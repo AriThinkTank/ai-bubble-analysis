@@ -617,6 +617,318 @@ footer {
 }
 .section { animation: fadeUp 0.6s ease both; }
 
+
+/* ======= FORMULA TOOLTIPS ======= */
+.fterm {
+  border-bottom: 1.5px dashed var(--gold);
+  cursor: help;
+  position: relative;
+  display: inline-block;
+  color: var(--gold);
+  font-weight: 600;
+}
+.fterm .ftip {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff;
+  border: 1px solid rgba(30,40,80,0.15);
+  box-shadow: 0 4px 20px rgba(30,40,80,0.14);
+  border-radius: 4px;
+  padding: 10px 14px;
+  width: 240px;
+  font-size: 10px;
+  color: var(--text);
+  line-height: 1.6;
+  z-index: 9999;
+  pointer-events: none;
+  transition: opacity 0.18s ease, visibility 0.18s ease;
+  text-align: left;
+  font-style: normal;
+  font-weight: 400;
+}
+.fterm .ftip .ftip-label {
+  display: block;
+  font-weight: 700;
+  color: var(--gold);
+  font-size: 11px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid rgba(176,125,16,0.2);
+  padding-bottom: 4px;
+}
+.fterm:hover .ftip,
+.fterm:focus .ftip {
+  visibility: visible;
+  opacity: 1;
+}
+/* Flip tooltip if near top */
+.fterm .ftip.tip-below {
+  bottom: auto;
+  top: calc(100% + 8px);
+}
+/* Small arrow on tooltip */
+.fterm .ftip::before {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid rgba(30,40,80,0.15);
+}
+.fterm .ftip::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid #fff;
+}
+.fterm .ftip.tip-below::before {
+  bottom: auto; top: -5px;
+  border-top: none;
+  border-bottom: 5px solid rgba(30,40,80,0.15);
+}
+.fterm .ftip.tip-below::after {
+  bottom: auto; top: -4px;
+  border-top: none;
+  border-bottom: 5px solid #fff;
+}
+
+/* ======= SOURCE HOVER BADGES ======= */
+.src-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: var(--blue-dim);
+  border: 1px solid rgba(26,110,181,0.35);
+  color: var(--blue);
+  font-size: 8px;
+  font-weight: 700;
+  cursor: help;
+  position: relative;
+  vertical-align: middle;
+  margin-left: 4px;
+  flex-shrink: 0;
+  transition: background 0.15s;
+}
+.src-badge:hover { background: rgba(26,110,181,0.2); }
+.src-badge .stip {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff;
+  border: 1px solid rgba(30,40,80,0.15);
+  box-shadow: 0 4px 20px rgba(30,40,80,0.14);
+  border-radius: 4px;
+  padding: 10px 14px;
+  width: 280px;
+  font-size: 10px;
+  color: var(--text);
+  line-height: 1.6;
+  z-index: 9999;
+  pointer-events: none;
+  transition: opacity 0.18s ease, visibility 0.18s ease;
+  text-align: left;
+  font-weight: 400;
+}
+.src-badge .stip .stip-title {
+  display: block;
+  font-weight: 700;
+  color: var(--blue);
+  font-size: 11px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid rgba(26,110,181,0.15);
+  padding-bottom: 4px;
+}
+.src-badge:hover .stip { visibility: visible; opacity: 1; }
+.src-badge .stip::before {
+  content: '';
+  position: absolute;
+  bottom: -5px; left: 50%;
+  transform: translateX(-50%);
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid rgba(30,40,80,0.15);
+}
+.src-badge .stip::after {
+  content: '';
+  position: absolute;
+  bottom: -4px; left: 50%;
+  transform: translateX(-50%);
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid #fff;
+}
+
+/* ======= SIMULATOR SECTION ======= */
+.sim-section {
+  padding: 72px 48px;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(180deg, #f0f4ff 0%, var(--bg) 100%);
+}
+.sim-grid {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 32px;
+  align-items: start;
+}
+.sim-controls {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: 0 2px 12px rgba(30,40,80,0.07);
+  padding: 24px;
+}
+.sim-control-title {
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.sim-lever {
+  margin-bottom: 22px;
+}
+.sim-lever-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 6px;
+}
+.sim-lever-name {
+  font-size: 11px;
+  color: var(--text-bright);
+  font-weight: 500;
+}
+.sim-lever-val {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--gold);
+  min-width: 60px;
+  text-align: right;
+}
+.sim-lever-desc {
+  font-size: 9px;
+  color: var(--text-dim);
+  margin-bottom: 6px;
+  line-height: 1.5;
+}
+input[type=range].sim-slider {
+  width: 100%;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--border-strong);
+  outline: none;
+  cursor: pointer;
+}
+input[type=range].sim-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--gold);
+  border: 2px solid #fff;
+  box-shadow: 0 1px 4px rgba(30,40,80,0.2);
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+input[type=range].sim-slider::-webkit-slider-thumb:hover { transform: scale(1.2); }
+input[type=range].sim-slider.red::-webkit-slider-thumb { background: var(--red); }
+input[type=range].sim-slider.blue::-webkit-slider-thumb { background: var(--blue); }
+input[type=range].sim-slider.green::-webkit-slider-thumb { background: var(--green); }
+.sim-divider { height: 1px; background: var(--border); margin: 16px 0; }
+.sim-reset {
+  width: 100%;
+  padding: 9px;
+  background: transparent;
+  border: 1px solid var(--border-strong);
+  color: var(--text-dim);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 8px;
+}
+.sim-reset:hover { background: var(--surface2); color: var(--text-bright); border-color: var(--gold); }
+
+.sim-output {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.sim-output-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.sim-outcome-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-top: 4px;
+}
+.sim-outcome-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 14px 12px;
+  text-align: center;
+  transition: border-color 0.3s;
+}
+.sim-outcome-card.active { border-color: var(--gold); box-shadow: 0 0 0 1px var(--gold); }
+.sim-outcome-card .soc-label {
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 6px;
+}
+.sim-outcome-card .soc-prob {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1;
+}
+.soc-a .soc-prob { color: var(--green); }
+.soc-b .soc-prob { color: var(--red); }
+.soc-c .soc-prob { color: var(--blue); }
+.soc-d .soc-prob { color: var(--amber); }
+
+.sim-warning {
+  padding: 10px 14px;
+  background: rgba(192,57,43,0.07);
+  border: 1px solid rgba(192,57,43,0.25);
+  font-size: 10px;
+  color: var(--red);
+  display: none;
+}
+.sim-warning.visible { display: block; }
+
+@media (max-width: 900px) {
+  .sim-grid { grid-template-columns: 1fr; }
+  .sim-outcome-cards { grid-template-columns: 1fr 1fr; }
+  .sim-output-row { grid-template-columns: 1fr; }
+  .sim-section { padding: 48px 24px; }
+}
+
 </style>
 </head>
 <body>
@@ -632,6 +944,7 @@ footer {
     <li><a href="#india">India</a></li>
     <li><a href="#leverage">Leverage</a></li>
     <li><a href="#assumptions">Sources</a></li>
+    <li><a href="#simulator">Simulator</a></li>
   </ul>
 </nav>
 
@@ -678,7 +991,7 @@ footer {
       <div class="card-title"><span class="dot dot-gold"></span>Investment Intensity as % of GDP</div>
       <div class="chart-wrap"><canvas id="chartIntensity"></canvas></div>
       <div style="font-size:10px;color:var(--text-dim);margin-top:12px;">
-        Source: Documents (AI_bubbles_details), BEA, Bain. AI 2025 Q2 annualised at 1.28% GDP. Dotcom peak: 1.5%. Railroad era: 1.8%.
+        Source: <span class="src-badge">1<span class="stip"><span class="stip-title">Research Documents (provided)</span>The three research papers provided: "AI Bubble Burst Paper", "AI Bubbles — Details", and "Pop Goes the AI Bubble". Core quantitative frameworks, stakeholder analysis, scenario probabilities, and mathematical models all originate from these.</span></span> <span class="src-badge">9<span class="stip"><span class="stip-title">BEA / US GDP Data</span>US Bureau of Economic Analysis. AI-related capital expenditures estimated at 0.82% of 2024 GDP and 1.28% annualised in Q2 2025, making AI capex a primary driver of US economic growth in H1 2025.</span></span> <span class="src-badge">2<span class="stip"><span class="stip-title">Bain Global AI Report 2025</span>Published by Bain & Company. Key data: $2T annual revenue requirement by 2030, 5% of enterprises seeing transformative returns, enterprise AI spending trajectory from $1.7B (2023) to $37B (2025).</span></span> — AI 2025 Q2 annualised at 1.28% GDP. Dotcom peak: 1.5%. Railroad era: 1.8%.
       </div>
     </div>
 
@@ -687,7 +1000,7 @@ footer {
       <div class="card-title"><span class="dot dot-red"></span>P/E Ratios: Then vs Now</div>
       <div class="chart-wrap"><canvas id="chartPE"></canvas></div>
       <div style="font-size:10px;color:var(--text-dim);margin-top:12px;">
-        Source: Documents (AI_bubble_burst_paper), Bloomberg, public filings. Dotcom NASDAQ P/E peaked at 200×; Nvidia FWD P/E ~30× (2025).
+        Source: <span class="src-badge">1<span class="stip"><span class="stip-title">Research Documents (provided)</span>The three research papers provided: "AI Bubble Burst Paper", "AI Bubbles — Details", and "Pop Goes the AI Bubble". Core quantitative frameworks, stakeholder analysis, scenario probabilities, and mathematical models all originate from these.</span></span> <span class="src-badge">11<span class="stip"><span class="stip-title">NASDAQ Historical Data / Bloomberg</span>Historical NASDAQ index data and Bloomberg terminal records. Dotcom peak P/E of 200× (March 2000), 78% decline through October 2002, Cisco peak market cap $500B. Nvidia trajectory comparison from Bloomberg data.</span></span> <span class="src-badge">4<span class="stip"><span class="stip-title">Company Financial Filings</span>Annual reports, 10-K/10-Q filings, and earnings calls from Microsoft, Google (Alphabet), Meta, Amazon, and Nvidia. OpenAI financials from leaked internal documents reported by The Information and WSJ.</span></span> — Dotcom NASDAQ P/E peaked at 200×; Nvidia FWD P/E ~30× (2025).
       </div>
     </div>
   </div>
@@ -698,7 +1011,7 @@ footer {
       <div class="card-title"><span class="dot dot-blue"></span>Hyperscaler Capex vs Operating Cash Flow (2025E)</div>
       <div class="chart-wrap"><canvas id="chartCashflow"></canvas></div>
       <div style="font-size:10px;color:var(--text-dim);margin-top:12px;">
-        Source: Documents (AI_bubbles_details), company filings, consensus estimates. Capex as % of OCF approaching but not exceeding 100%.
+        Source: <span class="src-badge">1<span class="stip"><span class="stip-title">Research Documents (provided)</span>The three research papers provided: "AI Bubble Burst Paper", "AI Bubbles — Details", and "Pop Goes the AI Bubble". Core quantitative frameworks, stakeholder analysis, scenario probabilities, and mathematical models all originate from these.</span></span> <span class="src-badge">4<span class="stip"><span class="stip-title">Company Financial Filings</span>Annual reports, 10-K/10-Q filings, and earnings calls from Microsoft, Google (Alphabet), Meta, Amazon, and Nvidia. OpenAI financials from leaked internal documents reported by The Information and WSJ.</span></span> — Capex as % of OCF approaching but not exceeding 100%.
       </div>
     </div>
 
@@ -707,16 +1020,26 @@ footer {
       <div class="card-title"><span class="dot dot-amber"></span>Cumulative Investment vs. AI Revenue — The Gap</div>
       <div class="chart-wrap"><canvas id="chartGap"></canvas></div>
       <div style="font-size:10px;color:var(--text-dim);margin-top:12px;">
-        Source: Documents, Goldman Sachs (2025), Bain. $560B invested by 5 hyperscalers vs $35B AI revenue combined = 6¢ per $1 invested.
+        Source: <span class="src-badge">1<span class="stip"><span class="stip-title">Research Documents (provided)</span>The three research papers provided: "AI Bubble Burst Paper", "AI Bubbles — Details", and "Pop Goes the AI Bubble". Core quantitative frameworks, stakeholder analysis, scenario probabilities, and mathematical models all originate from these.</span></span> <span class="src-badge">3<span class="stip"><span class="stip-title">Goldman Sachs AI Infrastructure 2025</span>Goldman Sachs analyst note on AI infrastructure. Key finding: 15% of Nvidia's projected 2025 revenue comes from circular/vendor-financing deals. Also provided hyperscaler capex projections.</span></span> <span class="src-badge">2<span class="stip"><span class="stip-title">Bain Global AI Report 2025</span>Published by Bain & Company. Key data: $2T annual revenue requirement by 2030, 5% of enterprises seeing transformative returns, enterprise AI spending trajectory from $1.7B (2023) to $37B (2025).</span></span> — $560B invested by 5 hyperscalers vs $35B AI revenue combined = 6¢ per $1 invested.
       </div>
     </div>
   </div>
 
   <!-- Math block: Sustainability condition -->
   <div class="math-block">
-    <strong style="font-size:12px;color:var(--text-bright);">Sustainability Condition (NPV Framework)</strong><br>
+    <strong style="font-size:12px;color:var(--text-bright);">Sustainability Condition (NPV Framework)</strong>
+    <span class="src-badge">2<span class="stip"><span class="stip-title">Bain Global AI Report 2025 + Company Filings</span>The $2T annual revenue requirement by 2030 comes from Bain's analysis of current investment pace. Hyperscaler capex of $560B from Microsoft, Google, Amazon, Meta, Nvidia annual reports and investor calls.</span></span><br>
     <span class="explain">From documents — investment is sustainable only if:</span>
-    <span class="eq">NPV = Σ(CF<sub>t</sub> / (1+r)<sup>t</sup>) − Cumulative Capex ≥ 0</span>
+    <span class="eq">
+      <span class="fterm">NPV<span class="ftip"><span class="ftip-label">NPV — Net Present Value</span>The total worth of all future cash flows expressed in today's dollars. If NPV ≥ 0, the investment pays for itself. A negative NPV means the investment destroys value at the assumed discount rate.</span></span>
+      = Σ(
+      <span class="fterm">CF<sub>t</sub><span class="ftip"><span class="ftip-label">CF<sub>t</sub> — Cash Flow at time t</span>Net revenue generated by AI investments in year t (revenues minus operating costs). Currently ~$35B/yr combined for the 5 largest hyperscalers. Needs to reach ~$98B/yr average to justify $560B capex.</span></span>
+      / (1 +
+      <span class="fterm">r<span class="ftip"><span class="ftip-label">r — Discount Rate (12%)</span>The annual rate used to "discount" future money back to today's value. Set at 12% here — 5-6% base WACC plus a ~6% risk premium for speculative AI returns. Higher r makes future revenues worth less today, requiring faster payoff.</span></span>
+      )<sup>t</sup>) −
+      <span class="fterm">Cumulative Capex<span class="ftip"><span class="ftip-label">Cumulative Capex — $560B</span>Total capital already deployed: Microsoft ~$80B, Google ~$85B, Amazon ~$125B, Meta ~$72B, Nvidia ~$100B commitments. This is the "sunk cost" that future cash flows must recoup.</span></span>
+      ≥ 0
+    </span>
     <span class="explain">At r = 12% discount rate, 15-yr depreciation, this requires annual cash flows averaging ~15–20% of cumulative capex.</span>
     <span class="eq">Required avg. annual CF ≥ $560B × 0.175 = ~$98B/yr</span>
     <span class="explain">Current AI revenue trajectory: ~$35B (2025) → implies 3× growth needed just to break sustainability threshold. Break-even expected 2028–2030.</span>
@@ -729,11 +1052,20 @@ footer {
       <div>
         <p style="font-size:11px;color:var(--text-dim);line-height:1.7;margin-bottom:16px;">
           Nvidia invests $100B in OpenAI → OpenAI buys Nvidia chips → Nvidia revenues rise → Nvidia market cap rises → more capacity to invest. Goldman Sachs estimates 15% of Nvidia's 2025 sales come from such circular arrangements.
+          <span class="src-badge">3<span class="stip"><span class="stip-title">Goldman Sachs AI Infrastructure Report 2025</span>GS analyst note estimated that approximately 15% of Nvidia's projected 2025 chip sales come from "circular" deals — where Nvidia itself finances or co-invests in companies that then purchase its chips.</span></span>
         </p>
         <div class="math-block" style="margin:0;">
-          <span class="eq">R = α·I,&nbsp;&nbsp; I = β·V,&nbsp;&nbsp; V = γ·R</span>
-          <span class="explain">Substituting: R(1 − αβγ) = 0</span>
-          <span class="explain">System stable only if αβγ &lt; 1. As circular exposure grows, αβγ → 1 and the system approaches criticality.</span>
+          <span class="explain" style="margin-bottom:6px;display:block;">Feedback loop between three linked variables:</span>
+          <span class="eq">
+            <span class="fterm">R<span class="ftip"><span class="ftip-label">R — Nvidia Revenue</span>Nvidia's chip sales revenue. Grows when AI labs increase compute purchases. ~$130B annual run-rate in 2025.</span></span>
+            = α·<span class="fterm">I<span class="ftip"><span class="ftip-label">I — Lab Investment</span>Capital deployed by AI labs (OpenAI, Anthropic, etc.) on compute. Directly drives Nvidia chip orders. ~$60B/yr for OpenAI alone.</span></span>,&nbsp;&nbsp;
+            I = β·<span class="fterm">V<span class="ftip"><span class="ftip-label">V — Lab Valuation</span>The market/private valuation of AI labs. High valuation → easier to raise capital → more compute investment. OpenAI at $500B (2025).</span></span>,&nbsp;&nbsp;
+            V = γ·R
+          </span>
+          <span class="explain">Substituting: <strong>R(1 − αβγ) = 0</strong></span>
+          <span class="explain">
+            <span class="fterm">αβγ<span class="ftip tip-below"><span class="ftip-label">αβγ — Loop Amplification Product</span>The combined elasticity of all three links. α = how much Nvidia revenue responds to lab investment. β = how much lab investment responds to valuation. γ = how much lab valuation responds to Nvidia revenue. Estimated at 0.7–0.85 today. If αβγ reaches 1.0, the system becomes unstable — any shock is amplified infinitely.</span></span>
+            must stay &lt; 1 for stability. Currently estimated at 0.7–0.85. As circular exposure grows, αβγ → 1 and the system approaches criticality.</span>
         </div>
       </div>
       <div>
@@ -793,7 +1125,7 @@ footer {
       <div class="card-title"><span class="dot dot-gold"></span>Hype Cycle Positioning — Gartner Model</div>
       <div class="chart-wrap"><canvas id="chartHype"></canvas></div>
       <div style="font-size:10px;color:var(--text-dim);margin-top:12px;">
-        Source: Gartner Hype Cycle model (adapted). Documents identify AI as near "Peak of Inflated Expectations" with correction likely 12–24 months out.
+        Source: <span class="src-badge">8<span class="stip"><span class="stip-title">Gartner Hype Cycle 2024/25</span>Gartner's annual technology hype cycle report. GenAI positioned near "Peak of Inflated Expectations" in 2024/25 editions. The five-stage model: Technology Trigger → Peak of Inflated Expectations → Trough of Disillusionment → Slope of Enlightenment → Plateau of Productivity.</span></span> <span class="src-badge">1<span class="stip"><span class="stip-title">Research Documents (provided)</span>The three research papers provided: "AI Bubble Burst Paper", "AI Bubbles — Details", and "Pop Goes the AI Bubble". Core quantitative frameworks, stakeholder analysis, scenario probabilities, and mathematical models all originate from these.</span></span> — AI positioned near "Peak of Inflated Expectations" with correction likely 12–24 months out.
       </div>
     </div>
 
@@ -801,7 +1133,7 @@ footer {
       <div class="card-title"><span class="dot dot-blue"></span>Boom-Bust Cycle: Web3 vs AI Investment</div>
       <div class="chart-wrap"><canvas id="chartBoomBust"></canvas></div>
       <div style="font-size:10px;color:var(--text-dim);margin-top:12px;">
-        Source: Documents (AI_bubbles_details), PitchBook, CB Insights. AI 2025 H1 alone matched full-year 2024 funding (~$100B).
+        Source: <span class="src-badge">1<span class="stip"><span class="stip-title">Research Documents (provided)</span>The three research papers provided: "AI Bubble Burst Paper", "AI Bubbles — Details", and "Pop Goes the AI Bubble". Core quantitative frameworks, stakeholder analysis, scenario probabilities, and mathematical models all originate from these.</span></span> <span class="src-badge">5<span class="stip"><span class="stip-title">PitchBook / CB Insights</span>Venture capital tracking databases. Key data: AI captured 50% of global VC in 2025 ($202B total), Web3 funding collapse of 82% year-over-year (Q1 2022 → Q1 2023), AI H1 2025 matching full-year 2024.</span></span> — AI 2025 H1 alone matched full-year 2024 funding (~$100B).
       </div>
     </div>
   </div>
@@ -850,7 +1182,7 @@ footer {
           </tr>
         </tbody>
       </table>
-      <div style="font-size:10px;color:var(--text-dim);margin-top:12px;">Source: Documents (AI_bubbles_details), company filings, Bain Research 2025.</div>
+      <div style="font-size:10px;color:var(--text-dim);margin-top:12px;">Source: <span class="src-badge">1<span class="stip"><span class="stip-title">Research Documents (provided)</span>The three research papers provided: "AI Bubble Burst Paper", "AI Bubbles — Details", and "Pop Goes the AI Bubble". Core quantitative frameworks, stakeholder analysis, scenario probabilities, and mathematical models all originate from these.</span></span> <span class="src-badge">4<span class="stip"><span class="stip-title">Company Financial Filings</span>Annual reports, 10-K/10-Q filings, and earnings calls from Microsoft, Google (Alphabet), Meta, Amazon, and Nvidia. OpenAI financials from leaked internal documents reported by The Information and WSJ.</span></span> <span class="src-badge">2<span class="stip"><span class="stip-title">Bain Global AI Report 2025</span>Published by Bain & Company. Key data: $2T annual revenue requirement by 2030, 5% of enterprises seeing transformative returns, enterprise AI spending trajectory from $1.7B (2023) to $37B (2025).</span></span></div>
     </div>
 
     <div>
@@ -969,14 +1301,31 @@ footer {
   </div>
 
   <div class="math-block" style="margin-top:24px;">
-    <strong style="font-size:12px;color:var(--text-bright);">Expected Value Calculation (from documents — AI_bubbles_details)</strong><br>
-    <span class="eq">EV(Invest) = P(Transform)×V(Win) + P(Partial)×V(Partial) − C(Investment)</span>
+    <strong style="font-size:12px;color:var(--text-bright);">Expected Value Calculation</strong>
+    <span class="src-badge">1<span class="stip"><span class="stip-title">Source: AI_bubbles_details (provided document)</span>The EV framework and probability estimates (30% full transformation, 50% partial, 20% failure) are drawn directly from the quantitative analysis in the research documents provided.</span></span><br>
+    <span class="eq">
+      <span class="fterm">EV<span class="ftip"><span class="ftip-label">EV — Expected Value</span>A weighted average of all possible outcomes, where each outcome is multiplied by its probability. If EV &gt; 0, the decision is rational on average even if individual outcomes may be negative.</span></span>
+      (Invest) =
+      <span class="fterm">P(Transform)<span class="ftip"><span class="ftip-label">P(Transform) = 30%</span>Estimated probability that AI fully transforms the economy — i.e., achieves dominant, general-purpose productivity gains across most sectors. Sourced from documents' scenario analysis.</span></span>
+      ×
+      <span class="fterm">V(Win)<span class="ftip"><span class="ftip-label">V(Win) = $5 Trillion</span>Value of achieving market dominance in a fully-transformed AI economy. Represents capturing a large share of a multi-trillion dollar sector — comparable to what Google/Amazon captured in search/e-commerce.</span></span>
+      +
+      <span class="fterm">P(Partial)<span class="ftip"><span class="ftip-label">P(Partial) = 50%</span>Probability of partial success — AI improves productivity in specific domains (coding, customer service) but does not transform the whole economy.</span></span>
+      ×<span class="fterm">V(Partial)<span class="ftip"><span class="ftip-label">V(Partial) = $500B</span>Value from partial AI deployment — modest market leadership in AI-augmented SaaS and enterprise software.</span></span>
+      −
+      <span class="fterm">C(Investment)<span class="ftip"><span class="ftip-label">C(Investment) = $300B</span>Approximate total investment cost borne by a single large tech player (e.g. Microsoft or Google) over the AI buildout cycle.</span></span>
+    </span>
     <span class="eq">= 0.30 × $5T + 0.50 × $500B − $300B = $1.5T + $250B − $300B = <span style="color:var(--green)">+$1.45T</span></span>
     <span class="explain">Even with 70% probability of partial/no transformation, expected value is positive — explains why corporations cannot rationally stop investing (Prisoner's Dilemma Nash Equilibrium: both invest).</span>
     <br><br>
     <strong style="font-size:12px;color:var(--text-bright);">OpenAI Survival Math</strong>
-    <span class="eq">Required CAGR = (200B / 13B)<sup>1/5</sup> − 1 = 72% p.a. (2025–2030)</span>
-    <span class="explain">OpenAI needs 72% annual revenue growth to reach break-even by 2030. Global AI SaaS market CAGR: ~39%. This implies OpenAI must grow at 2× market rate while market itself expands — historically rare (Google, Amazon in hyper-growth phase achieved this).</span>
+    <span class="src-badge">4<span class="stip"><span class="stip-title">OpenAI Financial Projections (leaked, reported 2025)</span>OpenAI's internal financial documents, reported by The Information and WSJ: $13B 2025 revenue estimate, $200B 2030 target, cumulative burn of $140B by 2029. CAGR derived arithmetically from these figures.</span></span><br>
+    <span class="eq">
+      Required
+      <span class="fterm">CAGR<span class="ftip"><span class="ftip-label">CAGR — Compound Annual Growth Rate</span>The year-over-year growth rate that, if constant, takes a starting value to an ending value. Formula: (End/Start)^(1/years) − 1. Here: (200/13)^(1/5) − 1 = 72%. For context, Amazon's peak CAGR was ~28%, Google's ~73% briefly in early years.</span></span>
+      = (200B / 13B)<sup>1/5</sup> − 1 = <strong>72% p.a.</strong> (2025–2030)
+    </span>
+    <span class="explain">OpenAI needs 72% annual revenue growth to reach break-even by 2030. Global AI SaaS market CAGR: ~39%. This implies OpenAI must grow at 2× market rate while market itself expands — historically rare (only Google, Amazon in hyper-growth phase achieved this).</span>
   </div>
 </section>
 
@@ -1095,7 +1444,7 @@ footer {
         </tr>
       </tbody>
     </table>
-    <div style="font-size:10px;color:var(--text-dim);margin-top:12px;">Source: Documents (AI_bubble_burst_paper, AI_bubbles_details), Goldman Sachs (2025), Bain Global AI Report (2025), company financial filings.</div>
+    <div style="font-size:10px;color:var(--text-dim);margin-top:12px;">Source: <span class="src-badge">1<span class="stip"><span class="stip-title">Research Documents (provided)</span>The three research papers provided: "AI Bubble Burst Paper", "AI Bubbles — Details", and "Pop Goes the AI Bubble". Core quantitative frameworks, stakeholder analysis, scenario probabilities, and mathematical models all originate from these.</span></span> <span class="src-badge">3<span class="stip"><span class="stip-title">Goldman Sachs AI Infrastructure 2025</span>Goldman Sachs analyst note on AI infrastructure. Key finding: 15% of Nvidia's projected 2025 revenue comes from circular/vendor-financing deals. Also provided hyperscaler capex projections.</span></span> <span class="src-badge">2<span class="stip"><span class="stip-title">Bain Global AI Report 2025</span>Published by Bain & Company. Key data: $2T annual revenue requirement by 2030, 5% of enterprises seeing transformative returns, enterprise AI spending trajectory from $1.7B (2023) to $37B (2025).</span></span> <span class="src-badge">4<span class="stip"><span class="stip-title">Company Financial Filings</span>Annual reports, 10-K/10-Q filings, and earnings calls from Microsoft, Google (Alphabet), Meta, Amazon, and Nvidia. OpenAI financials from leaked internal documents reported by The Information and WSJ.</span></span></div>
   </div>
 </section>
 
@@ -1299,7 +1648,7 @@ footer {
       <div class="card-title"><span class="dot dot-green"></span>India AI Exposure Profile</div>
       <div class="chart-wrap"><canvas id="chartIndia"></canvas></div>
       <div style="font-size:10px;color:var(--text-dim);margin-top:12px;">
-        Source: NASSCOM, IndiaAI Mission documents, McKinsey India AI Report 2025. India's $6B IT-AI services is ~3% of global AI investment.
+        Source: <span class="src-badge">6<span class="stip"><span class="stip-title">NASSCOM FY2025</span>National Association of Software and Service Companies annual industry report. India IT sector revenue ($254B), client geography breakdown (60% North America), employment data, and AI services growth projections.</span></span> <span class="src-badge">10<span class="stip"><span class="stip-title">IndiaAI Mission / MeitY</span>India's Ministry of Electronics and IT and the IndiaAI Mission framework. $1.25B ($10,372 crore) government AI compute program, 10,000+ GPU procurement for public access, focus on applications and language model localisation.</span></span> <span class="src-badge">7<span class="stip"><span class="stip-title">McKinsey Global Institute</span>McKinsey's AI productivity research. Key findings: 14% average productivity gain from AI tools in controlled studies, 78% enterprise AI adoption rate (2025), 26–55% productivity gains in specific use cases.</span></span> — India's $6B IT-AI services is ~3% of global AI investment.
       </div>
     </div>
 
@@ -1307,7 +1656,7 @@ footer {
       <div class="card-title"><span class="dot dot-amber"></span>IT Sector Revenue Sensitivity by Scenario</div>
       <div class="chart-wrap"><canvas id="chartIndiaIT"></canvas></div>
       <div style="font-size:10px;color:var(--text-dim);margin-top:12px;">
-        Source: NASSCOM FY2025 outlook, TCS/Infosys analyst estimates. 6–12 month lag from US market to Indian IT revenue impact.
+        Source: <span class="src-badge">6<span class="stip"><span class="stip-title">NASSCOM FY2025</span>National Association of Software and Service Companies annual industry report. India IT sector revenue ($254B), client geography breakdown (60% North America), employment data, and AI services growth projections.</span></span> <span class="src-badge">4<span class="stip"><span class="stip-title">Company Financial Filings</span>Annual reports, 10-K/10-Q filings, and earnings calls from Microsoft, Google (Alphabet), Meta, Amazon, and Nvidia. OpenAI financials from leaked internal documents reported by The Information and WSJ.</span></span> — 6–12 month lag from US market to Indian IT revenue impact.
       </div>
     </div>
   </div>
@@ -1456,13 +1805,187 @@ footer {
       <div style="margin-top:20px;">
         <div class="card-title"><span class="dot dot-amber"></span>Infrastructure Utilisation Lag Model</div>
         <div class="math-block" style="margin:0;">
-          <span class="eq">U(t) = min[1, A(t − τ) / I(t)]</span>
-          <span class="explain">A = application availability, I = infrastructure investment, τ = 5–7 year application lag</span><br>
+          <span class="eq">
+            <span class="fterm">U(t)<span class="ftip"><span class="ftip-label">U(t) — Utilisation at time t</span>The fraction of deployed AI infrastructure that is actually being used productively. 0 = completely idle; 1 = fully utilised. Capped at 1 because you can't use more than 100% of capacity.</span></span>
+            = min[1,
+            <span class="fterm">A(t − τ)<span class="ftip"><span class="ftip-label">A(t − τ) — Application Availability, lagged</span>The volume of AI applications (products, services, workflows) that exist and are ready to consume compute. The lag τ reflects that apps take years to be built, adopted, and scaled after infrastructure exists.</span></span>
+            /
+            <span class="fterm">I(t)<span class="ftip"><span class="ftip-label">I(t) — Infrastructure Investment</span>Total compute capacity deployed — data centres, GPUs, networking. Grows rapidly (63–73%/yr) as hyperscalers build ahead of demand.</span></span>
+            ]
+          </span>
+          <span class="explain">
+            <span class="fterm">τ<span class="ftip tip-below"><span class="ftip-label">τ — Application Lag (5–7 years)</span>Historical precedent: fibre optic cable laid 1997–2001 took until ~2005–2008 before applications (YouTube, cloud computing, social media) fully utilised it. The AI equivalent lag is estimated at 5–7 years.</span></span>
+            = 5–7 year application lag. Dark fiber analogy: 85–95% of 1990s fibre remained unused for years before the consumer internet arrived.
+          </span><br>
           <span class="explain">Current state (t=0): U ≈ 0.2–0.4 (40–60% utilisation in best cases)</span><br>
           <span class="explain">If A(t) catches up: infrastructure justified retrospectively ("dark compute" scenario)</span><br>
           <span class="explain">If τ is infinite (no app catch-up): full bubble collapse</span>
         </div>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION SIM: INTERACTIVE SCENARIO SIMULATOR -->
+<section class="sim-section" id="simulator">
+  <div class="section-header">
+    <span class="section-num">09</span>
+    <div>
+      <div class="section-title">Interactive Scenario Simulator</div>
+      <div class="section-subtitle">Adjust the key levers below to explore how different combinations of revenue growth, investment pace, circular financing, and India IT dependence shift scenario probabilities, OpenAI's runway, and India's exposure.</div>
+    </div>
+  </div>
+
+  <div class="sim-grid">
+    <!-- CONTROLS -->
+    <div class="sim-controls">
+      <div class="sim-control-title"><span class="dot dot-gold"></span>Adjust the levers</div>
+
+      <div class="sim-lever">
+        <div class="sim-lever-header">
+          <div class="sim-lever-name">AI Revenue Growth Rate (2025–2028)</div>
+          <div class="sim-lever-val" id="val-rev">35%</div>
+        </div>
+        <div class="sim-lever-desc">How fast global enterprise AI revenue grows annually. Base case ~35%. Bulls say 50%+; bears say it stalls at 20%.</div>
+        <input type="range" class="sim-slider green" id="sl-rev" min="10" max="70" value="35" step="1">
+        <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--text-dim);margin-top:3px;"><span>10% (stall)</span><span>40% (base)</span><span>70% (bull)</span></div>
+      </div>
+
+      <div class="sim-lever">
+        <div class="sim-lever-header">
+          <div class="sim-lever-name">Hyperscaler Capex Pace</div>
+          <div class="sim-lever-val" id="val-capex">$443B</div>
+        </div>
+        <div class="sim-lever-desc">Annual capital expenditure by the 5 major hyperscalers. $443B is 2025 consensus estimate. Cutting = correction signal.</div>
+        <input type="range" class="sim-slider" id="sl-capex" min="150" max="700" value="443" step="10">
+        <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--text-dim);margin-top:3px;"><span>$150B (slashed)</span><span>$443B (2025E)</span><span>$700B (accelerate)</span></div>
+      </div>
+
+      <div class="sim-lever">
+        <div class="sim-lever-header">
+          <div class="sim-lever-name">Circular Loop Intensity (αβγ)</div>
+          <div class="sim-lever-val" id="val-circ">0.78</div>
+        </div>
+        <div class="sim-lever-desc">How tightly linked Nvidia revenue, lab valuations, and lab investment are. Above 0.95 = system near instability. Below 0.5 = healthy independence.</div>
+        <input type="range" class="sim-slider red" id="sl-circ" min="0.3" max="1.0" value="0.78" step="0.01">
+        <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--text-dim);margin-top:3px;"><span>0.3 (stable)</span><span>0.78 (current est.)</span><span>1.0 (critical)</span></div>
+      </div>
+
+      <div class="sim-lever">
+        <div class="sim-lever-header">
+          <div class="sim-lever-name">Interest Rate Environment</div>
+          <div class="sim-lever-val" id="val-rate">5.0%</div>
+        </div>
+        <div class="sim-lever-desc">Higher rates compress DCF valuations of future AI revenues. Each +1% adds ~$100–150B discount to the NPV of 2030 AI revenue.</div>
+        <input type="range" class="sim-slider blue" id="sl-rate" min="2" max="9" value="5" step="0.25">
+        <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--text-dim);margin-top:3px;"><span>2% (dovish)</span><span>5% (current)</span><span>9% (tight)</span></div>
+      </div>
+
+      <div class="sim-lever">
+        <div class="sim-lever-header">
+          <div class="sim-lever-name">India IT North American Dependency</div>
+          <div class="sim-lever-val" id="val-india">60%</div>
+        </div>
+        <div class="sim-lever-desc">Share of India's IT revenue from North American clients. Currently ~60%. Higher = more exposed to US correction. Diversification reduces risk.</div>
+        <input type="range" class="sim-slider green" id="sl-india" min="30" max="80" value="60" step="1">
+        <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--text-dim);margin-top:3px;"><span>30% (diversified)</span><span>60% (today)</span><span>80% (concentrated)</span></div>
+      </div>
+
+      <div class="sim-divider"></div>
+
+      <div class="sim-lever">
+        <div class="sim-lever-header">
+          <div class="sim-lever-name">AI Capability Progress</div>
+          <div class="sim-lever-val" id="val-cap">Moderate</div>
+        </div>
+        <div class="sim-lever-desc">Expected AI capability trajectory. Affects which scenario is most likely.</div>
+        <input type="range" class="sim-slider" id="sl-cap" min="1" max="4" value="2" step="1">
+        <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--text-dim);margin-top:3px;"><span>Plateau</span><span>Moderate</span><span>Strong</span><span>Breakthrough</span></div>
+      </div>
+
+      <button class="sim-reset" onclick="resetSimulator()">↺ Reset to base case</button>
+    </div>
+
+    <!-- OUTPUTS -->
+    <div class="sim-output">
+
+      <!-- Warning banner -->
+      <div class="sim-warning" id="sim-warning">
+        ⚠ <strong>System instability detected:</strong> Circular loop (αβγ) is approaching criticality. A single funding shock could trigger cascading collapse across the investment loop.
+      </div>
+
+      <!-- Scenario probability shifts -->
+      <div class="card">
+        <div class="card-title"><span class="dot dot-gold"></span>Scenario Probabilities (updated from levers)</div>
+        <div class="sim-outcome-cards">
+          <div class="sim-outcome-card soc-a" id="soc-a">
+            <div class="soc-label">A — Soft Landing</div>
+            <div class="soc-prob" id="prob-a">35%</div>
+            <div style="font-size:9px;color:var(--text-dim);margin-top:4px;">Correction + recovery</div>
+          </div>
+          <div class="sim-outcome-card soc-b" id="soc-b">
+            <div class="soc-label">B — Hard Crash</div>
+            <div class="soc-prob" id="prob-b">25%</div>
+            <div style="font-size:9px;color:var(--text-dim);margin-top:4px;">AI winter</div>
+          </div>
+          <div class="sim-outcome-card soc-c" id="soc-c">
+            <div class="soc-label">C — Acceleration</div>
+            <div class="soc-prob" id="prob-c">15%</div>
+            <div style="font-size:9px;color:var(--text-dim);margin-top:4px;">AGI-adjacent</div>
+          </div>
+          <div class="sim-outcome-card soc-d" id="soc-d">
+            <div class="soc-label">D — Bifurcation</div>
+            <div class="soc-prob" id="prob-d">25%</div>
+            <div style="font-size:9px;color:var(--text-dim);margin-top:4px;">Split outcomes</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Two charts side by side -->
+      <div class="sim-output-row">
+        <div class="card">
+          <div class="card-title"><span class="dot dot-red"></span>OpenAI Runway to Break-even</div>
+          <div class="chart-wrap"><canvas id="chartSimOpenAI" style="max-height:220px;"></canvas></div>
+          <div id="sim-openai-note" style="font-size:10px;color:var(--text-dim);margin-top:8px;">At current growth rate, break-even in <strong id="sim-breakeven">2030</strong></div>
+        </div>
+        <div class="card">
+          <div class="card-title"><span class="dot dot-gold"></span>NPV of AI Investment at Current Settings</div>
+          <div class="chart-wrap"><canvas id="chartSimNPV" style="max-height:220px;"></canvas></div>
+          <div id="sim-npv-note" style="font-size:10px;color:var(--text-dim);margin-top:8px;">NPV: <strong id="sim-npv-val" style="color:var(--green)">+$420B</strong> at current settings</div>
+        </div>
+      </div>
+
+      <!-- India impact chart -->
+      <div class="card">
+        <div class="card-title"><span class="dot dot-green"></span>India IT Sector Impact — Revenue Growth Trajectory</div>
+        <div class="chart-wrap"><canvas id="chartSimIndia" style="max-height:200px;"></canvas></div>
+        <div id="sim-india-note" style="font-size:10px;color:var(--text-dim);margin-top:8px;">Estimated India IT revenue growth impact: <strong id="sim-india-val" style="color:var(--amber)">−6%</strong> from dominant scenario</div>
+      </div>
+
+      <!-- Key metrics row -->
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;">
+        <div class="card" style="padding:16px;text-align:center;">
+          <div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px;">Revenue Gap</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;" id="sim-gap-val">2.8×</div>
+          <div style="font-size:9px;color:var(--text-dim);">needed vs current</div>
+        </div>
+        <div class="card" style="padding:16px;text-align:center;">
+          <div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px;">Loop Stability</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;" id="sim-loop-val">Moderate</div>
+          <div style="font-size:9px;color:var(--text-dim);" id="sim-loop-sub">αβγ = 0.78</div>
+        </div>
+        <div class="card" style="padding:16px;text-align:center;">
+          <div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px;">Likely Outcome</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;" id="sim-likely">Soft Landing</div>
+          <div style="font-size:9px;" id="sim-likely-prob" style="color:var(--green)">35% probability</div>
+        </div>
+        <div class="card" style="padding:16px;text-align:center;">
+          <div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px;">India Lag</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;" id="sim-india-lag">9 mo</div>
+          <div style="font-size:9px;color:var(--text-dim);">from US correction</div>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
@@ -1997,6 +2520,281 @@ new Chart(document.getElementById('chartLeverage'), {
     }
   }
 });
+
+// ======= INTERACTIVE SIMULATOR =======
+const BASE = { rev: 35, capex: 443, circ: 0.78, rate: 5.0, india: 60, cap: 2 };
+const CAP_LABELS = ['', 'Plateau', 'Moderate', 'Strong', 'Breakthrough'];
+
+let simOpenAI, simNPV, simIndia;
+
+function initSimCharts() {
+  // OpenAI revenue vs burn chart
+  simOpenAI = new Chart(document.getElementById('chartSimOpenAI'), {
+    type: 'line',
+    data: {
+      labels: ['2025','2026','2027','2028','2029','2030'],
+      datasets: [
+        { label: 'Revenue ($B)', data: [], borderColor: GREEN, backgroundColor: 'rgba(26,122,74,0.08)', borderWidth: 2, pointRadius: 3, fill: true, tension: 0.3 },
+        { label: 'Cumulative Burn ($B)', data: [], borderColor: RED, backgroundColor: 'rgba(192,57,43,0.06)', borderWidth: 2, pointRadius: 3, fill: true, tension: 0.3 },
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: true,
+      plugins: { legend: { position: 'top', labels: { boxWidth: 10, padding: 10 } } },
+      scales: {
+        y: { ticks: { callback: v => '$' + v + 'B' }, title: { display: true, text: '$B', color: '#9090aa' } }
+      }
+    }
+  });
+
+  // NPV waterfall-style
+  simNPV = new Chart(document.getElementById('chartSimNPV'), {
+    type: 'bar',
+    data: {
+      labels: ['Total Capex', 'PV of Revenue (10yr)', 'NPV'],
+      datasets: [{ label: '$B', data: [], backgroundColor: ['rgba(192,57,43,0.5)', 'rgba(26,122,74,0.5)', 'rgba(176,125,16,0.6)'], borderColor: [RED, GREEN, GOLD], borderWidth: 1.5 }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: true,
+      plugins: { legend: { display: false } },
+      scales: { y: { ticks: { callback: v => '$' + v + 'B' }, title: { display: true, text: '$B', color: '#9090aa' } } }
+    }
+  });
+
+  // India trajectory
+  simIndia = new Chart(document.getElementById('chartSimIndia'), {
+    type: 'line',
+    data: {
+      labels: ['2025','2026','2027','2028','2029'],
+      datasets: [
+        { label: 'Baseline IT growth (%)', data: [8,8,8,9,9], borderColor: DIM, borderWidth: 1.5, borderDash: [4,3], pointRadius: 2, tension: 0.3 },
+        { label: 'Under sim scenario (%)', data: [], borderColor: GREEN, backgroundColor: 'rgba(26,122,74,0.06)', borderWidth: 2, pointRadius: 3, fill: true, tension: 0.3 },
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: true,
+      plugins: { legend: { position: 'top', labels: { boxWidth: 10, padding: 10 } } },
+      scales: { y: { ticks: { callback: v => v + '%' }, title: { display: true, text: 'Revenue growth %', color: '#9090aa' } } }
+    }
+  });
+
+  updateSimulator();
+}
+
+function clamp(v, lo, hi) { return Math.min(hi, Math.max(lo, v)); }
+
+function computeScenarios(rev, capex, circ, rate, cap) {
+  // Base probs
+  let pA = 35, pB = 25, pC = 15, pD = 25;
+
+  // Revenue growth effect
+  const revDelta = rev - 35;
+  pA += revDelta * 0.25;
+  pB -= revDelta * 0.35;
+  pC += revDelta * 0.15;
+  pD += revDelta * 0.05;
+
+  // Capex effect — very high capex → more likely crash OR accel
+  const capexDelta = (capex - 443) / 100;
+  pB += capexDelta * 1.5;
+  pC += capexDelta * 1.0;
+  pA -= capexDelta * 1.5;
+
+  // Circular loop — high αβγ → more crash risk
+  const circRisk = (circ - 0.78) * 100;
+  pB += circRisk * 0.25;
+  pA -= circRisk * 0.15;
+  pD -= circRisk * 0.1;
+
+  // Interest rate — high rates → more crash, less accel
+  const rateDelta = rate - 5;
+  pB += rateDelta * 1.8;
+  pC -= rateDelta * 1.0;
+  pA -= rateDelta * 0.8;
+
+  // Capability
+  if (cap === 1) { pB += 12; pC -= 10; pA -= 5; pD += 3; }
+  else if (cap === 3) { pC += 8; pD += 4; pA -= 6; pB -= 6; }
+  else if (cap === 4) { pC += 20; pA -= 8; pB -= 10; pD -= 2; }
+
+  // Normalise to 100
+  const total = pA + pB + pC + pD;
+  pA = Math.round(clamp(pA / total * 100, 2, 75));
+  pB = Math.round(clamp(pB / total * 100, 2, 75));
+  pC = Math.round(clamp(pC / total * 100, 2, 60));
+  pD = 100 - pA - pB - pC;
+  if (pD < 2) { pD = 2; pA = 100 - pB - pC - pD; }
+
+  return [pA, pB, pC, pD];
+}
+
+function computeOpenAI(rev) {
+  // OpenAI revenue trajectory based on growth rate
+  const base = 13;
+  const revs = [base];
+  for (let i = 1; i <= 5; i++) revs.push(+(revs[i-1] * (1 + rev/100)).toFixed(1));
+  // Burn schedule (fixed + variable; decreases as revenue scales)
+  const burns = [22, 28, 36, 38, 35, 30];
+  const cumBurns = [];
+  let cum = 0;
+  for (let i = 0; i < 6; i++) {
+    cum += Math.max(0, burns[i] - revs[i]);
+    cumBurns.push(+cum.toFixed(1));
+  }
+  // Break-even: when revenue >= burn
+  let beYear = 'Beyond 2030';
+  const years = [2025,2026,2027,2028,2029,2030];
+  for (let i = 0; i < 6; i++) {
+    if (revs[i] >= burns[i]) { beYear = years[i]; break; }
+  }
+  return { revs, cumBurns, beYear };
+}
+
+function computeNPV(rev, capex, rate) {
+  const r = rate / 100;
+  const currentAIRev = 35; // $B
+  let pv = 0;
+  let revNow = currentAIRev;
+  for (let t = 1; t <= 10; t++) {
+    revNow *= (1 + rev / 100);
+    // Capture fraction for hyperscalers (~20% of AI market)
+    const cf = revNow * 0.20 * 0.25; // 25% margin on share
+    pv += cf / Math.pow(1 + r, t);
+  }
+  const npv = Math.round(pv - capex);
+  return { capex, pv: Math.round(pv), npv };
+}
+
+function computeIndia(rev, capex, india, pA, pB, pC, pD) {
+  // Dominant scenario drives impact
+  const dominant = Math.max(pA, pB, pC, pD);
+  let impacts;
+  if (dominant === pB) {
+    impacts = [2, -3 - (india - 60) * 0.2, -8 - (india - 60) * 0.3, -10 - (india - 60) * 0.35, -6 - (india - 60) * 0.2];
+  } else if (dominant === pC) {
+    impacts = [2, -1, -5, -10, -12];
+  } else if (dominant === pD) {
+    impacts = [6, 5, 4, 6, 8];
+  } else {
+    impacts = [6, 3 - (india - 60) * 0.05, 1 - (india - 60) * 0.05, 4, 7];
+  }
+  return impacts.map(v => +v.toFixed(1));
+}
+
+function getDominantLabel(pA, pB, pC, pD) {
+  const max = Math.max(pA, pB, pC, pD);
+  if (max === pA) return ['Soft Landing', pA, 'color:var(--green)'];
+  if (max === pB) return ['Hard Crash', pB, 'color:var(--red)'];
+  if (max === pC) return ['Acceleration', pC, 'color:var(--blue)'];
+  return ['Bifurcation', pD, 'color:var(--amber)'];
+}
+
+function updateSimulator() {
+  const rev = +document.getElementById('sl-rev').value;
+  const capex = +document.getElementById('sl-capex').value;
+  const circ = +document.getElementById('sl-circ').value;
+  const rate = +document.getElementById('sl-rate').value;
+  const india = +document.getElementById('sl-india').value;
+  const cap = +document.getElementById('sl-cap').value;
+
+  // Update display values
+  document.getElementById('val-rev').textContent = rev + '%';
+  document.getElementById('val-capex').textContent = '$' + capex + 'B';
+  document.getElementById('val-circ').textContent = circ.toFixed(2);
+  document.getElementById('val-rate').textContent = rate.toFixed(2) + '%';
+  document.getElementById('val-india').textContent = india + '%';
+  document.getElementById('val-cap').textContent = CAP_LABELS[cap];
+
+  // Warning
+  const warn = document.getElementById('sim-warning');
+  warn.classList.toggle('visible', circ >= 0.93);
+
+  // Scenarios
+  const [pA, pB, pC, pD] = computeScenarios(rev, capex, circ, rate, cap);
+  document.getElementById('prob-a').textContent = pA + '%';
+  document.getElementById('prob-b').textContent = pB + '%';
+  document.getElementById('prob-c').textContent = pC + '%';
+  document.getElementById('prob-d').textContent = pD + '%';
+
+  // Highlight dominant
+  ['soc-a','soc-b','soc-c','soc-d'].forEach(id => document.getElementById(id).classList.remove('active'));
+  const dominant = Math.max(pA, pB, pC, pD);
+  if (dominant === pA) document.getElementById('soc-a').classList.add('active');
+  else if (dominant === pB) document.getElementById('soc-b').classList.add('active');
+  else if (dominant === pC) document.getElementById('soc-c').classList.add('active');
+  else document.getElementById('soc-d').classList.add('active');
+
+  // OpenAI
+  const { revs, cumBurns, beYear } = computeOpenAI(rev);
+  simOpenAI.data.datasets[0].data = revs;
+  simOpenAI.data.datasets[1].data = cumBurns;
+  simOpenAI.update('none');
+  document.getElementById('sim-breakeven').textContent = beYear;
+
+  // NPV
+  const { pv, npv } = computeNPV(rev, capex, rate);
+  simNPV.data.datasets[0].data = [capex, pv, npv];
+  simNPV.data.datasets[0].backgroundColor = [
+    'rgba(192,57,43,0.5)',
+    'rgba(26,122,74,0.5)',
+    npv >= 0 ? 'rgba(176,125,16,0.6)' : 'rgba(192,57,43,0.6)'
+  ];
+  simNPV.data.datasets[0].borderColor = [RED, GREEN, npv >= 0 ? GOLD : RED];
+  simNPV.update('none');
+  const npvEl = document.getElementById('sim-npv-val');
+  npvEl.textContent = (npv >= 0 ? '+' : '') + '$' + npv + 'B';
+  npvEl.style.color = npv >= 0 ? 'var(--green)' : 'var(--red)';
+
+  // India
+  const indiaData = computeIndia(rev, capex, india, pA, pB, pC, pD);
+  simIndia.data.datasets[1].data = indiaData;
+  const avgImpact = +(indiaData.reduce((a,b)=>a+b,0)/indiaData.length).toFixed(1);
+  simIndia.data.datasets[1].borderColor = avgImpact >= 5 ? GREEN : avgImpact >= 0 ? AMBER : RED;
+  simIndia.update('none');
+  const indiaEl = document.getElementById('sim-india-val');
+  indiaEl.textContent = (avgImpact >= 0 ? '+' : '') + avgImpact + '%';
+  indiaEl.style.color = avgImpact >= 5 ? 'var(--green)' : avgImpact >= 0 ? 'var(--amber)' : 'var(--red)';
+
+  // Key metrics
+  const revNeeded = capex * 0.175;
+  const gap = (revNeeded / (35 * (1 + rev/100))).toFixed(1);
+  document.getElementById('sim-gap-val').textContent = gap + '×';
+
+  const loopEl = document.getElementById('sim-loop-val');
+  const loopSub = document.getElementById('sim-loop-sub');
+  loopEl.textContent = circ < 0.6 ? 'Stable' : circ < 0.85 ? 'Moderate' : circ < 0.95 ? 'Fragile' : 'Critical';
+  loopEl.style.color = circ < 0.6 ? 'var(--green)' : circ < 0.85 ? 'var(--amber)' : 'var(--red)';
+  loopSub.textContent = 'αβγ = ' + circ.toFixed(2);
+
+  const [domLabel, domProb, domColor] = getDominantLabel(pA, pB, pC, pD);
+  document.getElementById('sim-likely').textContent = domLabel;
+  document.getElementById('sim-likely').style = domColor;
+  const lp = document.getElementById('sim-likely-prob');
+  lp.textContent = domProb + '% probability';
+  lp.style = domColor;
+
+  // India lag — proportional to dependency
+  const lag = Math.round(6 + (india - 30) * 0.1);
+  document.getElementById('sim-india-lag').textContent = lag + ' mo';
+}
+
+function resetSimulator() {
+  document.getElementById('sl-rev').value = BASE.rev;
+  document.getElementById('sl-capex').value = BASE.capex;
+  document.getElementById('sl-circ').value = BASE.circ;
+  document.getElementById('sl-rate').value = BASE.rate;
+  document.getElementById('sl-india').value = BASE.india;
+  document.getElementById('sl-cap').value = BASE.cap;
+  updateSimulator();
+}
+
+// Attach listeners
+['sl-rev','sl-capex','sl-circ','sl-rate','sl-india','sl-cap'].forEach(id => {
+  document.getElementById(id).addEventListener('input', updateSimulator);
+});
+
+// Init on DOM ready
+initSimCharts();
 
 </script>
 </body>
