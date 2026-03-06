@@ -1,0 +1,1997 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The AI Bubble — Scenario Analysis</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=JetBrains+Mono:wght@300;400;500;700&display=swap');
+
+:root {
+  --bg: #05050a;
+  --surface: #0c0c16;
+  --surface2: #12121f;
+  --border: rgba(255,255,255,0.07);
+  --border-strong: rgba(255,255,255,0.15);
+  --gold: #c9a84c;
+  --gold-dim: rgba(201,168,76,0.15);
+  --red: #d94f3d;
+  --red-dim: rgba(217,79,61,0.12);
+  --blue: #4d9de0;
+  --blue-dim: rgba(77,157,224,0.12);
+  --green: #52b788;
+  --green-dim: rgba(82,183,136,0.12);
+  --amber: #e07c3a;
+  --amber-dim: rgba(224,124,58,0.12);
+  --text: #c8c8d8;
+  --text-dim: #5a5a78;
+  --text-bright: #eeeeff;
+  --text-muted: #888899;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  line-height: 1.7;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* GRAIN OVERLAY */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  background-size: 200px;
+  pointer-events: none;
+  z-index: 1000;
+  opacity: 0.4;
+}
+
+/* NAV */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 900;
+  background: rgba(5,5,10,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 52px;
+}
+.nav-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 15px;
+  font-style: italic;
+  color: var(--gold);
+  letter-spacing: 0.05em;
+}
+.nav-links {
+  display: flex;
+  gap: 24px;
+  list-style: none;
+}
+.nav-links a {
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--gold); }
+
+/* HERO */
+.hero {
+  padding: 120px 48px 64px;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 50%; height: 100%;
+  background: radial-gradient(ellipse at 80% 50%, rgba(201,168,76,0.04) 0%, transparent 60%);
+  pointer-events: none;
+}
+.hero-tag {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.hero-tag::before {
+  content: '';
+  width: 32px;
+  height: 1px;
+  background: var(--gold);
+}
+.hero h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(42px, 6vw, 80px);
+  font-weight: 300;
+  color: var(--text-bright);
+  line-height: 1.05;
+  max-width: 800px;
+  margin-bottom: 32px;
+}
+.hero h1 em {
+  font-style: italic;
+  color: var(--gold);
+}
+.hero-meta {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  max-width: 800px;
+  border: 1px solid var(--border);
+  margin-top: 48px;
+}
+.hero-stat {
+  padding: 20px 24px;
+  border-right: 1px solid var(--border);
+  background: var(--surface);
+}
+.hero-stat:last-child { border-right: none; }
+.hero-stat .val {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--gold);
+  display: block;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.hero-stat .lbl {
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* SECTIONS */
+.section {
+  padding: 72px 48px;
+  border-bottom: 1px solid var(--border);
+}
+.section-header {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  margin-bottom: 48px;
+}
+.section-num {
+  font-size: 11px;
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+  min-width: 24px;
+}
+.section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(22px, 3vw, 36px);
+  font-weight: 400;
+  color: var(--text-bright);
+}
+.section-subtitle {
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-top: 8px;
+  letter-spacing: 0.05em;
+  max-width: 640px;
+  line-height: 1.6;
+}
+
+/* GRID LAYOUTS */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; }
+
+/* CARD */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 24px;
+  position: relative;
+}
+.card-title {
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.card-title .dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+}
+.dot-gold { background: var(--gold); }
+.dot-red { background: var(--red); }
+.dot-blue { background: var(--blue); }
+.dot-green { background: var(--green); }
+.dot-amber { background: var(--amber); }
+
+/* CHART CONTAINERS */
+.chart-wrap {
+  position: relative;
+  width: 100%;
+}
+.chart-wrap canvas { max-height: 320px; }
+
+/* SCENARIO CARDS */
+.scenario-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.scenario-card {
+  border: 1px solid var(--border);
+  padding: 28px;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color 0.25s, background 0.25s;
+}
+.scenario-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+}
+.sc-soft::before { background: var(--green); }
+.sc-hard::before { background: var(--red); }
+.sc-accel::before { background: var(--blue); }
+.sc-bifur::before { background: var(--amber); }
+.scenario-card:hover {
+  border-color: var(--border-strong);
+  background: var(--surface);
+}
+.sc-prob {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 42px;
+  font-weight: 600;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.sc-soft .sc-prob { color: var(--green); }
+.sc-hard .sc-prob { color: var(--red); }
+.sc-accel .sc-prob { color: var(--blue); }
+.sc-bifur .sc-prob { color: var(--amber); }
+.sc-name {
+  font-size: 13px;
+  color: var(--text-bright);
+  font-weight: 500;
+  margin-bottom: 12px;
+}
+.sc-desc {
+  font-size: 11px;
+  color: var(--text-dim);
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+.sc-impacts {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.sc-impact {
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.impact-icon { font-size: 12px; }
+
+/* STAKEHOLDER MATRIX */
+.stakeholder-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
+}
+.stakeholder-table th {
+  text-align: left;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border-strong);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  background: var(--surface2);
+}
+.stakeholder-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+  line-height: 1.5;
+}
+.stakeholder-table tr:last-child td { border-bottom: none; }
+.stakeholder-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+/* RISK BAR */
+.risk-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 10px;
+}
+.risk-bar-track {
+  flex: 1;
+  height: 4px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.risk-bar-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.8s ease;
+}
+
+/* DEPENDENCY MAP */
+.dep-map {
+  position: relative;
+  height: 420px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+.dep-map svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* INDIA SECTION */
+.india-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+.india-scenario {
+  border: 1px solid var(--border);
+  padding: 24px;
+}
+.india-scenario h4 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px;
+  color: var(--text-bright);
+  margin-bottom: 8px;
+}
+.india-scenario p {
+  font-size: 11px;
+  color: var(--text-dim);
+  line-height: 1.65;
+  margin-bottom: 16px;
+}
+.india-metrics {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 12px;
+}
+.india-metric {
+  background: var(--surface2);
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+}
+.india-metric .v {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px;
+  font-weight: 600;
+}
+.india-metric .l {
+  font-size: 9px;
+  color: var(--text-dim);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+/* ASSUMPTIONS + SOURCES */
+.source-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.source-list li {
+  display: flex;
+  gap: 12px;
+  align-items: baseline;
+  font-size: 11px;
+  color: var(--text-dim);
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+.source-list li span.src-num {
+  color: var(--gold);
+  font-size: 10px;
+  min-width: 20px;
+}
+
+/* MATH BLOCK */
+.math-block {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-left: 2px solid var(--gold);
+  padding: 20px 24px;
+  margin: 16px 0;
+  font-size: 11px;
+  line-height: 1.8;
+}
+.math-block .eq {
+  color: var(--gold);
+  font-size: 13px;
+  display: block;
+  margin: 6px 0;
+}
+.math-block .explain {
+  color: var(--text-dim);
+  font-size: 10px;
+}
+
+/* LEVERAGE POINTS */
+.leverage-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.leverage-item {
+  display: flex;
+  gap: 16px;
+  padding: 16px 20px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  align-items: flex-start;
+  transition: border-color 0.2s;
+}
+.leverage-item:hover { border-color: var(--border-strong); }
+.leverage-rank {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px;
+  font-weight: 700;
+  min-width: 32px;
+  line-height: 1;
+}
+.leverage-body {}
+.leverage-name {
+  font-size: 12px;
+  color: var(--text-bright);
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+.leverage-desc {
+  font-size: 10px;
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+
+/* HYPE CYCLE */
+.hype-label {
+  font-size: 10px;
+  fill: var(--text-dim);
+}
+
+/* TAGS */
+.tag {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 2px;
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+.tag-red { background: var(--red-dim); color: var(--red); }
+.tag-green { background: var(--green-dim); color: var(--green); }
+.tag-blue { background: var(--blue-dim); color: var(--blue); }
+.tag-gold { background: var(--gold-dim); color: var(--gold); }
+.tag-amber { background: var(--amber-dim); color: var(--amber); }
+
+/* TIMELINE */
+.timeline {
+  position: relative;
+  padding-left: 28px;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 7px; top: 8px; bottom: 8px;
+  width: 1px;
+  background: linear-gradient(to bottom, var(--gold), rgba(201,168,76,0.1));
+}
+.tl-item {
+  position: relative;
+  margin-bottom: 24px;
+}
+.tl-item::before {
+  content: '';
+  position: absolute;
+  left: -24px;
+  top: 6px;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 10px rgba(201,168,76,0.4);
+}
+.tl-item.future::before { background: var(--border-strong); box-shadow: none; border: 1px solid var(--gold); }
+.tl-date {
+  font-size: 10px;
+  color: var(--gold);
+  letter-spacing: 0.1em;
+  margin-bottom: 4px;
+}
+.tl-title {
+  font-size: 12px;
+  color: var(--text-bright);
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+.tl-text {
+  font-size: 10px;
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+
+/* ASSUMPTIONS */
+.assumption-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+}
+.assumption-card {
+  padding: 16px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+.assumption-card .a-label {
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 8px;
+}
+.assumption-card .a-val {
+  font-size: 11px;
+  color: var(--text-bright);
+  line-height: 1.5;
+}
+
+/* FOOTER */
+footer {
+  padding: 40px 48px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 10px;
+  color: var(--text-dim);
+}
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+  .scenario-grid { grid-template-columns: 1fr; }
+  .india-grid { grid-template-columns: 1fr; }
+  .hero-meta { grid-template-columns: 1fr 1fr; }
+  .hero { padding: 100px 24px 48px; }
+  .section { padding: 48px 24px; }
+  nav { padding: 0 20px; }
+  .nav-links { display: none; }
+  .assumption-grid { grid-template-columns: 1fr 1fr; }
+}
+
+/* ANIMATIONS */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.section { animation: fadeUp 0.6s ease both; }
+
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">The AI Bubble — Scenario Analysis</div>
+  <ul class="nav-links">
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#bubble-anatomy">Anatomy</a></li>
+    <li><a href="#scenarios">Scenarios</a></li>
+    <li><a href="#cascade">Cascade</a></li>
+    <li><a href="#india">India</a></li>
+    <li><a href="#leverage">Leverage</a></li>
+    <li><a href="#assumptions">Sources</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-tag">Scenario Analysis · March 2026</div>
+  <h1>The AI Bubble:<br><em>Anatomy, Scenarios,<br>and India's Position</em></h1>
+  <p style="max-width:600px;font-size:11px;color:var(--text-dim);line-height:1.8;">
+    A data-driven, mathematically-grounded scenario analysis of a potential AI investment correction — mapping global cascade effects, stakeholder exposures, and the divergent pathways facing India across four possible futures.
+  </p>
+  <div class="hero-meta">
+    <div class="hero-stat">
+      <span class="val">$443B</span>
+      <span class="lbl">Hyperscaler Capex 2025</span>
+    </div>
+    <div class="hero-stat">
+      <span class="val">$2T</span>
+      <span class="lbl">Revenue needed by 2030 to justify investment</span>
+    </div>
+    <div class="hero-stat">
+      <span class="val">6¢</span>
+      <span class="lbl">AI Revenue per $1 invested (hyperscalers)</span>
+    </div>
+    <div class="hero-stat">
+      <span class="val">5%</span>
+      <span class="lbl">Enterprises seeing transformative returns</span>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 1: BUBBLE ANATOMY -->
+<section class="section" id="bubble-anatomy">
+  <div class="section-header">
+    <span class="section-num">01</span>
+    <div>
+      <div class="section-title">Anatomy of the Bubble</div>
+      <div class="section-subtitle">Comparing AI investment intensity, valuation multiples, and revenue dynamics against dotcom and crypto precedents — with underlying mathematical structure.</div>
+    </div>
+  </div>
+
+  <div class="grid-2" style="margin-bottom:24px;">
+    <!-- Investment Intensity Chart -->
+    <div class="card">
+      <div class="card-title"><span class="dot dot-gold"></span>Investment Intensity as % of GDP</div>
+      <div class="chart-wrap"><canvas id="chartIntensity"></canvas></div>
+      <div style="font-size:10px;color:var(--text-dim);margin-top:12px;">
+        Source: Documents (AI_bubbles_details), BEA, Bain. AI 2025 Q2 annualised at 1.28% GDP. Dotcom peak: 1.5%. Railroad era: 1.8%.
+      </div>
+    </div>
+
+    <!-- Valuation Comparison -->
+    <div class="card">
+      <div class="card-title"><span class="dot dot-red"></span>P/E Ratios: Then vs Now</div>
+      <div class="chart-wrap"><canvas id="chartPE"></canvas></div>
+      <div style="font-size:10px;color:var(--text-dim);margin-top:12px;">
+        Source: Documents (AI_bubble_burst_paper), Bloomberg, public filings. Dotcom NASDAQ P/E peaked at 200×; Nvidia FWD P/E ~30× (2025).
+      </div>
+    </div>
+  </div>
+
+  <div class="grid-2" style="margin-bottom:24px;">
+    <!-- Cash flow coverage -->
+    <div class="card">
+      <div class="card-title"><span class="dot dot-blue"></span>Hyperscaler Capex vs Operating Cash Flow (2025E)</div>
+      <div class="chart-wrap"><canvas id="chartCashflow"></canvas></div>
+      <div style="font-size:10px;color:var(--text-dim);margin-top:12px;">
+        Source: Documents (AI_bubbles_details), company filings, consensus estimates. Capex as % of OCF approaching but not exceeding 100%.
+      </div>
+    </div>
+
+    <!-- Revenue vs Investment Gap -->
+    <div class="card">
+      <div class="card-title"><span class="dot dot-amber"></span>Cumulative Investment vs. AI Revenue — The Gap</div>
+      <div class="chart-wrap"><canvas id="chartGap"></canvas></div>
+      <div style="font-size:10px;color:var(--text-dim);margin-top:12px;">
+        Source: Documents, Goldman Sachs (2025), Bain. $560B invested by 5 hyperscalers vs $35B AI revenue combined = 6¢ per $1 invested.
+      </div>
+    </div>
+  </div>
+
+  <!-- Math block: Sustainability condition -->
+  <div class="math-block">
+    <strong style="font-size:12px;color:var(--text-bright);">Sustainability Condition (NPV Framework)</strong><br>
+    <span class="explain">From documents — investment is sustainable only if:</span>
+    <span class="eq">NPV = Σ(CF<sub>t</sub> / (1+r)<sup>t</sup>) − Cumulative Capex ≥ 0</span>
+    <span class="explain">At r = 12% discount rate, 15-yr depreciation, this requires annual cash flows averaging ~15–20% of cumulative capex.</span>
+    <span class="eq">Required avg. annual CF ≥ $560B × 0.175 = ~$98B/yr</span>
+    <span class="explain">Current AI revenue trajectory: ~$35B (2025) → implies 3× growth needed just to break sustainability threshold. Break-even expected 2028–2030.</span>
+  </div>
+
+  <!-- Circular investment loop -->
+  <div class="card" style="margin-top:24px;">
+    <div class="card-title"><span class="dot dot-red"></span>The Circular Investment Loop — System Instability</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:center;">
+      <div>
+        <p style="font-size:11px;color:var(--text-dim);line-height:1.7;margin-bottom:16px;">
+          Nvidia invests $100B in OpenAI → OpenAI buys Nvidia chips → Nvidia revenues rise → Nvidia market cap rises → more capacity to invest. Goldman Sachs estimates 15% of Nvidia's 2025 sales come from such circular arrangements.
+        </p>
+        <div class="math-block" style="margin:0;">
+          <span class="eq">R = α·I,&nbsp;&nbsp; I = β·V,&nbsp;&nbsp; V = γ·R</span>
+          <span class="explain">Substituting: R(1 − αβγ) = 0</span>
+          <span class="explain">System stable only if αβγ &lt; 1. As circular exposure grows, αβγ → 1 and the system approaches criticality.</span>
+        </div>
+      </div>
+      <div>
+        <svg viewBox="0 0 400 280" style="width:100%;max-height:240px;">
+          <defs>
+            <marker id="arrow" markerWidth="8" markerHeight="8" refX="5" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="rgba(201,168,76,0.7)"/>
+            </marker>
+          </defs>
+          <!-- Nodes -->
+          <ellipse cx="200" cy="48" rx="72" ry="24" fill="#12121f" stroke="rgba(201,168,76,0.4)" stroke-width="1"/>
+          <text x="200" y="44" text-anchor="middle" fill="#c9a84c" font-family="JetBrains Mono" font-size="10">NVIDIA</text>
+          <text x="200" y="57" text-anchor="middle" fill="#888899" font-family="JetBrains Mono" font-size="9">$3T+ market cap</text>
+
+          <ellipse cx="80" cy="200" rx="70" ry="24" fill="#12121f" stroke="rgba(77,157,224,0.4)" stroke-width="1"/>
+          <text x="80" y="196" text-anchor="middle" fill="#4d9de0" font-family="JetBrains Mono" font-size="10">OpenAI</text>
+          <text x="80" y="209" text-anchor="middle" fill="#888899" font-family="JetBrains Mono" font-size="9">$500B valuation</text>
+
+          <ellipse cx="320" cy="200" rx="70" ry="24" fill="#12121f" stroke="rgba(82,183,136,0.4)" stroke-width="1"/>
+          <text x="320" y="196" text-anchor="middle" fill="#52b788" font-family="JetBrains Mono" font-size="10">Cloud (MSFT/Oracle)</text>
+          <text x="320" y="209" text-anchor="middle" fill="#888899" font-family="JetBrains Mono" font-size="9">Infrastructure host</text>
+
+          <!-- Arrows -->
+          <path d="M140,188 L155,80" stroke="rgba(201,168,76,0.5)" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+          <text x="120" y="135" fill="#888899" font-family="JetBrains Mono" font-size="9" transform="rotate(-63,120,135)">chip purchases</text>
+
+          <path d="M245,68 L290,180" stroke="rgba(201,168,76,0.5)" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+          <text x="285" y="120" fill="#888899" font-family="JetBrains Mono" font-size="9" transform="rotate(63,285,120)">$100B investment</text>
+
+          <path d="M150,204 L250,204" stroke="rgba(201,168,76,0.5)" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+          <text x="185" y="220" fill="#888899" font-family="JetBrains Mono" font-size="9">API revenue</text>
+
+          <!-- Instability label -->
+          <rect x="152" y="120" width="96" height="32" fill="#1a0505" stroke="rgba(217,79,61,0.4)" rx="2"/>
+          <text x="200" y="133" text-anchor="middle" fill="#d94f3d" font-family="JetBrains Mono" font-size="9">CIRCULAR LOOP</text>
+          <text x="200" y="146" text-anchor="middle" fill="#d94f3d" font-family="JetBrains Mono" font-size="9">αβγ → 1 (fragile)</text>
+
+          <text x="200" y="260" text-anchor="middle" fill="#5a5a78" font-family="JetBrains Mono" font-size="9">15% of Nvidia revenue from circular deals (Goldman Sachs)</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 2: HYPE CYCLE + HISTORICAL TIMELINE -->
+<section class="section" id="overview">
+  <div class="section-header">
+    <span class="section-num">02</span>
+    <div>
+      <div class="section-title">Historical Parallels & Where We Are</div>
+      <div class="section-subtitle">Investment intensity, hype cycle positioning, and cross-bubble comparison across dotcom, crypto/Web3, and AI eras.</div>
+    </div>
+  </div>
+
+  <div class="grid-2" style="margin-bottom:24px;">
+    <div class="card">
+      <div class="card-title"><span class="dot dot-gold"></span>Hype Cycle Positioning — Gartner Model</div>
+      <div class="chart-wrap"><canvas id="chartHype"></canvas></div>
+      <div style="font-size:10px;color:var(--text-dim);margin-top:12px;">
+        Source: Gartner Hype Cycle model (adapted). Documents identify AI as near "Peak of Inflated Expectations" with correction likely 12–24 months out.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="dot dot-blue"></span>Boom-Bust Cycle: Web3 vs AI Investment</div>
+      <div class="chart-wrap"><canvas id="chartBoomBust"></canvas></div>
+      <div style="font-size:10px;color:var(--text-dim);margin-top:12px;">
+        Source: Documents (AI_bubbles_details), PitchBook, CB Insights. AI 2025 H1 alone matched full-year 2024 funding (~$100B).
+      </div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title"><span class="dot dot-amber"></span>Capital Efficiency Matrix: Dotcom vs AI</div>
+      <table class="stakeholder-table">
+        <thead>
+          <tr>
+            <th>Metric</th>
+            <th>Dotcom Era</th>
+            <th>AI Era (2025)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="color:var(--text-bright)">Avg. Price-to-Sales</td>
+            <td style="color:var(--red)">30–200×</td>
+            <td style="color:var(--green)">8–15×</td>
+          </tr>
+          <tr>
+            <td style="color:var(--text-bright)">Revenue Growth Rate</td>
+            <td style="color:var(--text-dim)">20–40%</td>
+            <td style="color:var(--green)">30–40%</td>
+          </tr>
+          <tr>
+            <td style="color:var(--text-bright)">Operating Margin (mature)</td>
+            <td style="color:var(--red)">Negative</td>
+            <td style="color:var(--green)">15–25%</td>
+          </tr>
+          <tr>
+            <td style="color:var(--text-bright)">Infrastructure Utilisation</td>
+            <td style="color:var(--red)">&lt;10%</td>
+            <td style="color:var(--amber)">40–60%</td>
+          </tr>
+          <tr>
+            <td style="color:var(--text-bright)">Cash Burn / Revenue</td>
+            <td style="color:var(--red)">&gt;200%</td>
+            <td style="color:var(--amber)">50–150%</td>
+          </tr>
+          <tr>
+            <td style="color:var(--text-bright)">OpenAI Revenue / Capex</td>
+            <td style="color:var(--text-dim)">—</td>
+            <td style="color:var(--red)">~0.22× (13B/60B)</td>
+          </tr>
+        </tbody>
+      </table>
+      <div style="font-size:10px;color:var(--text-dim);margin-top:12px;">Source: Documents (AI_bubbles_details), company filings, Bain Research 2025.</div>
+    </div>
+
+    <div>
+      <div style="margin-bottom:16px;">
+        <div class="card-title" style="margin-bottom:12px;"><span class="dot dot-red"></span>Key Events Timeline</div>
+      </div>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-date">2022–2023</div>
+          <div class="tl-title">ChatGPT Launch & AI Spring</div>
+          <div class="tl-text">OpenAI valued at $29B. Enterprise AI market: $1.7B. VC funding begins accelerating.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-date">2024</div>
+          <div class="tl-title">Infrastructure Arms Race Begins</div>
+          <div class="tl-text">Hyperscaler capex: $241B (0.82% GDP). AI captured 34% of global VC. Enterprise AI: $11.5B.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-date">Jan–Oct 2025</div>
+          <div class="tl-title">Peak Inflated Expectations</div>
+          <div class="tl-text">Nvidia hits $3T+. OpenAI: $500B. AI = 50% of global VC ($202B). Capex: $443B projected. Sundar Pichai acknowledges "elements of irrationality."</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-date">Nov 2025</div>
+          <div class="tl-title">OpenAI CFO "Backstop" Incident</div>
+          <div class="tl-text">Sarah Friar suggests government backstop for AI infrastructure. David Sachs: "No federal bailout." Market reads distress signal.</div>
+        </div>
+        <div class="tl-item future">
+          <div class="tl-date">2026–2027 (projected)</div>
+          <div class="tl-title">Potential Inflection — The Pop or Correction</div>
+          <div class="tl-text">Revenue must reach $300–500B/yr or capital markets reassess. OpenAI burn: $140B cumulative by 2029 in base case.</div>
+        </div>
+        <div class="tl-item future">
+          <div class="tl-date">2028–2030 (projected)</div>
+          <div class="tl-title">Resolution — "Dark Compute" or Transformation</div>
+          <div class="tl-text">Either infrastructure utilisation catches up (like dark fiber) or stranded assets crystallise losses. Bain: $2T annual AI revenue needed by 2030.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 3: SCENARIOS -->
+<section class="section" id="scenarios">
+  <div class="section-header">
+    <span class="section-num">03</span>
+    <div>
+      <div class="section-title">Four Scenarios</div>
+      <div class="section-subtitle">A probability-weighted scenario matrix based on two axes: AI capability trajectory × revenue realisation speed.</div>
+    </div>
+  </div>
+
+  <div style="margin-bottom:24px;">
+    <div class="card">
+      <div class="card-title"><span class="dot dot-gold"></span>Scenario Probability Distribution & Market Impact</div>
+      <div class="chart-wrap"><canvas id="chartScenarios"></canvas></div>
+    </div>
+  </div>
+
+  <div class="scenario-grid">
+    <div class="scenario-card sc-soft">
+      <div class="sc-prob">35%</div>
+      <div class="sc-name">Scenario A — Soft Landing (Correction)</div>
+      <div class="sc-desc">
+        AI capabilities advance but decelerate. Revenue grows to $300–500B by 2028. Valuations compress 30–50%. Consolidation among foundation labs; 3–5 survivors globally. Hyperscalers absorb losses from diversified revenue. Enterprise adoption broadens in well-defined use cases. "Productive bubble" outcome — infrastructure remains, many investors lose.
+      </div>
+      <div class="sc-impacts">
+        <div class="sc-impact"><span class="impact-icon">📉</span> NASDAQ AI-exposed stocks: −30 to −50%</div>
+        <div class="sc-impact"><span class="impact-icon">🏦</span> Foundation labs: consolidation to 3–5 survivors</div>
+        <div class="sc-impact"><span class="impact-icon">💡</span> Infrastructure (dark compute) remains intact</div>
+        <div class="sc-impact"><span class="impact-icon">🇮🇳</span> India: moderate IT demand slowdown, 6–12 months lag</div>
+      </div>
+    </div>
+
+    <div class="scenario-card sc-hard">
+      <div class="sc-prob">25%</div>
+      <div class="sc-name">Scenario B — Hard Crash (AI Winter II)</div>
+      <div class="sc-desc">
+        Capability plateau + revenue shortfall simultaneously. Capital markets close for unprofitable AI cos. Valuations: −70 to −80% from peak. Multiple major bankruptcies including possibly OpenAI. Nvidia stock −60–70%. AI investment freeze for 2–3 years. Echoes dotcom collapse in scale of destruction. Enterprise customers: stranded assets.
+      </div>
+      <div class="sc-impacts">
+        <div class="sc-impact"><span class="impact-icon">💥</span> Nvidia stock: −60 to −70% from peak</div>
+        <div class="sc-impact"><span class="impact-icon">❄️</span> AI winter: VC funding drops 80%+ (like Web3 2023)</div>
+        <div class="sc-impact"><span class="impact-icon">🏚️</span> OpenAI/Anthropic existential risk</div>
+        <div class="sc-impact"><span class="impact-icon">🇮🇳</span> India: IT sector contracts 8–15%; significant job losses</div>
+      </div>
+    </div>
+
+    <div class="scenario-card sc-accel">
+      <div class="sc-prob">15%</div>
+      <div class="sc-name">Scenario C — Continued Acceleration (AGI-adjacent)</div>
+      <div class="sc-desc">
+        AI capabilities break through — reasoning, planning, autonomy. Revenue exceeds projections. Current investment proves insufficient. Foundation labs become most valuable companies. Labour market disruption accelerates rapidly. Regulatory response likely triggers forced correction anyway. Low probability but non-trivial.
+      </div>
+      <div class="sc-impacts">
+        <div class="sc-impact"><span class="impact-icon">🚀</span> Foundation labs: multi-trillion valuations</div>
+        <div class="sc-impact"><span class="impact-icon">⚡</span> Labour displacement across white-collar sectors</div>
+        <div class="sc-impact"><span class="impact-icon">🏛️</span> Forced regulatory intervention likely</div>
+        <div class="sc-impact"><span class="impact-icon">🇮🇳</span> India: IT services severely disrupted; outsourcing erodes</div>
+      </div>
+    </div>
+
+    <div class="scenario-card sc-bifur">
+      <div class="sc-prob">25%</div>
+      <div class="sc-name">Scenario D — Bifurcation (Split Outcomes)</div>
+      <div class="sc-desc">
+        Certain applications (coding, customer service, content) prove highly valuable; others fail. 2–3 labs win massively; rest fail. "AI haves vs have-nots" among enterprises. Startup ecosystem: spectacular successes alongside widespread failures. Most likely near-term path given current deployment patterns.
+      </div>
+      <div class="sc-impacts">
+        <div class="sc-impact"><span class="impact-icon">✂️</span> Winner-take-most: 2–3 labs capture 80%+ of value</div>
+        <div class="sc-impact"><span class="impact-icon">📊</span> Sector splits: coding/CS disrupted; others stable</div>
+        <div class="sc-impact"><span class="impact-icon">🌍</span> Geopolitical: US/China AI leaders; others follow</div>
+        <div class="sc-impact"><span class="impact-icon">🇮🇳</span> India: application-layer positions partially protected</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="math-block" style="margin-top:24px;">
+    <strong style="font-size:12px;color:var(--text-bright);">Expected Value Calculation (from documents — AI_bubbles_details)</strong><br>
+    <span class="eq">EV(Invest) = P(Transform)×V(Win) + P(Partial)×V(Partial) − C(Investment)</span>
+    <span class="eq">= 0.30 × $5T + 0.50 × $500B − $300B = $1.5T + $250B − $300B = <span style="color:var(--green)">+$1.45T</span></span>
+    <span class="explain">Even with 70% probability of partial/no transformation, expected value is positive — explains why corporations cannot rationally stop investing (Prisoner's Dilemma Nash Equilibrium: both invest).</span>
+    <br><br>
+    <strong style="font-size:12px;color:var(--text-bright);">OpenAI Survival Math</strong>
+    <span class="eq">Required CAGR = (200B / 13B)<sup>1/5</sup> − 1 = 72% p.a. (2025–2030)</span>
+    <span class="explain">OpenAI needs 72% annual revenue growth to reach break-even by 2030. Global AI SaaS market CAGR: ~39%. This implies OpenAI must grow at 2× market rate while market itself expands — historically rare (Google, Amazon in hyper-growth phase achieved this).</span>
+  </div>
+</section>
+
+<!-- SECTION 4: STAKEHOLDER MAP -->
+<section class="section">
+  <div class="section-header">
+    <span class="section-num">04</span>
+    <div>
+      <div class="section-title">Stakeholder Risk-Reward Matrix</div>
+      <div class="section-subtitle">Mapping capital at risk, revenue exposure, and survival probability for each stakeholder class across the AI ecosystem.</div>
+    </div>
+  </div>
+
+  <div class="grid-2" style="margin-bottom:24px;">
+    <div class="card">
+      <div class="card-title"><span class="dot dot-red"></span>Survival Probability by Stakeholder</div>
+      <div class="chart-wrap"><canvas id="chartSurvival"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="dot dot-amber"></span>Capital at Risk vs. Revenue Exposure</div>
+      <div class="chart-wrap"><canvas id="chartRiskReward"></canvas></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="margin-bottom:16px;"><span class="dot dot-gold"></span>Detailed Stakeholder Analysis</div>
+    <table class="stakeholder-table">
+      <thead>
+        <tr>
+          <th>Stakeholder</th>
+          <th>Capital at Risk</th>
+          <th>Key Vulnerability</th>
+          <th>Survival (Base)</th>
+          <th>Scenario A Impact</th>
+          <th>Scenario B Impact</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="color:var(--text-bright);font-weight:500">Foundation Labs<br><small style="color:var(--text-dim)">(OpenAI, Anthropic, xAI)</small></td>
+          <td><span class="tag tag-red">$300B+ committed</span></td>
+          <td style="color:var(--text-dim);font-size:10px">Burn 5× revenue; 72% CAGR needed; $140B cumulative burn by 2029</td>
+          <td>
+            <div class="risk-bar">
+              <div class="risk-bar-track"><div class="risk-bar-fill" style="width:40%;background:var(--red)"></div></div>
+              <span style="color:var(--red)">40%</span>
+            </div>
+          </td>
+          <td style="color:var(--amber);font-size:10px">Consolidation; 3–5 survivors</td>
+          <td style="color:var(--red);font-size:10px">Multiple bankruptcies</td>
+        </tr>
+        <tr>
+          <td style="color:var(--text-bright);font-weight:500">Hyperscalers<br><small style="color:var(--text-dim)">(MSFT, Amazon, Google, Meta)</small></td>
+          <td><span class="tag tag-amber">$560B (2024–25)</span></td>
+          <td style="color:var(--text-dim);font-size:10px">Capex = 94% of OCF in 2026E; platform protection logic, not standalone ROI</td>
+          <td>
+            <div class="risk-bar">
+              <div class="risk-bar-track"><div class="risk-bar-fill" style="width:80%;background:var(--green)"></div></div>
+              <span style="color:var(--green)">80%</span>
+            </div>
+          </td>
+          <td style="color:var(--green);font-size:10px">Survive; reduce investment</td>
+          <td style="color:var(--amber);font-size:10px">Sharp capex cuts; stock −30%</td>
+        </tr>
+        <tr>
+          <td style="color:var(--text-bright);font-weight:500">Hardware Vendors<br><small style="color:var(--text-dim)">(Nvidia, AMD, TSMC)</small></td>
+          <td><span class="tag tag-red">Valuation risk $3T+</span></td>
+          <td style="color:var(--text-dim);font-size:10px">15% revenue from circular deals; demand depends on continued hyperscaler capex</td>
+          <td>
+            <div class="risk-bar">
+              <div class="risk-bar-track"><div class="risk-bar-fill" style="width:70%;background:var(--amber)"></div></div>
+              <span style="color:var(--amber)">70%</span>
+            </div>
+          </td>
+          <td style="color:var(--amber);font-size:10px">Revenue moderation; −30 to −40% stock</td>
+          <td style="color:var(--red);font-size:10px">Nvidia −60–70%; demand collapse</td>
+        </tr>
+        <tr>
+          <td style="color:var(--text-bright);font-weight:500">Enterprise Customers<br><small style="color:var(--text-dim)">(Fortune 500, SMEs)</small></td>
+          <td><span class="tag tag-gold">$37B/yr spending</span></td>
+          <td style="color:var(--text-dim);font-size:10px">Only 5% seeing transformative returns; shadow AI economy; stranded assets risk</td>
+          <td>
+            <div class="risk-bar">
+              <div class="risk-bar-track"><div class="risk-bar-fill" style="width:90%;background:var(--green)"></div></div>
+              <span style="color:var(--green)">90%</span>
+            </div>
+          </td>
+          <td style="color:var(--green);font-size:10px">Selective deployment; price benefits</td>
+          <td style="color:var(--amber);font-size:10px">Stranded assets; write-offs</td>
+        </tr>
+        <tr>
+          <td style="color:var(--text-bright);font-weight:500">AI Startups<br><small style="color:var(--text-dim)">(App layer, vertical AI)</small></td>
+          <td><span class="tag tag-red">$100B+ raised (H1 2025)</span></td>
+          <td style="color:var(--text-dim);font-size:10px">No zero-marginal-cost model; inference costs scale with revenue; VC-dependent</td>
+          <td>
+            <div class="risk-bar">
+              <div class="risk-bar-track"><div class="risk-bar-fill" style="width:30%;background:var(--red)"></div></div>
+              <span style="color:var(--red)">30%</span>
+            </div>
+          </td>
+          <td style="color:var(--amber);font-size:10px">Top 10% survive; rest consolidated</td>
+          <td style="color:var(--red);font-size:10px">Ecosystem freeze 2–3 years</td>
+        </tr>
+        <tr>
+          <td style="color:var(--text-bright);font-weight:500">Sovereign Actors<br><small style="color:var(--text-dim)">(US, China, EU, India)</small></td>
+          <td><span class="tag tag-blue">Strategic / GDP risk</span></td>
+          <td style="color:var(--text-dim);font-size:10px">Investment divorced from market signals; geopolitical "floor" to investment levels</td>
+          <td>
+            <div class="risk-bar">
+              <div class="risk-bar-track"><div class="risk-bar-fill" style="width:95%;background:var(--blue)"></div></div>
+              <span style="color:var(--blue)">95%</span>
+            </div>
+          </td>
+          <td style="color:var(--green);font-size:10px">Accelerate domestic AI strategy</td>
+          <td style="color:var(--amber);font-size:10px">Panic regulation or safety dilution</td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="font-size:10px;color:var(--text-dim);margin-top:12px;">Source: Documents (AI_bubble_burst_paper, AI_bubbles_details), Goldman Sachs (2025), Bain Global AI Report (2025), company financial filings.</div>
+  </div>
+</section>
+
+<!-- SECTION 5: GLOBAL CASCADE -->
+<section class="section" id="cascade">
+  <div class="section-header">
+    <span class="section-num">05</span>
+    <div>
+      <div class="section-title">Global Cascade — Dependency Map</div>
+      <div class="section-subtitle">How a bubble correction propagates through the global economy — from US financial markets through to emerging economies.</div>
+    </div>
+  </div>
+
+  <!-- Dependency SVG Map -->
+  <div class="dep-map" style="margin-bottom:24px;height:520px;">
+    <svg viewBox="0 0 900 480" style="width:100%;height:100%;">
+      <defs>
+        <marker id="arr-gold" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L7,3 z" fill="rgba(201,168,76,0.8)"/>
+        </marker>
+        <marker id="arr-red" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L7,3 z" fill="rgba(217,79,61,0.8)"/>
+        </marker>
+        <marker id="arr-blue" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L7,3 z" fill="rgba(77,157,224,0.8)"/>
+        </marker>
+        <marker id="arr-dim" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L7,3 z" fill="rgba(90,90,120,0.8)"/>
+        </marker>
+
+        <!-- Glow filter -->
+        <filter id="glow">
+          <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+          <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+
+      <!-- Layer labels -->
+      <text x="14" y="70" fill="#5a5a78" font-family="JetBrains Mono" font-size="8.5" letter-spacing="1">TRIGGER</text>
+      <text x="14" y="175" fill="#5a5a78" font-family="JetBrains Mono" font-size="8.5" letter-spacing="1">LAYER 1</text>
+      <text x="14" y="280" fill="#5a5a78" font-family="JetBrains Mono" font-size="8.5" letter-spacing="1">LAYER 2</text>
+      <text x="14" y="385" fill="#5a5a78" font-family="JetBrains Mono" font-size="8.5" letter-spacing="1">LAYER 3</text>
+      <text x="14" y="460" fill="#5a5a78" font-family="JetBrains Mono" font-size="8.5" letter-spacing="1">INDIA</text>
+
+      <!-- Dividers -->
+      <line x1="90" y1="100" x2="890" y2="100" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+      <line x1="90" y1="200" x2="890" y2="200" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+      <line x1="90" y1="310" x2="890" y2="310" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+      <line x1="90" y1="420" x2="890" y2="420" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+
+      <!-- TRIGGER NODE: Revenue Shortfall -->
+      <rect x="350" y="30" width="200" height="44" rx="3" fill="#1a1208" stroke="rgba(201,168,76,0.6)" stroke-width="1.5"/>
+      <text x="450" y="49" text-anchor="middle" fill="#c9a84c" font-family="JetBrains Mono" font-size="10" font-weight="500">REVENUE SHORTFALL</text>
+      <text x="450" y="63" text-anchor="middle" fill="#888899" font-family="JetBrains Mono" font-size="8.5">or Capability Plateau / Macro Shock</text>
+
+      <!-- LAYER 1 NODES -->
+      <!-- Foundation Labs fail -->
+      <rect x="100" y="120" width="160" height="44" rx="2" fill="#1a0808" stroke="rgba(217,79,61,0.5)"/>
+      <text x="180" y="139" text-anchor="middle" fill="#d94f3d" font-family="JetBrains Mono" font-size="9.5">Foundation Labs</text>
+      <text x="180" y="153" text-anchor="middle" fill="#888899" font-family="JetBrains Mono" font-size="8">Funding dries; valuations −70%</text>
+
+      <!-- Hyperscaler capex cuts -->
+      <rect x="295" y="120" width="160" height="44" rx="2" fill="#0f1208" stroke="rgba(82,183,136,0.5)"/>
+      <text x="375" y="139" text-anchor="middle" fill="#52b788" font-family="JetBrains Mono" font-size="9.5">Hyperscalers</text>
+      <text x="375" y="153" text-anchor="middle" fill="#888899" font-family="JetBrains Mono" font-size="8">Capex slashed; stock −30–50%</text>
+
+      <!-- Nvidia / Hardware -->
+      <rect x="490" y="120" width="160" height="44" rx="2" fill="#1a0e08" stroke="rgba(224,124,58,0.5)"/>
+      <text x="570" y="139" text-anchor="middle" fill="#e07c3a" font-family="JetBrains Mono" font-size="9.5">Nvidia / Hardware</text>
+      <text x="570" y="153" text-anchor="middle" fill="#888899" font-family="JetBrains Mono" font-size="8">Demand collapses; stock −60%</text>
+
+      <!-- VC Ecosystem -->
+      <rect x="685" y="120" width="160" height="44" rx="2" fill="#08081a" stroke="rgba(77,157,224,0.5)"/>
+      <text x="765" y="139" text-anchor="middle" fill="#4d9de0" font-family="JetBrains Mono" font-size="9.5">VC / Capital Markets</text>
+      <text x="765" y="153" text-anchor="middle" fill="#888899" font-family="JetBrains Mono" font-size="8">AI funding −80%; repricing</text>
+
+      <!-- LAYER 2 -->
+      <!-- US Tech Stocks -->
+      <rect x="100" y="225" width="150" height="44" rx="2" fill="#110808" stroke="rgba(217,79,61,0.4)"/>
+      <text x="175" y="244" text-anchor="middle" fill="#d94f3d" font-family="JetBrains Mono" font-size="9.5">US Tech Markets</text>
+      <text x="175" y="257" text-anchor="middle" fill="#888899" font-family="JetBrains Mono" font-size="8">NASDAQ −30 to −50%; wealth effect</text>
+
+      <!-- Enterprise AI spend freeze -->
+      <rect x="285" y="225" width="155" height="44" rx="2" fill="#0f1208" stroke="rgba(82,183,136,0.4)"/>
+      <text x="362" y="244" text-anchor="middle" fill="#52b788" font-family="JetBrains Mono" font-size="9.5">Enterprise Freeze</text>
+      <text x="362" y="257" text-anchor="middle" fill="#888899" font-family="JetBrains Mono" font-size="8">Budgets cut; stranded assets</text>
+
+      <!-- AI Startup collapse -->
+      <rect x="475" y="225" width="150" height="44" rx="2" fill="#1a0e08" stroke="rgba(224,124,58,0.4)"/>
+      <text x="550" y="244" text-anchor="middle" fill="#e07c3a" font-family="JetBrains Mono" font-size="9.5">AI Startup Collapse</text>
+      <text x="550" y="257" text-anchor="middle" fill="#888899" font-family="JetBrains Mono" font-size="8">80% funding drop; mass layoffs</text>
+
+      <!-- TSMC / Taiwan / Asia Supply -->
+      <rect x="660" y="225" width="175" height="44" rx="2" fill="#08081a" stroke="rgba(77,157,224,0.4)"/>
+      <text x="747" y="244" text-anchor="middle" fill="#4d9de0" font-family="JetBrains Mono" font-size="9.5">TSMC / Taiwan / Asia</text>
+      <text x="747" y="257" text-anchor="middle" fill="#888899" font-family="JetBrains Mono" font-size="8">Chip demand falls; supply chain idle</text>
+
+      <!-- LAYER 3 -->
+      <!-- Global contagion -->
+      <rect x="100" y="330" width="155" height="44" rx="2" fill="#110808" stroke="rgba(217,79,61,0.3)"/>
+      <text x="177" y="348" text-anchor="middle" fill="#d94f3d" font-family="JetBrains Mono" font-size="9.5">Financial Contagion</text>
+      <text x="177" y="362" text-anchor="middle" fill="#888899" font-family="JetBrains Mono" font-size="8">Global equity correction −10–25%</text>
+
+      <!-- Regulation -->
+      <rect x="290" y="330" width="155" height="44" rx="2" fill="#08100f" stroke="rgba(82,183,136,0.3)"/>
+      <text x="367" y="348" text-anchor="middle" fill="#52b788" font-family="JetBrains Mono" font-size="9.5">Regulation Surge</text>
+      <text x="367" y="362" text-anchor="middle" fill="#888899" font-family="JetBrains Mono" font-size="8">Panic rules or safety dilution</text>
+
+      <!-- Labour markets -->
+      <rect x="480" y="330" width="155" height="44" rx="2" fill="#1a0e08" stroke="rgba(224,124,58,0.3)"/>
+      <text x="557" y="348" text-anchor="middle" fill="#e07c3a" font-family="JetBrains Mono" font-size="9.5">Labour Markets</text>
+      <text x="557" y="362" text-anchor="middle" fill="#888899" font-family="JetBrains Mono" font-size="8">Tech layoffs; reallocation</text>
+
+      <!-- Dark Compute Legacy -->
+      <rect x="670" y="330" width="165" height="44" rx="2" fill="#0a0a1a" stroke="rgba(77,157,224,0.3)"/>
+      <text x="752" y="348" text-anchor="middle" fill="#4d9de0" font-family="JetBrains Mono" font-size="9.5">"Dark Compute" Legacy</text>
+      <text x="752" y="362" text-anchor="middle" fill="#888899" font-family="JetBrains Mono" font-size="8">Overcapacity → cheap infra later</text>
+
+      <!-- INDIA NODES -->
+      <rect x="130" y="432" width="145" height="36" rx="2" fill="#0a100a" stroke="rgba(82,183,136,0.5)" stroke-width="1.5"/>
+      <text x="202" y="447" text-anchor="middle" fill="#52b788" font-family="JetBrains Mono" font-size="9">India IT Services</text>
+      <text x="202" y="460" text-anchor="middle" fill="#888899" font-family="JetBrains Mono" font-size="8">Revenue lag 6–12 months</text>
+
+      <rect x="310" y="432" width="145" height="36" rx="2" fill="#0a100a" stroke="rgba(82,183,136,0.5)" stroke-width="1.5"/>
+      <text x="382" y="447" text-anchor="middle" fill="#52b788" font-family="JetBrains Mono" font-size="9">Indian Startup Eco</text>
+      <text x="382" y="460" text-anchor="middle" fill="#888899" font-family="JetBrains Mono" font-size="8">VC pullback; funding freeze</text>
+
+      <rect x="490" y="432" width="145" height="36" rx="2" fill="#0a100a" stroke="rgba(82,183,136,0.5)" stroke-width="1.5"/>
+      <text x="562" y="447" text-anchor="middle" fill="#52b788" font-family="JetBrains Mono" font-size="9">IndiaAI / Govt Programs</text>
+      <text x="562" y="460" text-anchor="middle" fill="#888899" font-family="JetBrains Mono" font-size="8">Partially insulated (sovereign)</text>
+
+      <rect x="670" y="432" width="165" height="36" rx="2" fill="#0a100a" stroke="rgba(201,168,76,0.5)" stroke-width="1.5"/>
+      <text x="752" y="447" text-anchor="middle" fill="#c9a84c" font-family="JetBrains Mono" font-size="9">India Applications Layer</text>
+      <text x="752" y="460" text-anchor="middle" fill="#888899" font-family="JetBrains Mono" font-size="8">Protected; may benefit (cheap compute)</text>
+
+      <!-- CASCADE ARROWS from Trigger -->
+      <line x1="390" y1="74" x2="215" y2="120" stroke="rgba(217,79,61,0.5)" stroke-width="1.5" marker-end="url(#arr-red)"/>
+      <line x1="430" y1="74" x2="375" y2="120" stroke="rgba(82,183,136,0.5)" stroke-width="1.5" marker-end="url(#arr-dim)"/>
+      <line x1="470" y1="74" x2="540" y2="120" stroke="rgba(224,124,58,0.5)" stroke-width="1.5" marker-end="url(#arr-dim)"/>
+      <line x1="510" y1="74" x2="720" y2="120" stroke="rgba(77,157,224,0.5)" stroke-width="1.5" marker-end="url(#arr-blue)"/>
+
+      <!-- L1 → L2 -->
+      <line x1="180" y1="164" x2="175" y2="225" stroke="rgba(217,79,61,0.4)" stroke-width="1" marker-end="url(#arr-red)"/>
+      <line x1="350" y1="164" x2="340" y2="225" stroke="rgba(82,183,136,0.4)" stroke-width="1" marker-end="url(#arr-dim)"/>
+      <line x1="540" y1="164" x2="520" y2="225" stroke="rgba(224,124,58,0.4)" stroke-width="1" marker-end="url(#arr-dim)"/>
+      <line x1="745" y1="164" x2="730" y2="225" stroke="rgba(77,157,224,0.4)" stroke-width="1" marker-end="url(#arr-blue)"/>
+      <!-- Cross-connections L1 -->
+      <line x1="260" y1="142" x2="295" y2="142" stroke="rgba(201,168,76,0.25)" stroke-width="1" marker-end="url(#arr-gold)"/>
+      <line x1="455" y1="142" x2="490" y2="142" stroke="rgba(201,168,76,0.25)" stroke-width="1" marker-end="url(#arr-gold)"/>
+
+      <!-- L2 → L3 -->
+      <line x1="175" y1="269" x2="175" y2="330" stroke="rgba(217,79,61,0.35)" stroke-width="1" marker-end="url(#arr-red)"/>
+      <line x1="340" y1="269" x2="350" y2="330" stroke="rgba(82,183,136,0.35)" stroke-width="1" marker-end="url(#arr-dim)"/>
+      <line x1="510" y1="269" x2="530" y2="330" stroke="rgba(224,124,58,0.35)" stroke-width="1" marker-end="url(#arr-dim)"/>
+      <line x1="710" y1="269" x2="730" y2="330" stroke="rgba(77,157,224,0.35)" stroke-width="1" marker-end="url(#arr-blue)"/>
+
+      <!-- L3 → India -->
+      <line x1="177" y1="374" x2="202" y2="432" stroke="rgba(82,183,136,0.4)" stroke-width="1" marker-end="url(#arr-dim)"/>
+      <line x1="367" y1="374" x2="382" y2="432" stroke="rgba(82,183,136,0.4)" stroke-width="1" marker-end="url(#arr-dim)"/>
+      <line x1="557" y1="374" x2="562" y2="432" stroke="rgba(82,183,136,0.4)" stroke-width="1" marker-end="url(#arr-dim)"/>
+      <line x1="750" y1="374" x2="752" y2="432" stroke="rgba(201,168,76,0.4)" stroke-width="1" marker-end="url(#arr-gold)"/>
+    </svg>
+  </div>
+
+  <!-- Contagion timeline -->
+  <div class="grid-3">
+    <div class="card">
+      <div class="card-title"><span class="dot dot-red"></span>Phase 1: Months 0–6</div>
+      <p style="font-size:11px;color:var(--text-dim);line-height:1.7;">
+        Trigger event (revenue miss, capability plateau, or macro shock). Foundation lab valuation collapse. Nvidia stock drops 30–40%. US tech NASDAQ correction begins. VC funding for AI freezes. Circular investment loop begins to unravel.
+      </p>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="dot dot-amber"></span>Phase 2: Months 6–18</div>
+      <p style="font-size:11px;color:var(--text-dim);line-height:1.7;">
+        Hyperscaler capex cuts announced. Enterprise AI budgets frozen. Startup ecosystem mass layoffs. TSMC chip demand signal drops. Global equity contagion: −10 to −25% in tech-heavy indices. India IT sector feels demand compression.
+      </p>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="dot dot-blue"></span>Phase 3: Months 18–36+</div>
+      <p style="font-size:11px;color:var(--text-dim);line-height:1.7;">
+        Regulatory response (panic rules or safety dilution). "Dark compute" overcapacity → inference cost collapse. Survivors emerge stronger. India's application-layer and sovereign AI programs partially recover. Long-term: cheap infrastructure enables next generation.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 6: INDIA IMPACT -->
+<section class="section" id="india">
+  <div class="section-header">
+    <span class="section-num">06</span>
+    <div>
+      <div class="section-title">India — Four Pathways</div>
+      <div class="section-subtitle">India's AI exposure is structurally different from the US — primarily a consumer of AI infrastructure and an applications-layer player, not a frontier model developer. This creates both buffers and vulnerabilities.</div>
+    </div>
+  </div>
+
+  <!-- India exposure chart -->
+  <div class="grid-2" style="margin-bottom:24px;">
+    <div class="card">
+      <div class="card-title"><span class="dot dot-green"></span>India AI Exposure Profile</div>
+      <div class="chart-wrap"><canvas id="chartIndia"></canvas></div>
+      <div style="font-size:10px;color:var(--text-dim);margin-top:12px;">
+        Source: NASSCOM, IndiaAI Mission documents, McKinsey India AI Report 2025. India's $6B IT-AI services is ~3% of global AI investment.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="dot dot-amber"></span>IT Sector Revenue Sensitivity by Scenario</div>
+      <div class="chart-wrap"><canvas id="chartIndiaIT"></canvas></div>
+      <div style="font-size:10px;color:var(--text-dim);margin-top:12px;">
+        Source: NASSCOM FY2025 outlook, TCS/Infosys analyst estimates. 6–12 month lag from US market to Indian IT revenue impact.
+      </div>
+    </div>
+  </div>
+
+  <div class="india-grid" style="margin-bottom:24px;">
+    <div class="india-scenario" style="border-top: 2px solid var(--green);">
+      <h4>Scenario A — Soft Landing</h4>
+      <span class="tag tag-green" style="margin-bottom:12px;display:inline-block;">Probability: 35%</span>
+      <p>
+        India's IT sector faces a 6–12 month demand slowdown as US enterprise budgets contract. Large IT firms (TCS, Infosys, Wipro) see deal sizes reduce but maintain revenues through cost-optimisation mandates. India's application-layer AI startups benefit from cheaper global compute. The "AI services" opportunity expands — global companies outsource AI implementation to Indian firms.
+      </p>
+      <p style="font-size:10px;color:var(--text-dim);">
+        <strong style="color:var(--green)">Key upside:</strong> India missed the model-building bus but now benefits from cheap infrastructure. Document argues: "Indian approach focused on applications — in mild correction, global Big Tech wins but Indian application layer is partially protected."
+      </p>
+      <div class="india-metrics">
+        <div class="india-metric"><div class="v" style="color:var(--amber)">−5 to −8%</div><div class="l">IT sector revenue growth impact</div></div>
+        <div class="india-metric"><div class="v" style="color:var(--green)">+12%</div><div class="l">AI services opportunity growth</div></div>
+        <div class="india-metric"><div class="v" style="color:var(--amber)">6–12 mo</div><div class="l">Lag before impact felt</div></div>
+        <div class="india-metric"><div class="v" style="color:var(--green)">Protected</div><div class="l">IndiaAI Mission / sovereign</div></div>
+      </div>
+    </div>
+
+    <div class="india-scenario" style="border-top: 2px solid var(--red);">
+      <h4>Scenario B — Hard Crash</h4>
+      <span class="tag tag-red" style="margin-bottom:12px;display:inline-block;">Probability: 25%</span>
+      <p>
+        A hard crash creates severe demand destruction in US tech spending — the primary client base for India's $250B+ IT sector. Digital transformation budgets freeze. Global VC flight triggers Indian startup funding collapse (India attracted $10B+ in AI-adjacent VC in 2024). NASSCOM estimates project 8–15% revenue contraction. Job losses in Bengaluru, Hyderabad, Pune tech clusters.
+      </p>
+      <p style="font-size:10px;color:var(--text-dim);">
+        <strong style="color:var(--red)">Key risk:</strong> India's IT sector derives ~60% revenue from North American clients. A NASDAQ correction of 50%+ historically correlates with IT spending freeze of 12–24 months. BPO/KPO segments most vulnerable to automation-driven cuts regardless of bubble outcome.
+      </p>
+      <div class="india-metrics">
+        <div class="india-metric"><div class="v" style="color:var(--red)">−15%</div><div class="l">IT sector revenue contraction</div></div>
+        <div class="india-metric"><div class="v" style="color:var(--red)">−80%</div><div class="l">AI startup VC funding drop</div></div>
+        <div class="india-metric"><div class="v" style="color:var(--amber)">2–3 yr</div><div class="l">Recovery timeline</div></div>
+        <div class="india-metric"><div class="v" style="color:var(--red)">100K+</div><div class="l">Potential tech job losses</div></div>
+      </div>
+    </div>
+
+    <div class="india-scenario" style="border-top: 2px solid var(--blue);">
+      <h4>Scenario C — Continued Acceleration</h4>
+      <span class="tag tag-blue" style="margin-bottom:12px;display:inline-block;">Probability: 15%</span>
+      <p>
+        This is the most disruptive scenario for India's existing strengths. AGI-adjacent capabilities would directly automate services that India's IT sector specialises in: code generation, BPO, data annotation, testing. India's comparative advantage in English-language knowledge work erodes. India's structural position as a beneficiary of global IT outsourcing is threatened structurally, not cyclically.
+      </p>
+      <p style="font-size:10px;color:var(--text-dim);">
+        <strong style="color:var(--blue)">Structural shift:</strong> Unlike Scenarios A/D, this creates permanent disruption rather than a cycle. India must pivot from labour-arbitrage IT to high-value AI product development — a transition requiring 5–10 year institutional restructuring.
+      </p>
+      <div class="india-metrics">
+        <div class="india-metric"><div class="v" style="color:var(--red)">Structural</div><div class="l">Nature of disruption</div></div>
+        <div class="india-metric"><div class="v" style="color:var(--amber)">5–10 yr</div><div class="l">Pivot/adaptation timeline</div></div>
+        <div class="india-metric"><div class="v" style="color:var(--red)">High</div><div class="l">BPO/KPO automation risk</div></div>
+        <div class="india-metric"><div class="v" style="color:var(--blue)">IndiaAI</div><div class="l">Sovereign buffer activated</div></div>
+      </div>
+    </div>
+
+    <div class="india-scenario" style="border-top: 2px solid var(--amber);">
+      <h4>Scenario D — Bifurcation</h4>
+      <span class="tag tag-amber" style="margin-bottom:12px;display:inline-block;">Probability: 25%</span>
+      <p>
+        India faces split outcomes mirroring global bifurcation. Tier-1 IT firms with strong AI practices (Infosys Topaz, TCS AI Cloud) fare well; pure-play BPO contracts. Indian AI startups in vertical applications (healthcare, agri-tech, fintech) succeed. India benefits from "dark compute" cost collapse — inference gets cheap, enabling mass deployment of applications built on global infrastructure.
+      </p>
+      <p style="font-size:10px;color:var(--text-dim);">
+        <strong style="color:var(--amber)">Strategic opportunity:</strong> India's public digital infrastructure (UPI, ONDC, DPI) creates a unique deployment environment. If AI inference costs collapse as in the dark-fiber analogy, India's application-layer focus may prove prescient.
+      </p>
+      <div class="india-metrics">
+        <div class="india-metric"><div class="v" style="color:var(--amber)">Split</div><div class="l">IT sector outcome</div></div>
+        <div class="india-metric"><div class="v" style="color:var(--green)">+20%</div><div class="l">AI app opportunity uplift</div></div>
+        <div class="india-metric"><div class="v" style="color:var(--amber)">−20%</div><div class="l">BPO/legacy services</div></div>
+        <div class="india-metric"><div class="v" style="color:var(--green)">DPI edge</div><div class="l">UPI/ONDC infra advantage</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- India positioning chart -->
+  <div class="card">
+    <div class="card-title"><span class="dot dot-gold"></span>India's Strategic Position: Insulation vs. Exposure Across AI Value Chain</div>
+    <div class="chart-wrap"><canvas id="chartIndiaChain"></canvas></div>
+    <div style="font-size:10px;color:var(--text-dim);margin-top:12px;">
+      Higher score = more exposed to bubble burst risk. Lower score = more insulated. India's application focus and absence from frontier model development provides partial buffer, but IT services dependency on North America creates primary vulnerability.
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 7: LEVERAGE POINTS -->
+<section class="section" id="leverage">
+  <div class="section-header">
+    <span class="section-num">07</span>
+    <div>
+      <div class="section-title">Leverage Points &amp; Complexity Analysis</div>
+      <div class="section-subtitle">Where small changes produce disproportionate system outcomes — using Meadows' leverage point framework applied to the AI investment system.</div>
+    </div>
+  </div>
+
+  <div class="grid-2" style="margin-bottom:24px;">
+    <div>
+      <div class="leverage-list">
+        <div class="leverage-item">
+          <div class="leverage-rank" style="color:var(--red)">1</div>
+          <div class="leverage-body">
+            <div class="leverage-name">Revenue Realisation Threshold (~$300–500B by 2028)</div>
+            <div class="leverage-desc">The single most critical leverage point. If enterprise AI revenue fails to reach $300B annually within 3 years, capital markets will reassess — triggering cascading devaluation. Every quarter of revenue data is a system signal. Current trajectory: $37B (2025) needing 8–13× growth in 3 years.</div>
+          </div>
+        </div>
+        <div class="leverage-item">
+          <div class="leverage-rank" style="color:var(--red)">2</div>
+          <div class="leverage-body">
+            <div class="leverage-name">Circular Financing Stability (αβγ &lt; 1)</div>
+            <div class="leverage-desc">If any node in the Nvidia → OpenAI → Cloud loop faces financial stress, the feedback reverses. Goldman Sachs: 15% of Nvidia revenue is circular. A single OpenAI funding round failure could destabilise the entire loop. Monitoring: OpenAI's next fundraise and revenue update.</div>
+          </div>
+        </div>
+        <div class="leverage-item">
+          <div class="leverage-rank" style="color:var(--amber)">3</div>
+          <div class="leverage-body">
+            <div class="leverage-name">Capability Trajectory — Scaling Returns</div>
+            <div class="leverage-desc">If marginal value of larger models stops exceeding marginal cost, the investment thesis collapses. Gary Marcus and others note disappointing returns to scale at frontier. Conversely, a reasoning breakthrough resets the entire analysis. This is the highest-uncertainty leverage point.</div>
+          </div>
+        </div>
+        <div class="leverage-item">
+          <div class="leverage-rank" style="color:var(--amber)">4</div>
+          <div class="leverage-body">
+            <div class="leverage-name">Interest Rate Environment</div>
+            <div class="leverage-desc">Higher rates compress DCF valuations of long-dated AI revenue streams. At 5% discount rate: NPV of $2T in 2030 revenue = $1.56T. At 8%: $1.26T. A 3-point rate rise reduces AI asset values ~20% independently of operational performance.</div>
+          </div>
+        </div>
+        <div class="leverage-item">
+          <div class="leverage-rank" style="color:var(--blue)">5</div>
+          <div class="leverage-body">
+            <div class="leverage-name">Sovereign / Geopolitical Floor</div>
+            <div class="leverage-desc">US-China AI competition creates a political floor on investment that doesn't exist in normal bubble dynamics. Government backing (CHIPS Act, IndiaAI Mission, EU AI Act investment) prevents full capital withdrawal. This is the key reason AI differs from crypto — state actors underwrite a base level of investment.</div>
+          </div>
+        </div>
+        <div class="leverage-item">
+          <div class="leverage-rank" style="color:var(--blue)">6</div>
+          <div class="leverage-body">
+            <div class="leverage-name">Enterprise Adoption Gap Closure (25% shadow AI → formal)</div>
+            <div class="leverage-desc">40% of knowledge workers use AI personally; only 15% have formal enterprise deployment. Closing this 25-point gap from bottom-up adoption could generate $100–200B in new enterprise revenue rapidly, validating investments and averting correction. The "Slack-ification" of AI is the soft-landing mechanism.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="dot dot-gold"></span>Leverage Point Impact × Probability</div>
+      <div class="chart-wrap"><canvas id="chartLeverage"></canvas></div>
+      <div style="margin-top:20px;">
+        <div class="card-title"><span class="dot dot-amber"></span>Infrastructure Utilisation Lag Model</div>
+        <div class="math-block" style="margin:0;">
+          <span class="eq">U(t) = min[1, A(t − τ) / I(t)]</span>
+          <span class="explain">A = application availability, I = infrastructure investment, τ = 5–7 year application lag</span><br>
+          <span class="explain">Current state (t=0): U ≈ 0.2–0.4 (40–60% utilisation in best cases)</span><br>
+          <span class="explain">If A(t) catches up: infrastructure justified retrospectively ("dark compute" scenario)</span><br>
+          <span class="explain">If τ is infinite (no app catch-up): full bubble collapse</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 8: ASSUMPTIONS + SOURCES -->
+<section class="section" id="assumptions">
+  <div class="section-header">
+    <span class="section-num">08</span>
+    <div>
+      <div class="section-title">Assumptions &amp; Data Sources</div>
+      <div class="section-subtitle">All analytical assumptions made explicit. This analysis reflects the state of publicly available data as of early 2026.</div>
+    </div>
+  </div>
+
+  <div class="grid-2" style="margin-bottom:24px;">
+    <div>
+      <div class="card-title" style="margin-bottom:16px;"><span class="dot dot-gold"></span>Key Assumptions</div>
+      <div class="assumption-grid">
+        <div class="assumption-card">
+          <div class="a-label">Discount Rate</div>
+          <div class="a-val">12% for hyperscaler AI capex NPV. 15% for startup valuation. Reflects risk premium above WACC.</div>
+        </div>
+        <div class="assumption-card">
+          <div class="a-label">Revenue Lag</div>
+          <div class="a-val">AI revenue recognised 12–24 months after infrastructure deployment. Application lag τ = 5–7 years for full utilisation.</div>
+        </div>
+        <div class="assumption-card">
+          <div class="a-label">India IT Lag</div>
+          <div class="a-val">6–12 months from US tech market correction to India IT revenue impact, based on historical dotcom pattern.</div>
+        </div>
+        <div class="assumption-card">
+          <div class="a-label">Circular Loop</div>
+          <div class="a-val">αβγ product estimated at 0.7–0.85 based on disclosed deal flows. System approaches criticality as value nears 1.0.</div>
+        </div>
+        <div class="assumption-card">
+          <div class="a-label">Scenario Probs</div>
+          <div class="a-val">Derived from documents: Soft 35%, Hard 25%, Accel 15%, Bifurcation 25%. Sum = 100%. Author-attributed, not actuarial.</div>
+        </div>
+        <div class="assumption-card">
+          <div class="a-label">India Exposure</div>
+          <div class="a-val">60% of India IT revenue from North American clients (NASSCOM). Direct frontier model investment: &lt;1% of global.</div>
+        </div>
+        <div class="assumption-card">
+          <div class="a-label">OpenAI Math</div>
+          <div class="a-val">Revenue: $13B (2025E). Committed capex: $60B/yr. Cumulative burn to 2029: $140B. CAGR needed: 72%.</div>
+        </div>
+        <div class="assumption-card">
+          <div class="a-label">Hyperscaler Return</div>
+          <div class="a-val">NPV calculation assumes 10-year payback, $560B invested. Required avg annual CF: ~$98B. Current: $35B. Gap = 2.8×.</div>
+        </div>
+        <div class="assumption-card">
+          <div class="a-label">Dark Compute</div>
+          <div class="a-val">Analogy to dark fiber (85–95% unused post-dotcom) assumes infrastructure persists through correction and enables later applications.</div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card-title" style="margin-bottom:16px;"><span class="dot dot-blue"></span>Data Sources</div>
+      <ul class="source-list">
+        <li><span class="src-num">[1]</span> <span>Primary Documents: "AI Bubble Burst Paper", "AI Bubbles — Details", "Pop Goes the AI Bubble" (provided). Core quantitative framework, stakeholder analysis, scenario probabilities, mathematical models.</span></li>
+        <li><span class="src-num">[2]</span> <span>Bain Global AI Report 2025 — $2T revenue requirement by 2030; 5% transformative return rate; enterprise adoption data.</span></li>
+        <li><span class="src-num">[3]</span> <span>Goldman Sachs AI Infrastructure Report 2025 — 15% circular Nvidia revenue; hyperscaler capex projections ($443B 2025E).</span></li>
+        <li><span class="src-num">[4]</span> <span>Company Financial Filings (MSFT, Google, Meta, Amazon, Nvidia, OpenAI) — Capex, OCF, AI revenue disclosures. OpenAI financials via leaked documents reported by major outlets.</span></li>
+        <li><span class="src-num">[5]</span> <span>PitchBook / CB Insights — VC funding data: AI = 50% of global VC ($202B, 2025); Web3 collapse −82% (2023 vs 2022); AI H1 2025 = $100B.</span></li>
+        <li><span class="src-num">[6]</span> <span>NASSCOM FY2025 — India IT sector revenue ($254B), North American client dependency (60%), job market data.</span></li>
+        <li><span class="src-num">[7]</span> <span>McKinsey Global Institute — 14% productivity gains from AI tools; 78% enterprise adoption (2025); 26–55% productivity in specific use cases.</span></li>
+        <li><span class="src-num">[8]</span> <span>Gartner Hype Cycle (2024/2025) — Positioning of GenAI near "Peak of Inflated Expectations".</span></li>
+        <li><span class="src-num">[9]</span> <span>BEA / US GDP Data — AI capex as % of GDP: Q2 2025 = 1.28% annualised. Full year 2024 = 0.82%.</span></li>
+        <li><span class="src-num">[10]</span> <span>IndiaAI Mission Docs / MeitY — $1.25B government AI compute program; $838M GPU procurement; focus on application layer.</span></li>
+        <li><span class="src-num">[11]</span> <span>NASDAQ historical data — Dotcom P/E peak: 200×; decline 78% (2000–2002); Cisco peak market cap $500B; comparison to Nvidia trajectory.</span></li>
+        <li><span class="src-num">[12]</span> <span>Sam Altman (Aug 2025) — "Investors overexcited AND AI most important in a long time" — both simultaneously true quote, cited in documents.</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Final synthesis -->
+  <div class="card" style="border-color:rgba(201,168,76,0.3);">
+    <div class="card-title"><span class="dot dot-gold"></span>Synthesis: Is This a Bubble?</div>
+    <p style="font-size:12px;color:var(--text);line-height:1.8;max-width:900px;">
+      The documents' core thesis — and this analysis concurs — is that <em style="color:var(--gold)">AI is simultaneously a bubble and a transformative technology</em>. These are not mutually exclusive. The dotcom era showed that bubbles can finance infrastructure that outlasts the correction. The critical distinction from crypto: AI has demonstrated measurable utility (14% productivity gains, 78% enterprise adoption) while crypto's utility-speculation ratio never broke 0.001.
+    </p>
+    <p style="font-size:12px;color:var(--text-dim);line-height:1.8;max-width:900px;margin-top:12px;">
+      The mathematical structure reveals a system under stress: $560B invested yielding $35B revenue (6¢/$1), OpenAI needing 72% CAGR, and circular financing loops approaching αβγ = 1. Yet the game-theoretic analysis shows rational actors cannot stop investing. The most likely outcome is Scenario A (35%) — a productive bubble correction, not unlike dark fiber — leaving "dark compute" that enables the next wave of applications. For India, the application-layer focus and sovereign programs provide partial insulation, but the IT sector's North American dependence remains the primary vulnerability, with a 6–12 month lag before any US correction reaches Indian shores.
+    </p>
+  </div>
+</section>
+
+<footer>
+  <div>AI Bubble Scenario Analysis · Data to March 2026 · Based on provided research documents + public sources</div>
+  <div style="color:var(--text-dim)">Probabilities are analytical estimates, not actuarial. Not investment advice.</div>
+</footer>
+
+<script>
+// ======= CHART DEFAULTS =======
+Chart.defaults.color = '#5a5a78';
+Chart.defaults.borderColor = 'rgba(255,255,255,0.06)';
+Chart.defaults.font.family = "'JetBrains Mono', monospace";
+Chart.defaults.font.size = 10;
+
+const GOLD = '#c9a84c';
+const RED = '#d94f3d';
+const BLUE = '#4d9de0';
+const GREEN = '#52b788';
+const AMBER = '#e07c3a';
+const DIM = 'rgba(90,90,120,0.5)';
+
+function goldGrad(ctx, top, bottom) {
+  const g = ctx.createLinearGradient(0, 0, 0, 300);
+  g.addColorStop(0, top);
+  g.addColorStop(1, bottom);
+  return g;
+}
+
+// ======= 1. INVESTMENT INTENSITY =======
+new Chart(document.getElementById('chartIntensity'), {
+  type: 'bar',
+  data: {
+    labels: ['Railroad Era\n1870s', 'Dotcom Peak\n1999-2000', 'Apollo\n1960s', 'AI 2024\n(0.82% GDP)', 'AI Q2 2025\n(annualised)'],
+    datasets: [{
+      label: '% of GDP',
+      data: [1.8, 1.5, 1.1, 0.82, 1.28],
+      backgroundColor: [DIM, 'rgba(217,79,61,0.5)', DIM, 'rgba(201,168,76,0.4)', 'rgba(201,168,76,0.85)'],
+      borderColor: [DIM, RED, DIM, GOLD, GOLD],
+      borderWidth: 1,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { display: false },
+      tooltip: { callbacks: { label: (c) => ` ${c.raw}% of GDP` } }
+    },
+    scales: {
+      y: { title: { display: true, text: '% of GDP', color: '#5a5a78' }, max: 2.2,
+           ticks: { callback: v => v + '%' } },
+      x: { ticks: { maxRotation: 0 } }
+    }
+  }
+});
+
+// ======= 2. P/E RATIOS =======
+new Chart(document.getElementById('chartPE'), {
+  type: 'bar',
+  data: {
+    labels: ['NASDAQ\nDotcom Peak', 'Cisco\n1999', 'Nvidia FWD\n2025', 'S&P500\n2025', 'Dotcom Avg\nInternet Co'],
+    datasets: [{
+      label: 'P/E Ratio',
+      data: [200, 472, 30, 23, 85],
+      backgroundColor: ['rgba(217,79,61,0.7)', 'rgba(217,79,61,0.9)', 'rgba(82,183,136,0.7)', 'rgba(77,157,224,0.5)', 'rgba(217,79,61,0.5)'],
+      borderColor: [RED, RED, GREEN, BLUE, RED],
+      borderWidth: 1,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { display: false },
+      tooltip: { callbacks: { label: (c) => ` ${c.raw}× P/E` } }
+    },
+    scales: {
+      y: { title: { display: true, text: 'P/E Multiple (×)', color: '#5a5a78' },
+           ticks: { callback: v => v + '×' } },
+    }
+  }
+});
+
+// ======= 3. CASHFLOW COVERAGE =======
+new Chart(document.getElementById('chartCashflow'), {
+  type: 'bar',
+  data: {
+    labels: ['Microsoft', 'Alphabet', 'Amazon', 'Meta'],
+    datasets: [
+      {
+        label: 'Operating Cash Flow ($B)',
+        data: [150, 110, 125, 90],
+        backgroundColor: 'rgba(77,157,224,0.3)',
+        borderColor: BLUE, borderWidth: 1,
+      },
+      {
+        label: 'AI Capex ($B, 2025E)',
+        data: [80, 85, 125, 72],
+        backgroundColor: 'rgba(217,79,61,0.4)',
+        borderColor: RED, borderWidth: 1,
+      }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { position: 'top', labels: { boxWidth: 10, padding: 12 } },
+      tooltip: { callbacks: { label: (c) => ` $${c.raw}B — ${c.dataset.label}` } }
+    },
+    scales: {
+      y: { title: { display: true, text: '$B', color: '#5a5a78' },
+           ticks: { callback: v => '$' + v + 'B' } },
+    }
+  }
+});
+
+// ======= 4. GAP CHART =======
+new Chart(document.getElementById('chartGap'), {
+  type: 'bar',
+  data: {
+    labels: ['2023', '2024', '2025E', '2026E', '2027E', '2028E'],
+    datasets: [
+      {
+        label: 'Cumulative Hyperscaler AI Capex ($B)',
+        data: [80, 241, 443, 602, 680, 720],
+        backgroundColor: 'rgba(217,79,61,0.3)',
+        borderColor: RED, borderWidth: 1, type: 'bar',
+      },
+      {
+        label: 'Cumulative AI Revenue ($B)',
+        data: [10, 37, 115, 200, 340, 520],
+        backgroundColor: 'rgba(82,183,136,0.3)',
+        borderColor: GREEN, borderWidth: 1.5, type: 'bar',
+      }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: {
+      legend: { position: 'top', labels: { boxWidth: 10, padding: 12 } },
+      annotation: {}
+    },
+    scales: {
+      y: { title: { display: true, text: '$B cumulative', color: '#5a5a78' },
+           ticks: { callback: v => '$' + v + 'B' } },
+    }
+  }
+});
+
+// ======= 5. HYPE CYCLE =======
+(function() {
+  const ctx = document.getElementById('chartHype');
+  // Custom line chart simulating hype curve
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: ['Technology\nTrigger', 'Rising\nExpectation', 'Peak Inflated\nExpectation', 'Trough of\nDisillusionment', 'Slope of\nEnlightenment', 'Plateau of\nProductivity'],
+      datasets: [
+        {
+          label: 'Hype Level',
+          data: [20, 65, 100, 15, 45, 65],
+          borderColor: GOLD,
+          backgroundColor: 'rgba(201,168,76,0.06)',
+          borderWidth: 2,
+          pointRadius: [4, 4, 8, 4, 4, 4],
+          pointBackgroundColor: [GOLD, GOLD, RED, GOLD, GOLD, GREEN],
+          fill: true,
+          tension: 0.4,
+        },
+        {
+          label: 'Where AI is now (2025)',
+          data: [null, null, 100, null, null, null],
+          pointRadius: 14,
+          pointBackgroundColor: 'rgba(217,79,61,0.2)',
+          pointBorderColor: RED,
+          pointBorderWidth: 2,
+          showLine: false,
+        }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: true,
+      plugins: {
+        legend: { display: true, labels: { boxWidth: 10, padding: 12 } },
+        tooltip: { callbacks: { label: (c) => ` Hype: ${c.raw}/100` } }
+      },
+      scales: {
+        y: { title: { display: true, text: 'Visibility / Hype Level', color: '#5a5a78' },
+             min: 0, max: 115 },
+      }
+    }
+  });
+})();
+
+// ======= 6. BOOM BUST =======
+new Chart(document.getElementById('chartBoomBust'), {
+  type: 'line',
+  data: {
+    labels: ['2020', '2021 Q1', '2021 Q3', '2022 Q1', '2022 Q3', '2023 Q1', '2023 Q3', '2024', '2025 H1'],
+    datasets: [
+      {
+        label: 'Web3/Crypto VC ($B, quarterly annualised)',
+        data: [10, 35, 60, 94, 40, 17, 11, 12, 14],
+        borderColor: 'rgba(217,79,61,0.7)',
+        backgroundColor: 'rgba(217,79,61,0.04)',
+        borderWidth: 1.5, pointRadius: 3, fill: true, tension: 0.3,
+      },
+      {
+        label: 'AI VC ($B, quarterly annualised)',
+        data: [15, 20, 28, 40, 55, 70, 90, 140, 200],
+        borderColor: GOLD,
+        backgroundColor: 'rgba(201,168,76,0.06)',
+        borderWidth: 2, pointRadius: 3, fill: true, tension: 0.3,
+      }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { position: 'top', labels: { boxWidth: 10, padding: 12 } } },
+    scales: {
+      y: { title: { display: true, text: '$B (annualised)', color: '#5a5a78' },
+           ticks: { callback: v => '$' + v + 'B' } },
+    }
+  }
+});
+
+// ======= 7. SCENARIO CHART =======
+new Chart(document.getElementById('chartScenarios'), {
+  type: 'bar',
+  data: {
+    labels: ['A: Soft Landing', 'B: Hard Crash', 'C: Acceleration', 'D: Bifurcation'],
+    datasets: [
+      {
+        label: 'Probability (%)',
+        data: [35, 25, 15, 25],
+        backgroundColor: ['rgba(82,183,136,0.5)', 'rgba(217,79,61,0.5)', 'rgba(77,157,224,0.5)', 'rgba(224,124,58,0.5)'],
+        borderColor: [GREEN, RED, BLUE, AMBER],
+        borderWidth: 1.5,
+        yAxisID: 'y',
+      },
+      {
+        label: 'NASDAQ Drawdown Implied (%)',
+        data: [-40, -75, 20, -25],
+        backgroundColor: 'transparent',
+        borderColor: [GREEN, RED, BLUE, AMBER],
+        borderWidth: 2,
+        type: 'line',
+        yAxisID: 'y2',
+        pointRadius: 6,
+        pointBackgroundColor: [GREEN, RED, BLUE, AMBER],
+      }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { position: 'top', labels: { boxWidth: 10, padding: 12 } } },
+    scales: {
+      y: { title: { display: true, text: 'Probability (%)', color: '#5a5a78' },
+           ticks: { callback: v => v + '%' }, position: 'left', min: 0, max: 50 },
+      y2: { title: { display: true, text: 'NASDAQ Impact (%)', color: '#5a5a78' },
+            ticks: { callback: v => v + '%' }, position: 'right', grid: { display: false }, min: -100, max: 40 }
+    }
+  }
+});
+
+// ======= 8. SURVIVAL CHART =======
+new Chart(document.getElementById('chartSurvival'), {
+  type: 'bar',
+  data: {
+    labels: ['Foundation\nLabs', 'Hyperscalers', 'Hardware\nVendors', 'Enterprise\nCustomers', 'AI\nStartups', 'Sovereign\nActors'],
+    datasets: [{
+      label: 'Survival Probability (%) — Base Scenario',
+      data: [40, 80, 70, 90, 30, 95],
+      backgroundColor: [
+        'rgba(217,79,61,0.6)', 'rgba(82,183,136,0.6)',
+        'rgba(224,124,58,0.6)', 'rgba(82,183,136,0.8)',
+        'rgba(217,79,61,0.8)', 'rgba(77,157,224,0.6)'
+      ],
+      borderColor: [RED, GREEN, AMBER, GREEN, RED, BLUE],
+      borderWidth: 1.5,
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { display: false },
+      tooltip: { callbacks: { label: (c) => ` ${c.raw}% survival probability` } }
+    },
+    scales: {
+      x: { title: { display: true, text: 'Probability (%)', color: '#5a5a78' },
+           min: 0, max: 100, ticks: { callback: v => v + '%' } },
+    }
+  }
+});
+
+// ======= 9. RISK vs REWARD SCATTER =======
+new Chart(document.getElementById('chartRiskReward'), {
+  type: 'scatter',
+  data: {
+    datasets: [
+      { label: 'Foundation Labs', data: [{ x: 95, y: 20 }], backgroundColor: RED, pointRadius: 14 },
+      { label: 'Hyperscalers', data: [{ x: 60, y: 70 }], backgroundColor: BLUE, pointRadius: 14 },
+      { label: 'Hardware Vendors', data: [{ x: 75, y: 55 }], backgroundColor: AMBER, pointRadius: 14 },
+      { label: 'Enterprises', data: [{ x: 35, y: 80 }], backgroundColor: GREEN, pointRadius: 14 },
+      { label: 'AI Startups', data: [{ x: 90, y: 15 }], backgroundColor: 'rgba(217,79,61,0.5)', pointRadius: 10 },
+      { label: 'India IT', data: [{ x: 50, y: 60 }], backgroundColor: 'rgba(82,183,136,0.5)', pointRadius: 12 },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: {
+      legend: { position: 'right', labels: { boxWidth: 8, padding: 10, font: { size: 9 } } },
+      tooltip: { callbacks: {
+        label: (c) => `${c.dataset.label}: Risk=${c.raw.x}%, Resilience=${c.raw.y}%`
+      }}
+    },
+    scales: {
+      x: { title: { display: true, text: 'Bubble Risk Exposure (%)', color: '#5a5a78' }, min: 0, max: 110 },
+      y: { title: { display: true, text: 'Resilience / Survivability (%)', color: '#5a5a78' }, min: 0, max: 100 },
+    }
+  }
+});
+
+// ======= 10. INDIA EXPOSURE RADAR =======
+new Chart(document.getElementById('chartIndia'), {
+  type: 'radar',
+  data: {
+    labels: ['Frontier Model\nDevelopment', 'Compute\nInfrastructure', 'IT Services\n(US-dependent)', 'Application\nLayer', 'Startup\nEcosystem', 'Sovereign/\nGovt Programs'],
+    datasets: [
+      {
+        label: 'India Exposure to Bubble (higher = more exposed)',
+        data: [5, 15, 75, 40, 55, 20],
+        borderColor: RED,
+        backgroundColor: 'rgba(217,79,61,0.1)',
+        borderWidth: 1.5, pointRadius: 4,
+      },
+      {
+        label: 'India Opportunity (higher = more upside)',
+        data: [10, 25, 30, 85, 60, 80],
+        borderColor: GREEN,
+        backgroundColor: 'rgba(82,183,136,0.08)',
+        borderWidth: 1.5, pointRadius: 4,
+      }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { position: 'top', labels: { boxWidth: 10, padding: 12 } } },
+    scales: {
+      r: {
+        min: 0, max: 100,
+        ticks: { stepSize: 25, backdropColor: 'transparent', color: '#5a5a78', font: { size: 9 } },
+        grid: { color: 'rgba(255,255,255,0.05)' },
+        pointLabels: { color: '#888899', font: { size: 9 } },
+        angleLines: { color: 'rgba(255,255,255,0.05)' }
+      }
+    }
+  }
+});
+
+// ======= 11. INDIA IT SENSITIVITY =======
+new Chart(document.getElementById('chartIndiaIT'), {
+  type: 'bar',
+  data: {
+    labels: ['Scenario A\nSoft Landing', 'Scenario B\nHard Crash', 'Scenario C\nAcceleration', 'Scenario D\nBifurcation'],
+    datasets: [
+      {
+        label: 'IT Services Revenue Growth Impact (%)',
+        data: [-6, -15, -12, -3],
+        backgroundColor: ['rgba(224,124,58,0.5)', 'rgba(217,79,61,0.7)', 'rgba(77,157,224,0.5)', 'rgba(201,168,76,0.5)'],
+        borderColor: [AMBER, RED, BLUE, GOLD], borderWidth: 1.5,
+        yAxisID: 'y',
+      },
+      {
+        label: 'AI Services Opportunity Growth (%)',
+        data: [12, -5, -20, 20],
+        backgroundColor: 'transparent',
+        borderColor: GREEN, borderWidth: 2,
+        type: 'line',
+        yAxisID: 'y',
+        pointRadius: 6,
+        pointBackgroundColor: GREEN,
+      }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { position: 'top', labels: { boxWidth: 10, padding: 12 } } },
+    scales: {
+      y: { title: { display: true, text: 'Revenue Growth Impact (%)', color: '#5a5a78' },
+           ticks: { callback: v => v + '%' } }
+    }
+  }
+});
+
+// ======= 12. INDIA VALUE CHAIN =======
+new Chart(document.getElementById('chartIndiaChain'), {
+  type: 'bar',
+  data: {
+    labels: ['Frontier\nModels', 'Compute\nInfra', 'Cloud\nServices', 'IT\nServices', 'BPO/\nKPO', 'AI\nApplications', 'DPI / Public\nInfra', 'Govt AI\nPrograms'],
+    datasets: [
+      {
+        label: 'India Bubble Exposure (0=insulated, 100=high risk)',
+        data: [5, 12, 20, 68, 80, 38, 15, 18],
+        backgroundColor: [
+          'rgba(82,183,136,0.5)', 'rgba(82,183,136,0.5)', 'rgba(224,124,58,0.4)',
+          'rgba(217,79,61,0.5)', 'rgba(217,79,61,0.7)', 'rgba(224,124,58,0.4)',
+          'rgba(82,183,136,0.5)', 'rgba(77,157,224,0.4)'
+        ],
+        borderColor: [GREEN, GREEN, AMBER, RED, RED, AMBER, GREEN, BLUE],
+        borderWidth: 1.5,
+      }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { display: false },
+      tooltip: { callbacks: { label: (c) => ` Exposure score: ${c.raw}/100` } }
+    },
+    scales: {
+      y: { title: { display: true, text: 'Bubble Exposure Score', color: '#5a5a78' },
+           min: 0, max: 100 }
+    }
+  }
+});
+
+// ======= 13. LEVERAGE POINT CHART =======
+new Chart(document.getElementById('chartLeverage'), {
+  type: 'bubble',
+  data: {
+    datasets: [
+      { label: 'Revenue Threshold', data: [{ x: 90, y: 95, r: 18 }], backgroundColor: 'rgba(217,79,61,0.6)', borderColor: RED },
+      { label: 'Circular Loop', data: [{ x: 85, y: 88, r: 15 }], backgroundColor: 'rgba(217,79,61,0.4)', borderColor: RED },
+      { label: 'Capability Plateau', data: [{ x: 60, y: 95, r: 16 }], backgroundColor: 'rgba(201,168,76,0.5)', borderColor: GOLD },
+      { label: 'Interest Rates', data: [{ x: 55, y: 65, r: 11 }], backgroundColor: 'rgba(224,124,58,0.5)', borderColor: AMBER },
+      { label: 'Sovereign Floor', data: [{ x: 30, y: 75, r: 13 }], backgroundColor: 'rgba(77,157,224,0.5)', borderColor: BLUE },
+      { label: 'Enterprise Adoption Gap', data: [{ x: 70, y: 70, r: 14 }], backgroundColor: 'rgba(82,183,136,0.5)', borderColor: GREEN },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: {
+      legend: { position: 'right', labels: { boxWidth: 8, padding: 8, font: { size: 9 } } },
+      tooltip: { callbacks: {
+        label: (c) => `${c.dataset.label}: Probability=${c.raw.x}%, Impact=${c.raw.y}%`
+      }}
+    },
+    scales: {
+      x: { title: { display: true, text: 'Trigger Probability (%)', color: '#5a5a78' }, min: 0, max: 110 },
+      y: { title: { display: true, text: 'System Impact (%)', color: '#5a5a78' }, min: 0, max: 110 }
+    }
+  }
+});
+
+</script>
+</body>
+</html>
