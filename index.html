@@ -9,25 +9,25 @@
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=JetBrains+Mono:wght@300;400;500;700&display=swap');
 
 :root {
-  --bg: #05050a;
-  --surface: #0c0c16;
-  --surface2: #12121f;
-  --border: rgba(255,255,255,0.07);
-  --border-strong: rgba(255,255,255,0.15);
-  --gold: #c9a84c;
-  --gold-dim: rgba(201,168,76,0.15);
-  --red: #d94f3d;
-  --red-dim: rgba(217,79,61,0.12);
-  --blue: #4d9de0;
-  --blue-dim: rgba(77,157,224,0.12);
-  --green: #52b788;
-  --green-dim: rgba(82,183,136,0.12);
-  --amber: #e07c3a;
-  --amber-dim: rgba(224,124,58,0.12);
-  --text: #c8c8d8;
-  --text-dim: #5a5a78;
-  --text-bright: #eeeeff;
-  --text-muted: #888899;
+  --bg: #f5f6fa;
+  --surface: #ffffff;
+  --surface2: #eef0f6;
+  --border: rgba(30,40,80,0.10);
+  --border-strong: rgba(30,40,80,0.22);
+  --gold: #b07d10;
+  --gold-dim: rgba(176,125,16,0.10);
+  --red: #c0392b;
+  --red-dim: rgba(192,57,43,0.09);
+  --blue: #1a6eb5;
+  --blue-dim: rgba(26,110,181,0.10);
+  --green: #1a7a4a;
+  --green-dim: rgba(26,122,74,0.09);
+  --amber: #c05c10;
+  --amber-dim: rgba(192,92,16,0.09);
+  --text: #2c2c3a;
+  --text-dim: #7a7a96;
+  --text-bright: #111122;
+  --text-muted: #9090aa;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -43,16 +43,15 @@ body {
   overflow-x: hidden;
 }
 
-/* GRAIN OVERLAY */
+/* SUBTLE TOP BORDER ACCENT */
 body::before {
   content: '';
   position: fixed;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
-  background-size: 200px;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--gold), var(--blue), var(--green));
   pointer-events: none;
   z-index: 1000;
-  opacity: 0.4;
 }
 
 /* NAV */
@@ -60,7 +59,7 @@ nav {
   position: fixed;
   top: 0; left: 0; right: 0;
   z-index: 900;
-  background: rgba(5,5,10,0.92);
+  background: rgba(245,246,250,0.95);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
   padding: 0 32px;
@@ -68,6 +67,7 @@ nav {
   align-items: center;
   justify-content: space-between;
   height: 52px;
+  box-shadow: 0 1px 12px rgba(30,40,80,0.07);
 }
 .nav-logo {
   font-family: 'Cormorant Garamond', serif;
@@ -103,7 +103,7 @@ nav {
   position: absolute;
   top: 0; right: 0;
   width: 50%; height: 100%;
-  background: radial-gradient(ellipse at 80% 50%, rgba(201,168,76,0.04) 0%, transparent 60%);
+  background: radial-gradient(ellipse at 80% 50%, rgba(176,125,16,0.05) 0%, transparent 60%);
   pointer-events: none;
 }
 .hero-tag {
@@ -208,6 +208,7 @@ nav {
   border: 1px solid var(--border);
   padding: 24px;
   position: relative;
+  box-shadow: 0 2px 12px rgba(30,40,80,0.06);
 }
 .card-title {
   font-size: 10px;
@@ -262,7 +263,7 @@ nav {
 .sc-bifur::before { background: var(--amber); }
 .scenario-card:hover {
   border-color: var(--border-strong);
-  background: var(--surface);
+  background: rgba(30,40,80,0.02);
 }
 .sc-prob {
   font-family: 'Cormorant Garamond', serif;
@@ -315,6 +316,7 @@ nav {
   text-transform: uppercase;
   color: var(--text-dim);
   background: var(--surface2);
+  border-bottom: 2px solid var(--border-strong);
 }
 .stakeholder-table td {
   padding: 14px 16px;
@@ -323,7 +325,7 @@ nav {
   line-height: 1.5;
 }
 .stakeholder-table tr:last-child td { border-bottom: none; }
-.stakeholder-table tr:hover td { background: rgba(255,255,255,0.02); }
+.stakeholder-table tr:hover td { background: rgba(30,40,80,0.03); }
 
 /* RISK BAR */
 .risk-bar {
@@ -352,6 +354,7 @@ nav {
   background: var(--surface);
   border: 1px solid var(--border);
   overflow: hidden;
+  box-shadow: 0 2px 12px rgba(30,40,80,0.06);
 }
 .dep-map svg {
   width: 100%;
@@ -420,6 +423,7 @@ nav {
   padding: 10px 14px;
   border: 1px solid var(--border);
   background: var(--surface);
+  box-shadow: 0 1px 4px rgba(30,40,80,0.04);
 }
 .source-list li span.src-num {
   color: var(--gold);
@@ -429,9 +433,9 @@ nav {
 
 /* MATH BLOCK */
 .math-block {
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-left: 2px solid var(--gold);
+  background: #fffbf0;
+  border: 1px solid rgba(176,125,16,0.2);
+  border-left: 3px solid var(--gold);
   padding: 20px 24px;
   margin: 16px 0;
   font-size: 11px;
@@ -439,6 +443,7 @@ nav {
 }
 .math-block .eq {
   color: var(--gold);
+  font-weight: 600;
   font-size: 13px;
   display: block;
   margin: 6px 0;
@@ -463,7 +468,7 @@ nav {
   align-items: flex-start;
   transition: border-color 0.2s;
 }
-.leverage-item:hover { border-color: var(--border-strong); }
+.leverage-item:hover { border-color: var(--border-strong); background: rgba(30,40,80,0.02); }
 .leverage-rank {
   font-family: 'Cormorant Garamond', serif;
   font-size: 28px;
@@ -589,7 +594,8 @@ footer {
 /* SCROLLBAR */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
+::-webkit-scrollbar-thumb { background: rgba(30,40,80,0.18); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(30,40,80,0.32); }
 
 /* RESPONSIVE */
 @media (max-width: 900px) {
@@ -734,38 +740,38 @@ footer {
         <svg viewBox="0 0 400 280" style="width:100%;max-height:240px;">
           <defs>
             <marker id="arrow" markerWidth="8" markerHeight="8" refX="5" refY="3" orient="auto">
-              <path d="M0,0 L0,6 L8,3 z" fill="rgba(201,168,76,0.7)"/>
+              <path d="M0,0 L0,6 L8,3 z" fill="rgba(176,125,16,0.8)"/>
             </marker>
           </defs>
           <!-- Nodes -->
-          <ellipse cx="200" cy="48" rx="72" ry="24" fill="#12121f" stroke="rgba(201,168,76,0.4)" stroke-width="1"/>
-          <text x="200" y="44" text-anchor="middle" fill="#c9a84c" font-family="JetBrains Mono" font-size="10">NVIDIA</text>
-          <text x="200" y="57" text-anchor="middle" fill="#888899" font-family="JetBrains Mono" font-size="9">$3T+ market cap</text>
+          <ellipse cx="200" cy="48" rx="72" ry="24" fill="#fffbf0" stroke="rgba(176,125,16,0.4)" stroke-width="1"/>
+          <text x="200" y="44" text-anchor="middle" fill="#b07d10" font-family="JetBrains Mono" font-size="10">NVIDIA</text>
+          <text x="200" y="57" text-anchor="middle" fill="#7a7a96" font-family="JetBrains Mono" font-size="9">$3T+ market cap</text>
 
-          <ellipse cx="80" cy="200" rx="70" ry="24" fill="#12121f" stroke="rgba(77,157,224,0.4)" stroke-width="1"/>
-          <text x="80" y="196" text-anchor="middle" fill="#4d9de0" font-family="JetBrains Mono" font-size="10">OpenAI</text>
-          <text x="80" y="209" text-anchor="middle" fill="#888899" font-family="JetBrains Mono" font-size="9">$500B valuation</text>
+          <ellipse cx="80" cy="200" rx="70" ry="24" fill="#f5f8ff" stroke="rgba(26,110,181,0.4)" stroke-width="1"/>
+          <text x="80" y="196" text-anchor="middle" fill="#1a6eb5" font-family="JetBrains Mono" font-size="10">OpenAI</text>
+          <text x="80" y="209" text-anchor="middle" fill="#7a7a96" font-family="JetBrains Mono" font-size="9">$500B valuation</text>
 
-          <ellipse cx="320" cy="200" rx="70" ry="24" fill="#12121f" stroke="rgba(82,183,136,0.4)" stroke-width="1"/>
-          <text x="320" y="196" text-anchor="middle" fill="#52b788" font-family="JetBrains Mono" font-size="10">Cloud (MSFT/Oracle)</text>
-          <text x="320" y="209" text-anchor="middle" fill="#888899" font-family="JetBrains Mono" font-size="9">Infrastructure host</text>
+          <ellipse cx="320" cy="200" rx="70" ry="24" fill="#f5fff9" stroke="rgba(26,122,74,0.4)" stroke-width="1"/>
+          <text x="320" y="196" text-anchor="middle" fill="#1a7a4a" font-family="JetBrains Mono" font-size="10">Cloud (MSFT/Oracle)</text>
+          <text x="320" y="209" text-anchor="middle" fill="#7a7a96" font-family="JetBrains Mono" font-size="9">Infrastructure host</text>
 
           <!-- Arrows -->
-          <path d="M140,188 L155,80" stroke="rgba(201,168,76,0.5)" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
-          <text x="120" y="135" fill="#888899" font-family="JetBrains Mono" font-size="9" transform="rotate(-63,120,135)">chip purchases</text>
+          <path d="M140,188 L155,80" stroke="rgba(176,125,16,0.5)" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+          <text x="120" y="135" fill="#7a7a96" font-family="JetBrains Mono" font-size="9" transform="rotate(-63,120,135)">chip purchases</text>
 
-          <path d="M245,68 L290,180" stroke="rgba(201,168,76,0.5)" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
-          <text x="285" y="120" fill="#888899" font-family="JetBrains Mono" font-size="9" transform="rotate(63,285,120)">$100B investment</text>
+          <path d="M245,68 L290,180" stroke="rgba(176,125,16,0.5)" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+          <text x="285" y="120" fill="#7a7a96" font-family="JetBrains Mono" font-size="9" transform="rotate(63,285,120)">$100B investment</text>
 
-          <path d="M150,204 L250,204" stroke="rgba(201,168,76,0.5)" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
-          <text x="185" y="220" fill="#888899" font-family="JetBrains Mono" font-size="9">API revenue</text>
+          <path d="M150,204 L250,204" stroke="rgba(176,125,16,0.5)" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+          <text x="185" y="220" fill="#7a7a96" font-family="JetBrains Mono" font-size="9">API revenue</text>
 
           <!-- Instability label -->
-          <rect x="152" y="120" width="96" height="32" fill="#1a0505" stroke="rgba(217,79,61,0.4)" rx="2"/>
-          <text x="200" y="133" text-anchor="middle" fill="#d94f3d" font-family="JetBrains Mono" font-size="9">CIRCULAR LOOP</text>
-          <text x="200" y="146" text-anchor="middle" fill="#d94f3d" font-family="JetBrains Mono" font-size="9">αβγ → 1 (fragile)</text>
+          <rect x="152" y="120" width="96" height="32" fill="#fff0ef" stroke="rgba(192,57,43,0.4)" rx="2"/>
+          <text x="200" y="133" text-anchor="middle" fill="#c0392b" font-family="JetBrains Mono" font-size="9">CIRCULAR LOOP</text>
+          <text x="200" y="146" text-anchor="middle" fill="#c0392b" font-family="JetBrains Mono" font-size="9">αβγ → 1 (fragile)</text>
 
-          <text x="200" y="260" text-anchor="middle" fill="#5a5a78" font-family="JetBrains Mono" font-size="9">15% of Nvidia revenue from circular deals (Goldman Sachs)</text>
+          <text x="200" y="260" text-anchor="middle" fill="#9090aa" font-family="JetBrains Mono" font-size="9">15% of Nvidia revenue from circular deals (Goldman Sachs)</text>
         </svg>
       </div>
     </div>
@@ -1111,13 +1117,13 @@ footer {
           <path d="M0,0 L0,6 L7,3 z" fill="rgba(201,168,76,0.8)"/>
         </marker>
         <marker id="arr-red" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
-          <path d="M0,0 L0,6 L7,3 z" fill="rgba(217,79,61,0.8)"/>
+          <path d="M0,0 L0,6 L7,3 z" fill="rgba(192,57,43,0.8)"/>
         </marker>
         <marker id="arr-blue" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
-          <path d="M0,0 L0,6 L7,3 z" fill="rgba(77,157,224,0.8)"/>
+          <path d="M0,0 L0,6 L7,3 z" fill="rgba(26,110,181,0.8)"/>
         </marker>
         <marker id="arr-dim" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
-          <path d="M0,0 L0,6 L7,3 z" fill="rgba(90,90,120,0.8)"/>
+          <path d="M0,0 L0,6 L7,3 z" fill="rgba(100,110,140,0.8)"/>
         </marker>
 
         <!-- Glow filter -->
@@ -1128,129 +1134,129 @@ footer {
       </defs>
 
       <!-- Layer labels -->
-      <text x="14" y="70" fill="#5a5a78" font-family="JetBrains Mono" font-size="8.5" letter-spacing="1">TRIGGER</text>
-      <text x="14" y="175" fill="#5a5a78" font-family="JetBrains Mono" font-size="8.5" letter-spacing="1">LAYER 1</text>
-      <text x="14" y="280" fill="#5a5a78" font-family="JetBrains Mono" font-size="8.5" letter-spacing="1">LAYER 2</text>
-      <text x="14" y="385" fill="#5a5a78" font-family="JetBrains Mono" font-size="8.5" letter-spacing="1">LAYER 3</text>
-      <text x="14" y="460" fill="#5a5a78" font-family="JetBrains Mono" font-size="8.5" letter-spacing="1">INDIA</text>
+      <text x="14" y="70" fill="#9090aa" font-family="JetBrains Mono" font-size="8.5" letter-spacing="1">TRIGGER</text>
+      <text x="14" y="175" fill="#9090aa" font-family="JetBrains Mono" font-size="8.5" letter-spacing="1">LAYER 1</text>
+      <text x="14" y="280" fill="#9090aa" font-family="JetBrains Mono" font-size="8.5" letter-spacing="1">LAYER 2</text>
+      <text x="14" y="385" fill="#9090aa" font-family="JetBrains Mono" font-size="8.5" letter-spacing="1">LAYER 3</text>
+      <text x="14" y="460" fill="#9090aa" font-family="JetBrains Mono" font-size="8.5" letter-spacing="1">INDIA</text>
 
       <!-- Dividers -->
-      <line x1="90" y1="100" x2="890" y2="100" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
-      <line x1="90" y1="200" x2="890" y2="200" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
-      <line x1="90" y1="310" x2="890" y2="310" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
-      <line x1="90" y1="420" x2="890" y2="420" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+      <line x1="90" y1="100" x2="890" y2="100" stroke="rgba(30,40,80,0.08)" stroke-width="1"/>
+      <line x1="90" y1="200" x2="890" y2="200" stroke="rgba(30,40,80,0.08)" stroke-width="1"/>
+      <line x1="90" y1="310" x2="890" y2="310" stroke="rgba(30,40,80,0.08)" stroke-width="1"/>
+      <line x1="90" y1="420" x2="890" y2="420" stroke="rgba(30,40,80,0.08)" stroke-width="1"/>
 
       <!-- TRIGGER NODE: Revenue Shortfall -->
-      <rect x="350" y="30" width="200" height="44" rx="3" fill="#1a1208" stroke="rgba(201,168,76,0.6)" stroke-width="1.5"/>
-      <text x="450" y="49" text-anchor="middle" fill="#c9a84c" font-family="JetBrains Mono" font-size="10" font-weight="500">REVENUE SHORTFALL</text>
-      <text x="450" y="63" text-anchor="middle" fill="#888899" font-family="JetBrains Mono" font-size="8.5">or Capability Plateau / Macro Shock</text>
+      <rect x="350" y="30" width="200" height="44" rx="3" fill="#fffbf0" stroke="rgba(176,125,16,0.6)" stroke-width="1.5"/>
+      <text x="450" y="49" text-anchor="middle" fill="#b07d10" font-family="JetBrains Mono" font-size="10" font-weight="500">REVENUE SHORTFALL</text>
+      <text x="450" y="63" text-anchor="middle" fill="#7a7a96" font-family="JetBrains Mono" font-size="8.5">or Capability Plateau / Macro Shock</text>
 
       <!-- LAYER 1 NODES -->
       <!-- Foundation Labs fail -->
-      <rect x="100" y="120" width="160" height="44" rx="2" fill="#1a0808" stroke="rgba(217,79,61,0.5)"/>
-      <text x="180" y="139" text-anchor="middle" fill="#d94f3d" font-family="JetBrains Mono" font-size="9.5">Foundation Labs</text>
-      <text x="180" y="153" text-anchor="middle" fill="#888899" font-family="JetBrains Mono" font-size="8">Funding dries; valuations −70%</text>
+      <rect x="100" y="120" width="160" height="44" rx="2" fill="#fff5f5" stroke="rgba(192,57,43,0.45)"/>
+      <text x="180" y="139" text-anchor="middle" fill="#c0392b" font-family="JetBrains Mono" font-size="9.5">Foundation Labs</text>
+      <text x="180" y="153" text-anchor="middle" fill="#7a7a96" font-family="JetBrains Mono" font-size="8">Funding dries; valuations −70%</text>
 
       <!-- Hyperscaler capex cuts -->
-      <rect x="295" y="120" width="160" height="44" rx="2" fill="#0f1208" stroke="rgba(82,183,136,0.5)"/>
-      <text x="375" y="139" text-anchor="middle" fill="#52b788" font-family="JetBrains Mono" font-size="9.5">Hyperscalers</text>
-      <text x="375" y="153" text-anchor="middle" fill="#888899" font-family="JetBrains Mono" font-size="8">Capex slashed; stock −30–50%</text>
+      <rect x="295" y="120" width="160" height="44" rx="2" fill="#f5fff9" stroke="rgba(26,122,74,0.45)"/>
+      <text x="375" y="139" text-anchor="middle" fill="#1a7a4a" font-family="JetBrains Mono" font-size="9.5">Hyperscalers</text>
+      <text x="375" y="153" text-anchor="middle" fill="#7a7a96" font-family="JetBrains Mono" font-size="8">Capex slashed; stock −30–50%</text>
 
       <!-- Nvidia / Hardware -->
-      <rect x="490" y="120" width="160" height="44" rx="2" fill="#1a0e08" stroke="rgba(224,124,58,0.5)"/>
-      <text x="570" y="139" text-anchor="middle" fill="#e07c3a" font-family="JetBrains Mono" font-size="9.5">Nvidia / Hardware</text>
-      <text x="570" y="153" text-anchor="middle" fill="#888899" font-family="JetBrains Mono" font-size="8">Demand collapses; stock −60%</text>
+      <rect x="490" y="120" width="160" height="44" rx="2" fill="#fff8f3" stroke="rgba(192,92,16,0.45)"/>
+      <text x="570" y="139" text-anchor="middle" fill="#c05c10" font-family="JetBrains Mono" font-size="9.5">Nvidia / Hardware</text>
+      <text x="570" y="153" text-anchor="middle" fill="#7a7a96" font-family="JetBrains Mono" font-size="8">Demand collapses; stock −60%</text>
 
       <!-- VC Ecosystem -->
-      <rect x="685" y="120" width="160" height="44" rx="2" fill="#08081a" stroke="rgba(77,157,224,0.5)"/>
-      <text x="765" y="139" text-anchor="middle" fill="#4d9de0" font-family="JetBrains Mono" font-size="9.5">VC / Capital Markets</text>
-      <text x="765" y="153" text-anchor="middle" fill="#888899" font-family="JetBrains Mono" font-size="8">AI funding −80%; repricing</text>
+      <rect x="685" y="120" width="160" height="44" rx="2" fill="#f5f8ff" stroke="rgba(26,110,181,0.45)"/>
+      <text x="765" y="139" text-anchor="middle" fill="#1a6eb5" font-family="JetBrains Mono" font-size="9.5">VC / Capital Markets</text>
+      <text x="765" y="153" text-anchor="middle" fill="#7a7a96" font-family="JetBrains Mono" font-size="8">AI funding −80%; repricing</text>
 
       <!-- LAYER 2 -->
       <!-- US Tech Stocks -->
-      <rect x="100" y="225" width="150" height="44" rx="2" fill="#110808" stroke="rgba(217,79,61,0.4)"/>
-      <text x="175" y="244" text-anchor="middle" fill="#d94f3d" font-family="JetBrains Mono" font-size="9.5">US Tech Markets</text>
-      <text x="175" y="257" text-anchor="middle" fill="#888899" font-family="JetBrains Mono" font-size="8">NASDAQ −30 to −50%; wealth effect</text>
+      <rect x="100" y="225" width="150" height="44" rx="2" fill="#fff5f5" stroke="rgba(192,57,43,0.35)"/>
+      <text x="175" y="244" text-anchor="middle" fill="#c0392b" font-family="JetBrains Mono" font-size="9.5">US Tech Markets</text>
+      <text x="175" y="257" text-anchor="middle" fill="#7a7a96" font-family="JetBrains Mono" font-size="8">NASDAQ −30 to −50%; wealth effect</text>
 
       <!-- Enterprise AI spend freeze -->
-      <rect x="285" y="225" width="155" height="44" rx="2" fill="#0f1208" stroke="rgba(82,183,136,0.4)"/>
-      <text x="362" y="244" text-anchor="middle" fill="#52b788" font-family="JetBrains Mono" font-size="9.5">Enterprise Freeze</text>
-      <text x="362" y="257" text-anchor="middle" fill="#888899" font-family="JetBrains Mono" font-size="8">Budgets cut; stranded assets</text>
+      <rect x="285" y="225" width="155" height="44" rx="2" fill="#f5fff9" stroke="rgba(26,122,74,0.35)"/>
+      <text x="362" y="244" text-anchor="middle" fill="#1a7a4a" font-family="JetBrains Mono" font-size="9.5">Enterprise Freeze</text>
+      <text x="362" y="257" text-anchor="middle" fill="#7a7a96" font-family="JetBrains Mono" font-size="8">Budgets cut; stranded assets</text>
 
       <!-- AI Startup collapse -->
-      <rect x="475" y="225" width="150" height="44" rx="2" fill="#1a0e08" stroke="rgba(224,124,58,0.4)"/>
-      <text x="550" y="244" text-anchor="middle" fill="#e07c3a" font-family="JetBrains Mono" font-size="9.5">AI Startup Collapse</text>
-      <text x="550" y="257" text-anchor="middle" fill="#888899" font-family="JetBrains Mono" font-size="8">80% funding drop; mass layoffs</text>
+      <rect x="475" y="225" width="150" height="44" rx="2" fill="#fff8f3" stroke="rgba(192,92,16,0.35)"/>
+      <text x="550" y="244" text-anchor="middle" fill="#c05c10" font-family="JetBrains Mono" font-size="9.5">AI Startup Collapse</text>
+      <text x="550" y="257" text-anchor="middle" fill="#7a7a96" font-family="JetBrains Mono" font-size="8">80% funding drop; mass layoffs</text>
 
       <!-- TSMC / Taiwan / Asia Supply -->
-      <rect x="660" y="225" width="175" height="44" rx="2" fill="#08081a" stroke="rgba(77,157,224,0.4)"/>
-      <text x="747" y="244" text-anchor="middle" fill="#4d9de0" font-family="JetBrains Mono" font-size="9.5">TSMC / Taiwan / Asia</text>
-      <text x="747" y="257" text-anchor="middle" fill="#888899" font-family="JetBrains Mono" font-size="8">Chip demand falls; supply chain idle</text>
+      <rect x="660" y="225" width="175" height="44" rx="2" fill="#f5f8ff" stroke="rgba(26,110,181,0.35)"/>
+      <text x="747" y="244" text-anchor="middle" fill="#1a6eb5" font-family="JetBrains Mono" font-size="9.5">TSMC / Taiwan / Asia</text>
+      <text x="747" y="257" text-anchor="middle" fill="#7a7a96" font-family="JetBrains Mono" font-size="8">Chip demand falls; supply chain idle</text>
 
       <!-- LAYER 3 -->
       <!-- Global contagion -->
-      <rect x="100" y="330" width="155" height="44" rx="2" fill="#110808" stroke="rgba(217,79,61,0.3)"/>
-      <text x="177" y="348" text-anchor="middle" fill="#d94f3d" font-family="JetBrains Mono" font-size="9.5">Financial Contagion</text>
-      <text x="177" y="362" text-anchor="middle" fill="#888899" font-family="JetBrains Mono" font-size="8">Global equity correction −10–25%</text>
+      <rect x="100" y="330" width="155" height="44" rx="2" fill="#fff5f5" stroke="rgba(192,57,43,0.28)"/>
+      <text x="177" y="348" text-anchor="middle" fill="#c0392b" font-family="JetBrains Mono" font-size="9.5">Financial Contagion</text>
+      <text x="177" y="362" text-anchor="middle" fill="#7a7a96" font-family="JetBrains Mono" font-size="8">Global equity correction −10–25%</text>
 
       <!-- Regulation -->
-      <rect x="290" y="330" width="155" height="44" rx="2" fill="#08100f" stroke="rgba(82,183,136,0.3)"/>
-      <text x="367" y="348" text-anchor="middle" fill="#52b788" font-family="JetBrains Mono" font-size="9.5">Regulation Surge</text>
-      <text x="367" y="362" text-anchor="middle" fill="#888899" font-family="JetBrains Mono" font-size="8">Panic rules or safety dilution</text>
+      <rect x="290" y="330" width="155" height="44" rx="2" fill="#f5fff9" stroke="rgba(26,122,74,0.28)"/>
+      <text x="367" y="348" text-anchor="middle" fill="#1a7a4a" font-family="JetBrains Mono" font-size="9.5">Regulation Surge</text>
+      <text x="367" y="362" text-anchor="middle" fill="#7a7a96" font-family="JetBrains Mono" font-size="8">Panic rules or safety dilution</text>
 
       <!-- Labour markets -->
-      <rect x="480" y="330" width="155" height="44" rx="2" fill="#1a0e08" stroke="rgba(224,124,58,0.3)"/>
-      <text x="557" y="348" text-anchor="middle" fill="#e07c3a" font-family="JetBrains Mono" font-size="9.5">Labour Markets</text>
-      <text x="557" y="362" text-anchor="middle" fill="#888899" font-family="JetBrains Mono" font-size="8">Tech layoffs; reallocation</text>
+      <rect x="480" y="330" width="155" height="44" rx="2" fill="#fff8f3" stroke="rgba(192,92,16,0.28)"/>
+      <text x="557" y="348" text-anchor="middle" fill="#c05c10" font-family="JetBrains Mono" font-size="9.5">Labour Markets</text>
+      <text x="557" y="362" text-anchor="middle" fill="#7a7a96" font-family="JetBrains Mono" font-size="8">Tech layoffs; reallocation</text>
 
       <!-- Dark Compute Legacy -->
-      <rect x="670" y="330" width="165" height="44" rx="2" fill="#0a0a1a" stroke="rgba(77,157,224,0.3)"/>
-      <text x="752" y="348" text-anchor="middle" fill="#4d9de0" font-family="JetBrains Mono" font-size="9.5">"Dark Compute" Legacy</text>
-      <text x="752" y="362" text-anchor="middle" fill="#888899" font-family="JetBrains Mono" font-size="8">Overcapacity → cheap infra later</text>
+      <rect x="670" y="330" width="165" height="44" rx="2" fill="#f5f8ff" stroke="rgba(26,110,181,0.28)"/>
+      <text x="752" y="348" text-anchor="middle" fill="#1a6eb5" font-family="JetBrains Mono" font-size="9.5">"Dark Compute" Legacy</text>
+      <text x="752" y="362" text-anchor="middle" fill="#7a7a96" font-family="JetBrains Mono" font-size="8">Overcapacity → cheap infra later</text>
 
       <!-- INDIA NODES -->
-      <rect x="130" y="432" width="145" height="36" rx="2" fill="#0a100a" stroke="rgba(82,183,136,0.5)" stroke-width="1.5"/>
-      <text x="202" y="447" text-anchor="middle" fill="#52b788" font-family="JetBrains Mono" font-size="9">India IT Services</text>
-      <text x="202" y="460" text-anchor="middle" fill="#888899" font-family="JetBrains Mono" font-size="8">Revenue lag 6–12 months</text>
+      <rect x="130" y="432" width="145" height="36" rx="2" fill="#f0faf5" stroke="rgba(26,122,74,0.5)" stroke-width="1.5"/>
+      <text x="202" y="447" text-anchor="middle" fill="#1a7a4a" font-family="JetBrains Mono" font-size="9">India IT Services</text>
+      <text x="202" y="460" text-anchor="middle" fill="#7a7a96" font-family="JetBrains Mono" font-size="8">Revenue lag 6–12 months</text>
 
-      <rect x="310" y="432" width="145" height="36" rx="2" fill="#0a100a" stroke="rgba(82,183,136,0.5)" stroke-width="1.5"/>
-      <text x="382" y="447" text-anchor="middle" fill="#52b788" font-family="JetBrains Mono" font-size="9">Indian Startup Eco</text>
-      <text x="382" y="460" text-anchor="middle" fill="#888899" font-family="JetBrains Mono" font-size="8">VC pullback; funding freeze</text>
+      <rect x="310" y="432" width="145" height="36" rx="2" fill="#f0faf5" stroke="rgba(26,122,74,0.5)" stroke-width="1.5"/>
+      <text x="382" y="447" text-anchor="middle" fill="#1a7a4a" font-family="JetBrains Mono" font-size="9">Indian Startup Eco</text>
+      <text x="382" y="460" text-anchor="middle" fill="#7a7a96" font-family="JetBrains Mono" font-size="8">VC pullback; funding freeze</text>
 
-      <rect x="490" y="432" width="145" height="36" rx="2" fill="#0a100a" stroke="rgba(82,183,136,0.5)" stroke-width="1.5"/>
-      <text x="562" y="447" text-anchor="middle" fill="#52b788" font-family="JetBrains Mono" font-size="9">IndiaAI / Govt Programs</text>
-      <text x="562" y="460" text-anchor="middle" fill="#888899" font-family="JetBrains Mono" font-size="8">Partially insulated (sovereign)</text>
+      <rect x="490" y="432" width="145" height="36" rx="2" fill="#f0faf5" stroke="rgba(26,122,74,0.5)" stroke-width="1.5"/>
+      <text x="562" y="447" text-anchor="middle" fill="#1a7a4a" font-family="JetBrains Mono" font-size="9">IndiaAI / Govt Programs</text>
+      <text x="562" y="460" text-anchor="middle" fill="#7a7a96" font-family="JetBrains Mono" font-size="8">Partially insulated (sovereign)</text>
 
-      <rect x="670" y="432" width="165" height="36" rx="2" fill="#0a100a" stroke="rgba(201,168,76,0.5)" stroke-width="1.5"/>
-      <text x="752" y="447" text-anchor="middle" fill="#c9a84c" font-family="JetBrains Mono" font-size="9">India Applications Layer</text>
-      <text x="752" y="460" text-anchor="middle" fill="#888899" font-family="JetBrains Mono" font-size="8">Protected; may benefit (cheap compute)</text>
+      <rect x="670" y="432" width="165" height="36" rx="2" fill="#fffbf0" stroke="rgba(176,125,16,0.5)" stroke-width="1.5"/>
+      <text x="752" y="447" text-anchor="middle" fill="#b07d10" font-family="JetBrains Mono" font-size="9">India Applications Layer</text>
+      <text x="752" y="460" text-anchor="middle" fill="#7a7a96" font-family="JetBrains Mono" font-size="8">Protected; may benefit (cheap compute)</text>
 
       <!-- CASCADE ARROWS from Trigger -->
-      <line x1="390" y1="74" x2="215" y2="120" stroke="rgba(217,79,61,0.5)" stroke-width="1.5" marker-end="url(#arr-red)"/>
-      <line x1="430" y1="74" x2="375" y2="120" stroke="rgba(82,183,136,0.5)" stroke-width="1.5" marker-end="url(#arr-dim)"/>
-      <line x1="470" y1="74" x2="540" y2="120" stroke="rgba(224,124,58,0.5)" stroke-width="1.5" marker-end="url(#arr-dim)"/>
-      <line x1="510" y1="74" x2="720" y2="120" stroke="rgba(77,157,224,0.5)" stroke-width="1.5" marker-end="url(#arr-blue)"/>
+      <line x1="390" y1="74" x2="215" y2="120" stroke="rgba(192,57,43,0.55)" stroke-width="1.5" marker-end="url(#arr-red)"/>
+      <line x1="430" y1="74" x2="375" y2="120" stroke="rgba(100,110,140,0.45)" stroke-width="1.5" marker-end="url(#arr-dim)"/>
+      <line x1="470" y1="74" x2="540" y2="120" stroke="rgba(100,110,140,0.45)" stroke-width="1.5" marker-end="url(#arr-dim)"/>
+      <line x1="510" y1="74" x2="720" y2="120" stroke="rgba(26,110,181,0.55)" stroke-width="1.5" marker-end="url(#arr-blue)"/>
 
       <!-- L1 → L2 -->
-      <line x1="180" y1="164" x2="175" y2="225" stroke="rgba(217,79,61,0.4)" stroke-width="1" marker-end="url(#arr-red)"/>
-      <line x1="350" y1="164" x2="340" y2="225" stroke="rgba(82,183,136,0.4)" stroke-width="1" marker-end="url(#arr-dim)"/>
-      <line x1="540" y1="164" x2="520" y2="225" stroke="rgba(224,124,58,0.4)" stroke-width="1" marker-end="url(#arr-dim)"/>
-      <line x1="745" y1="164" x2="730" y2="225" stroke="rgba(77,157,224,0.4)" stroke-width="1" marker-end="url(#arr-blue)"/>
+      <line x1="180" y1="164" x2="175" y2="225" stroke="rgba(192,57,43,0.45)" stroke-width="1" marker-end="url(#arr-red)"/>
+      <line x1="350" y1="164" x2="340" y2="225" stroke="rgba(100,110,140,0.35)" stroke-width="1" marker-end="url(#arr-dim)"/>
+      <line x1="540" y1="164" x2="520" y2="225" stroke="rgba(100,110,140,0.35)" stroke-width="1" marker-end="url(#arr-dim)"/>
+      <line x1="745" y1="164" x2="730" y2="225" stroke="rgba(26,110,181,0.45)" stroke-width="1" marker-end="url(#arr-blue)"/>
       <!-- Cross-connections L1 -->
-      <line x1="260" y1="142" x2="295" y2="142" stroke="rgba(201,168,76,0.25)" stroke-width="1" marker-end="url(#arr-gold)"/>
-      <line x1="455" y1="142" x2="490" y2="142" stroke="rgba(201,168,76,0.25)" stroke-width="1" marker-end="url(#arr-gold)"/>
+      <line x1="260" y1="142" x2="295" y2="142" stroke="rgba(176,125,16,0.35)" stroke-width="1" marker-end="url(#arr-gold)"/>
+      <line x1="455" y1="142" x2="490" y2="142" stroke="rgba(176,125,16,0.35)" stroke-width="1" marker-end="url(#arr-gold)"/>
 
       <!-- L2 → L3 -->
-      <line x1="175" y1="269" x2="175" y2="330" stroke="rgba(217,79,61,0.35)" stroke-width="1" marker-end="url(#arr-red)"/>
-      <line x1="340" y1="269" x2="350" y2="330" stroke="rgba(82,183,136,0.35)" stroke-width="1" marker-end="url(#arr-dim)"/>
-      <line x1="510" y1="269" x2="530" y2="330" stroke="rgba(224,124,58,0.35)" stroke-width="1" marker-end="url(#arr-dim)"/>
-      <line x1="710" y1="269" x2="730" y2="330" stroke="rgba(77,157,224,0.35)" stroke-width="1" marker-end="url(#arr-blue)"/>
+      <line x1="175" y1="269" x2="175" y2="330" stroke="rgba(192,57,43,0.4)" stroke-width="1" marker-end="url(#arr-red)"/>
+      <line x1="340" y1="269" x2="350" y2="330" stroke="rgba(100,110,140,0.3)" stroke-width="1" marker-end="url(#arr-dim)"/>
+      <line x1="510" y1="269" x2="530" y2="330" stroke="rgba(100,110,140,0.3)" stroke-width="1" marker-end="url(#arr-dim)"/>
+      <line x1="710" y1="269" x2="730" y2="330" stroke="rgba(26,110,181,0.4)" stroke-width="1" marker-end="url(#arr-blue)"/>
 
       <!-- L3 → India -->
-      <line x1="177" y1="374" x2="202" y2="432" stroke="rgba(82,183,136,0.4)" stroke-width="1" marker-end="url(#arr-dim)"/>
-      <line x1="367" y1="374" x2="382" y2="432" stroke="rgba(82,183,136,0.4)" stroke-width="1" marker-end="url(#arr-dim)"/>
-      <line x1="557" y1="374" x2="562" y2="432" stroke="rgba(82,183,136,0.4)" stroke-width="1" marker-end="url(#arr-dim)"/>
-      <line x1="750" y1="374" x2="752" y2="432" stroke="rgba(201,168,76,0.4)" stroke-width="1" marker-end="url(#arr-gold)"/>
+      <line x1="177" y1="374" x2="202" y2="432" stroke="rgba(100,110,140,0.35)" stroke-width="1" marker-end="url(#arr-dim)"/>
+      <line x1="367" y1="374" x2="382" y2="432" stroke="rgba(100,110,140,0.35)" stroke-width="1" marker-end="url(#arr-dim)"/>
+      <line x1="557" y1="374" x2="562" y2="432" stroke="rgba(100,110,140,0.35)" stroke-width="1" marker-end="url(#arr-dim)"/>
+      <line x1="750" y1="374" x2="752" y2="432" stroke="rgba(176,125,16,0.45)" stroke-width="1" marker-end="url(#arr-gold)"/>
     </svg>
   </div>
 
@@ -1552,17 +1558,17 @@ footer {
 
 <script>
 // ======= CHART DEFAULTS =======
-Chart.defaults.color = '#5a5a78';
-Chart.defaults.borderColor = 'rgba(255,255,255,0.06)';
+Chart.defaults.color = '#7a7a96';
+Chart.defaults.borderColor = 'rgba(30,40,80,0.08)';
 Chart.defaults.font.family = "'JetBrains Mono', monospace";
 Chart.defaults.font.size = 10;
 
-const GOLD = '#c9a84c';
-const RED = '#d94f3d';
-const BLUE = '#4d9de0';
-const GREEN = '#52b788';
-const AMBER = '#e07c3a';
-const DIM = 'rgba(90,90,120,0.5)';
+const GOLD = '#b07d10';
+const RED = '#c0392b';
+const BLUE = '#1a6eb5';
+const GREEN = '#1a7a4a';
+const AMBER = '#c05c10';
+const DIM = 'rgba(100,110,140,0.3)';
 
 function goldGrad(ctx, top, bottom) {
   const g = ctx.createLinearGradient(0, 0, 0, 300);
@@ -1579,9 +1585,9 @@ new Chart(document.getElementById('chartIntensity'), {
     datasets: [{
       label: '% of GDP',
       data: [1.8, 1.5, 1.1, 0.82, 1.28],
-      backgroundColor: [DIM, 'rgba(217,79,61,0.5)', DIM, 'rgba(201,168,76,0.4)', 'rgba(201,168,76,0.85)'],
+      backgroundColor: [DIM, 'rgba(192,57,43,0.55)', DIM, 'rgba(176,125,16,0.45)', 'rgba(176,125,16,0.85)'],
       borderColor: [DIM, RED, DIM, GOLD, GOLD],
-      borderWidth: 1,
+      borderWidth: 1.5,
     }]
   },
   options: {
@@ -1590,7 +1596,7 @@ new Chart(document.getElementById('chartIntensity'), {
       tooltip: { callbacks: { label: (c) => ` ${c.raw}% of GDP` } }
     },
     scales: {
-      y: { title: { display: true, text: '% of GDP', color: '#5a5a78' }, max: 2.2,
+      y: { title: { display: true, text: '% of GDP', color: '#9090aa' }, max: 2.2,
            ticks: { callback: v => v + '%' } },
       x: { ticks: { maxRotation: 0 } }
     }
@@ -1605,7 +1611,7 @@ new Chart(document.getElementById('chartPE'), {
     datasets: [{
       label: 'P/E Ratio',
       data: [200, 472, 30, 23, 85],
-      backgroundColor: ['rgba(217,79,61,0.7)', 'rgba(217,79,61,0.9)', 'rgba(82,183,136,0.7)', 'rgba(77,157,224,0.5)', 'rgba(217,79,61,0.5)'],
+      backgroundColor: ['rgba(192,57,43,0.65)', 'rgba(192,57,43,0.85)', 'rgba(26,122,74,0.65)', 'rgba(26,110,181,0.5)', 'rgba(192,57,43,0.45)'],
       borderColor: [RED, RED, GREEN, BLUE, RED],
       borderWidth: 1,
     }]
@@ -1616,7 +1622,7 @@ new Chart(document.getElementById('chartPE'), {
       tooltip: { callbacks: { label: (c) => ` ${c.raw}× P/E` } }
     },
     scales: {
-      y: { title: { display: true, text: 'P/E Multiple (×)', color: '#5a5a78' },
+      y: { title: { display: true, text: 'P/E Multiple (×)', color: '#9090aa' },
            ticks: { callback: v => v + '×' } },
     }
   }
@@ -1631,13 +1637,13 @@ new Chart(document.getElementById('chartCashflow'), {
       {
         label: 'Operating Cash Flow ($B)',
         data: [150, 110, 125, 90],
-        backgroundColor: 'rgba(77,157,224,0.3)',
-        borderColor: BLUE, borderWidth: 1,
+        backgroundColor: 'rgba(26,110,181,0.25)',
+        borderColor: BLUE, borderWidth: 1.5,
       },
       {
         label: 'AI Capex ($B, 2025E)',
         data: [80, 85, 125, 72],
-        backgroundColor: 'rgba(217,79,61,0.4)',
+        backgroundColor: 'rgba(192,57,43,0.35)',
         borderColor: RED, borderWidth: 1,
       }
     ]
@@ -1648,7 +1654,7 @@ new Chart(document.getElementById('chartCashflow'), {
       tooltip: { callbacks: { label: (c) => ` $${c.raw}B — ${c.dataset.label}` } }
     },
     scales: {
-      y: { title: { display: true, text: '$B', color: '#5a5a78' },
+      y: { title: { display: true, text: '$B', color: '#9090aa' },
            ticks: { callback: v => '$' + v + 'B' } },
     }
   }
@@ -1663,13 +1669,13 @@ new Chart(document.getElementById('chartGap'), {
       {
         label: 'Cumulative Hyperscaler AI Capex ($B)',
         data: [80, 241, 443, 602, 680, 720],
-        backgroundColor: 'rgba(217,79,61,0.3)',
-        borderColor: RED, borderWidth: 1, type: 'bar',
+        backgroundColor: 'rgba(192,57,43,0.25)',
+        borderColor: RED, borderWidth: 1.5, type: 'bar',
       },
       {
         label: 'Cumulative AI Revenue ($B)',
         data: [10, 37, 115, 200, 340, 520],
-        backgroundColor: 'rgba(82,183,136,0.3)',
+        backgroundColor: 'rgba(26,122,74,0.25)',
         borderColor: GREEN, borderWidth: 1.5, type: 'bar',
       }
     ]
@@ -1681,7 +1687,7 @@ new Chart(document.getElementById('chartGap'), {
       annotation: {}
     },
     scales: {
-      y: { title: { display: true, text: '$B cumulative', color: '#5a5a78' },
+      y: { title: { display: true, text: '$B cumulative', color: '#9090aa' },
            ticks: { callback: v => '$' + v + 'B' } },
     }
   }
@@ -1700,7 +1706,7 @@ new Chart(document.getElementById('chartGap'), {
           label: 'Hype Level',
           data: [20, 65, 100, 15, 45, 65],
           borderColor: GOLD,
-          backgroundColor: 'rgba(201,168,76,0.06)',
+          backgroundColor: 'rgba(176,125,16,0.07)',
           borderWidth: 2,
           pointRadius: [4, 4, 8, 4, 4, 4],
           pointBackgroundColor: [GOLD, GOLD, RED, GOLD, GOLD, GREEN],
@@ -1711,7 +1717,7 @@ new Chart(document.getElementById('chartGap'), {
           label: 'Where AI is now (2025)',
           data: [null, null, 100, null, null, null],
           pointRadius: 14,
-          pointBackgroundColor: 'rgba(217,79,61,0.2)',
+          pointBackgroundColor: 'rgba(192,57,43,0.15)',
           pointBorderColor: RED,
           pointBorderWidth: 2,
           showLine: false,
@@ -1725,7 +1731,7 @@ new Chart(document.getElementById('chartGap'), {
         tooltip: { callbacks: { label: (c) => ` Hype: ${c.raw}/100` } }
       },
       scales: {
-        y: { title: { display: true, text: 'Visibility / Hype Level', color: '#5a5a78' },
+        y: { title: { display: true, text: 'Visibility / Hype Level', color: '#9090aa' },
              min: 0, max: 115 },
       }
     }
@@ -1741,15 +1747,15 @@ new Chart(document.getElementById('chartBoomBust'), {
       {
         label: 'Web3/Crypto VC ($B, quarterly annualised)',
         data: [10, 35, 60, 94, 40, 17, 11, 12, 14],
-        borderColor: 'rgba(217,79,61,0.7)',
-        backgroundColor: 'rgba(217,79,61,0.04)',
+        borderColor: 'rgba(192,57,43,0.8)',
+        backgroundColor: 'rgba(192,57,43,0.06)',
         borderWidth: 1.5, pointRadius: 3, fill: true, tension: 0.3,
       },
       {
         label: 'AI VC ($B, quarterly annualised)',
         data: [15, 20, 28, 40, 55, 70, 90, 140, 200],
         borderColor: GOLD,
-        backgroundColor: 'rgba(201,168,76,0.06)',
+        backgroundColor: 'rgba(176,125,16,0.07)',
         borderWidth: 2, pointRadius: 3, fill: true, tension: 0.3,
       }
     ]
@@ -1758,7 +1764,7 @@ new Chart(document.getElementById('chartBoomBust'), {
     responsive: true, maintainAspectRatio: true,
     plugins: { legend: { position: 'top', labels: { boxWidth: 10, padding: 12 } } },
     scales: {
-      y: { title: { display: true, text: '$B (annualised)', color: '#5a5a78' },
+      y: { title: { display: true, text: '$B (annualised)', color: '#9090aa' },
            ticks: { callback: v => '$' + v + 'B' } },
     }
   }
@@ -1773,7 +1779,7 @@ new Chart(document.getElementById('chartScenarios'), {
       {
         label: 'Probability (%)',
         data: [35, 25, 15, 25],
-        backgroundColor: ['rgba(82,183,136,0.5)', 'rgba(217,79,61,0.5)', 'rgba(77,157,224,0.5)', 'rgba(224,124,58,0.5)'],
+        backgroundColor: ['rgba(26,122,74,0.5)', 'rgba(192,57,43,0.5)', 'rgba(26,110,181,0.5)', 'rgba(192,92,16,0.5)'],
         borderColor: [GREEN, RED, BLUE, AMBER],
         borderWidth: 1.5,
         yAxisID: 'y',
@@ -1795,9 +1801,9 @@ new Chart(document.getElementById('chartScenarios'), {
     responsive: true, maintainAspectRatio: true,
     plugins: { legend: { position: 'top', labels: { boxWidth: 10, padding: 12 } } },
     scales: {
-      y: { title: { display: true, text: 'Probability (%)', color: '#5a5a78' },
+      y: { title: { display: true, text: 'Probability (%)', color: '#9090aa' },
            ticks: { callback: v => v + '%' }, position: 'left', min: 0, max: 50 },
-      y2: { title: { display: true, text: 'NASDAQ Impact (%)', color: '#5a5a78' },
+      y2: { title: { display: true, text: 'NASDAQ Impact (%)', color: '#9090aa' },
             ticks: { callback: v => v + '%' }, position: 'right', grid: { display: false }, min: -100, max: 40 }
     }
   }
@@ -1812,9 +1818,9 @@ new Chart(document.getElementById('chartSurvival'), {
       label: 'Survival Probability (%) — Base Scenario',
       data: [40, 80, 70, 90, 30, 95],
       backgroundColor: [
-        'rgba(217,79,61,0.6)', 'rgba(82,183,136,0.6)',
-        'rgba(224,124,58,0.6)', 'rgba(82,183,136,0.8)',
-        'rgba(217,79,61,0.8)', 'rgba(77,157,224,0.6)'
+        'rgba(192,57,43,0.55)', 'rgba(26,122,74,0.55)',
+        'rgba(192,92,16,0.55)', 'rgba(26,122,74,0.75)',
+        'rgba(192,57,43,0.75)', 'rgba(26,110,181,0.55)'
       ],
       borderColor: [RED, GREEN, AMBER, GREEN, RED, BLUE],
       borderWidth: 1.5,
@@ -1827,7 +1833,7 @@ new Chart(document.getElementById('chartSurvival'), {
       tooltip: { callbacks: { label: (c) => ` ${c.raw}% survival probability` } }
     },
     scales: {
-      x: { title: { display: true, text: 'Probability (%)', color: '#5a5a78' },
+      x: { title: { display: true, text: 'Probability (%)', color: '#9090aa' },
            min: 0, max: 100, ticks: { callback: v => v + '%' } },
     }
   }
@@ -1855,8 +1861,8 @@ new Chart(document.getElementById('chartRiskReward'), {
       }}
     },
     scales: {
-      x: { title: { display: true, text: 'Bubble Risk Exposure (%)', color: '#5a5a78' }, min: 0, max: 110 },
-      y: { title: { display: true, text: 'Resilience / Survivability (%)', color: '#5a5a78' }, min: 0, max: 100 },
+      x: { title: { display: true, text: 'Bubble Risk Exposure (%)', color: '#9090aa' }, min: 0, max: 110 },
+      y: { title: { display: true, text: 'Resilience / Survivability (%)', color: '#9090aa' }, min: 0, max: 100 },
     }
   }
 });
@@ -1871,14 +1877,14 @@ new Chart(document.getElementById('chartIndia'), {
         label: 'India Exposure to Bubble (higher = more exposed)',
         data: [5, 15, 75, 40, 55, 20],
         borderColor: RED,
-        backgroundColor: 'rgba(217,79,61,0.1)',
+        backgroundColor: 'rgba(192,57,43,0.08)',
         borderWidth: 1.5, pointRadius: 4,
       },
       {
         label: 'India Opportunity (higher = more upside)',
         data: [10, 25, 30, 85, 60, 80],
         borderColor: GREEN,
-        backgroundColor: 'rgba(82,183,136,0.08)',
+        backgroundColor: 'rgba(26,122,74,0.07)',
         borderWidth: 1.5, pointRadius: 4,
       }
     ]
@@ -1889,10 +1895,10 @@ new Chart(document.getElementById('chartIndia'), {
     scales: {
       r: {
         min: 0, max: 100,
-        ticks: { stepSize: 25, backdropColor: 'transparent', color: '#5a5a78', font: { size: 9 } },
-        grid: { color: 'rgba(255,255,255,0.05)' },
-        pointLabels: { color: '#888899', font: { size: 9 } },
-        angleLines: { color: 'rgba(255,255,255,0.05)' }
+        ticks: { stepSize: 25, backdropColor: 'rgba(245,246,250,0.8)', color: '#9090aa', font: { size: 9 } },
+        grid: { color: 'rgba(30,40,80,0.08)' },
+        pointLabels: { color: '#7a7a96', font: { size: 9 } },
+        angleLines: { color: 'rgba(30,40,80,0.08)' }
       }
     }
   }
@@ -1927,7 +1933,7 @@ new Chart(document.getElementById('chartIndiaIT'), {
     responsive: true, maintainAspectRatio: true,
     plugins: { legend: { position: 'top', labels: { boxWidth: 10, padding: 12 } } },
     scales: {
-      y: { title: { display: true, text: 'Revenue Growth Impact (%)', color: '#5a5a78' },
+      y: { title: { display: true, text: 'Revenue Growth Impact (%)', color: '#9090aa' },
            ticks: { callback: v => v + '%' } }
     }
   }
@@ -1943,9 +1949,9 @@ new Chart(document.getElementById('chartIndiaChain'), {
         label: 'India Bubble Exposure (0=insulated, 100=high risk)',
         data: [5, 12, 20, 68, 80, 38, 15, 18],
         backgroundColor: [
-          'rgba(82,183,136,0.5)', 'rgba(82,183,136,0.5)', 'rgba(224,124,58,0.4)',
-          'rgba(217,79,61,0.5)', 'rgba(217,79,61,0.7)', 'rgba(224,124,58,0.4)',
-          'rgba(82,183,136,0.5)', 'rgba(77,157,224,0.4)'
+          'rgba(26,122,74,0.45)', 'rgba(26,122,74,0.45)', 'rgba(192,92,16,0.35)',
+          'rgba(192,57,43,0.45)', 'rgba(192,57,43,0.65)', 'rgba(192,92,16,0.35)',
+          'rgba(26,122,74,0.45)', 'rgba(26,110,181,0.35)'
         ],
         borderColor: [GREEN, GREEN, AMBER, RED, RED, AMBER, GREEN, BLUE],
         borderWidth: 1.5,
@@ -1958,7 +1964,7 @@ new Chart(document.getElementById('chartIndiaChain'), {
       tooltip: { callbacks: { label: (c) => ` Exposure score: ${c.raw}/100` } }
     },
     scales: {
-      y: { title: { display: true, text: 'Bubble Exposure Score', color: '#5a5a78' },
+      y: { title: { display: true, text: 'Bubble Exposure Score', color: '#9090aa' },
            min: 0, max: 100 }
     }
   }
@@ -1986,8 +1992,8 @@ new Chart(document.getElementById('chartLeverage'), {
       }}
     },
     scales: {
-      x: { title: { display: true, text: 'Trigger Probability (%)', color: '#5a5a78' }, min: 0, max: 110 },
-      y: { title: { display: true, text: 'System Impact (%)', color: '#5a5a78' }, min: 0, max: 110 }
+      x: { title: { display: true, text: 'Trigger Probability (%)', color: '#9090aa' }, min: 0, max: 110 },
+      y: { title: { display: true, text: 'System Impact (%)', color: '#9090aa' }, min: 0, max: 110 }
     }
   }
 });
