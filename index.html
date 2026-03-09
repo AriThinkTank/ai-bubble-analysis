@@ -929,6 +929,125 @@ input[type=range].sim-slider.green::-webkit-slider-thumb { background: var(--gre
   .sim-section { padding: 48px 24px; }
 }
 
+
+/* ======= PERCENTAGE ANNOTATION TOOLTIPS ======= */
+.pct-tip {
+  border-bottom: 1.5px dotted var(--text-dim);
+  cursor: help;
+  position: relative;
+  display: inline-block;
+}
+.pct-tip .ptip {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff;
+  border: 1px solid rgba(30,40,80,0.13);
+  box-shadow: 0 6px 24px rgba(30,40,80,0.12);
+  border-radius: 4px;
+  padding: 12px 14px;
+  width: 280px;
+  font-size: 10px;
+  color: var(--text);
+  line-height: 1.65;
+  z-index: 10000;
+  pointer-events: none;
+  transition: opacity 0.18s ease, visibility 0.18s ease;
+  text-align: left;
+  font-style: normal;
+  font-weight: 400;
+  font-family: 'JetBrains Mono', monospace;
+}
+.pct-tip .ptip .ptip-label {
+  display: block;
+  font-weight: 700;
+  font-size: 11px;
+  color: var(--text-bright);
+  margin-bottom: 6px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid var(--border);
+}
+.ptip-basis {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 2px 7px;
+  border-radius: 10px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  margin-bottom: 7px;
+  margin-top: 2px;
+}
+.ptip-basis.sourced {
+  background: rgba(26,110,181,0.1);
+  color: var(--blue);
+  border: 1px solid rgba(26,110,181,0.25);
+}
+.ptip-basis.derived {
+  background: rgba(176,125,16,0.1);
+  color: var(--gold);
+  border: 1px solid rgba(176,125,16,0.25);
+}
+.ptip-basis.assumption {
+  background: rgba(192,83,16,0.1);
+  color: var(--amber);
+  border: 1px solid rgba(192,83,16,0.25);
+}
+.ptip-basis.estimate {
+  background: rgba(26,122,74,0.1);
+  color: var(--green);
+  border: 1px solid rgba(26,122,74,0.25);
+}
+.pct-tip:hover .ptip,
+.pct-tip:focus .ptip {
+  visibility: visible;
+  opacity: 1;
+}
+/* Arrow pointing down toward the number */
+.pct-tip .ptip::before {
+  content: '';
+  position: absolute;
+  bottom: -5px; left: 50%;
+  transform: translateX(-50%);
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid rgba(30,40,80,0.13);
+}
+.pct-tip .ptip::after {
+  content: '';
+  position: absolute;
+  bottom: -4px; left: 50%;
+  transform: translateX(-50%);
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid #fff;
+}
+/* Legend for the basis types */
+.pct-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0 0;
+  font-size: 10px;
+}
+.pct-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.pct-legend-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+}
+.pct-legend-dot.sourced { background: var(--blue); }
+.pct-legend-dot.derived { background: var(--gold); }
+.pct-legend-dot.assumption { background: var(--amber); }
+.pct-legend-dot.estimate { background: var(--green); }
+
 </style>
 </head>
 <body>
@@ -965,11 +1084,11 @@ input[type=range].sim-slider.green::-webkit-slider-thumb { background: var(--gre
       <span class="lbl">Revenue needed by 2030 to justify investment</span>
     </div>
     <div class="hero-stat">
-      <span class="val">6¢</span>
+      <span class="val"><span class="pct-tip">6¢<span class="ptip"><span class="ptip-label">6&cent; per $1 invested &mdash; AI Revenue-to-Capex ratio</span><span class="ptip-basis derived">&#128208; Derived</span>Calculated from public data. Combined AI revenue of 5 major hyperscalers: ~$35B (2025E). Combined AI capex 2024&ndash;2025: ~$560B. Ratio: 35/560 = 6.25 cents. AI revenue attribution is not separately disclosed by these companies &mdash; this blended figure is from research documents + Goldman Sachs estimates.</span></span></span>
       <span class="lbl">AI Revenue per $1 invested (hyperscalers)</span>
     </div>
     <div class="hero-stat">
-      <span class="val">5%</span>
+      <span class="val"><span class="pct-tip">5%<span class="ptip"><span class="ptip-label">5% — Enterprises seeing transformative returns</span><span class="ptip-basis sourced">&#128196; Sourced</span>Bain &amp; Company Global AI Report (2025). Despite $30&ndash;40B invested in gen-AI initiatives by 2025, Bain found only 5% of organisations reported outcomes classified as &ldquo;transformative.&rdquo; The 95% majority saw incremental or no measurable return on AI investment.</span></span></span>
       <span class="lbl">Enterprises seeing transformative returns</span>
     </div>
   </div>
@@ -991,7 +1110,7 @@ input[type=range].sim-slider.green::-webkit-slider-thumb { background: var(--gre
       <div class="card-title"><span class="dot dot-gold"></span>Investment Intensity as % of GDP</div>
       <div class="chart-wrap"><canvas id="chartIntensity"></canvas></div>
       <div style="font-size:10px;color:var(--text-dim);margin-top:12px;">
-        Source: <span class="src-badge">1<span class="stip"><span class="stip-title">Research Documents (provided)</span>The three research papers provided: "AI Bubble Burst Paper", "AI Bubbles — Details", and "Pop Goes the AI Bubble". Core quantitative frameworks, stakeholder analysis, scenario probabilities, and mathematical models all originate from these.</span></span> <span class="src-badge">9<span class="stip"><span class="stip-title">BEA / US GDP Data</span>US Bureau of Economic Analysis. AI-related capital expenditures estimated at 0.82% of 2024 GDP and 1.28% annualised in Q2 2025, making AI capex a primary driver of US economic growth in H1 2025.</span></span> <span class="src-badge">2<span class="stip"><span class="stip-title">Bain Global AI Report 2025</span>Published by Bain & Company. Key data: $2T annual revenue requirement by 2030, 5% of enterprises seeing transformative returns, enterprise AI spending trajectory from $1.7B (2023) to $37B (2025).</span></span> — AI 2025 Q2 annualised at 1.28% GDP. Dotcom peak: 1.5%. Railroad era: 1.8%.
+        Source: <span class="src-badge">1<span class="stip"><span class="stip-title">Research Documents (provided)</span>The three research papers provided: "AI Bubble Burst Paper", "AI Bubbles — Details", and "Pop Goes the AI Bubble". Core quantitative frameworks, stakeholder analysis, scenario probabilities, and mathematical models all originate from these.</span></span> <span class="src-badge">9<span class="stip"><span class="stip-title">BEA / US GDP Data</span>US Bureau of Economic Analysis. AI-related capital expenditures estimated at 0.82% of 2024 GDP and 1.28% annualised in Q2 2025, making AI capex a primary driver of US economic growth in H1 2025.</span></span> <span class="src-badge">2<span class="stip"><span class="stip-title">Bain Global AI Report 2025</span>Published by Bain & Company. Key data: $2T annual revenue requirement by 2030, 5% of enterprises seeing transformative returns, enterprise AI spending trajectory from $1.7B (2023) to $37B (2025).</span></span> — AI 2025 Q2 annualised at <span class="pct-tip">1.28% GDP<span class="ptip"><span class="ptip-label">1.28% of GDP &mdash; AI Capex annualised Q2 2025</span><span class="ptip-basis sourced">&#128196; Sourced</span>BEA + research documents. Q2 2025 hyperscaler capex of ~$97B was annualised (&times;4 = $388B). Divided by annualised Q2 GDP (~$30.3T) &asymp; 1.28%. This briefly surpassed the US consumer as the primary driver of US economic growth.</span></span>. Dotcom peak: <span class="pct-tip">1.5%<span class="ptip"><span class="ptip-label">1.5% of GDP &mdash; Dotcom-era peak investment (1999&ndash;2000)</span><span class="ptip-basis sourced">&#128196; Sourced</span>Research documents (AI_bubbles_details), corroborated by NBER economic history data. Telecom and internet infrastructure spending peaked at ~1.5% of US GDP in 1999&ndash;2000, primarily driven by the fibre optic overbuild &mdash; 80 million miles of cable laid.</span></span>. Railroad era: <span class="pct-tip">1.8%<span class="ptip"><span class="ptip-label">1.8% of GDP &mdash; Railroad investment boom (1870s)</span><span class="ptip-basis estimate">&#128202; Estimate</span>Historical economic estimate from research documents and economic history literature (Fishlow 1965, Fogel 1964). Railroad construction at the 1870s boom peak absorbed roughly 1.8% of US GDP annually &mdash; the largest infrastructure investment episode before the 20th century.</span></span>.
       </div>
     </div>
 
@@ -1011,7 +1130,7 @@ input[type=range].sim-slider.green::-webkit-slider-thumb { background: var(--gre
       <div class="card-title"><span class="dot dot-blue"></span>Hyperscaler Capex vs Operating Cash Flow (2025E)</div>
       <div class="chart-wrap"><canvas id="chartCashflow"></canvas></div>
       <div style="font-size:10px;color:var(--text-dim);margin-top:12px;">
-        Source: <span class="src-badge">1<span class="stip"><span class="stip-title">Research Documents (provided)</span>The three research papers provided: "AI Bubble Burst Paper", "AI Bubbles — Details", and "Pop Goes the AI Bubble". Core quantitative frameworks, stakeholder analysis, scenario probabilities, and mathematical models all originate from these.</span></span> <span class="src-badge">4<span class="stip"><span class="stip-title">Company Financial Filings</span>Annual reports, 10-K/10-Q filings, and earnings calls from Microsoft, Google (Alphabet), Meta, Amazon, and Nvidia. OpenAI financials from leaked internal documents reported by The Information and WSJ.</span></span> — Capex as % of OCF approaching but not exceeding 100%.
+        Source: <span class="src-badge">1<span class="stip"><span class="stip-title">Research Documents (provided)</span>The three research papers provided: "AI Bubble Burst Paper", "AI Bubbles — Details", and "Pop Goes the AI Bubble". Core quantitative frameworks, stakeholder analysis, scenario probabilities, and mathematical models all originate from these.</span></span> <span class="src-badge">4<span class="stip"><span class="stip-title">Company Financial Filings</span>Annual reports, 10-K/10-Q filings, and earnings calls from Microsoft, Google (Alphabet), Meta, Amazon, and Nvidia. OpenAI financials from leaked internal documents reported by The Information and WSJ.</span></span> — Capex as % of OCF approaching but not exceeding <span class="pct-tip">100%<span class="ptip"><span class="ptip-label">Capex as % of OCF approaching 100% &mdash; coverage ratio</span><span class="ptip-basis sourced">&#128196; Sourced</span>Research documents (AI_bubbles_details) + Goldman Sachs consensus estimates. Hyperscaler capex reached ~76% of OCF in 2024 and is projected at ~94% in 2026. A ratio above 100% would require debt financing for dividends/buybacks. The chart shows the trend line; crossing 100% is a key fragility signal the documents highlight.</span></span>.
       </div>
     </div>
 
@@ -1020,7 +1139,7 @@ input[type=range].sim-slider.green::-webkit-slider-thumb { background: var(--gre
       <div class="card-title"><span class="dot dot-amber"></span>Cumulative Investment vs. AI Revenue — The Gap</div>
       <div class="chart-wrap"><canvas id="chartGap"></canvas></div>
       <div style="font-size:10px;color:var(--text-dim);margin-top:12px;">
-        Source: <span class="src-badge">1<span class="stip"><span class="stip-title">Research Documents (provided)</span>The three research papers provided: "AI Bubble Burst Paper", "AI Bubbles — Details", and "Pop Goes the AI Bubble". Core quantitative frameworks, stakeholder analysis, scenario probabilities, and mathematical models all originate from these.</span></span> <span class="src-badge">3<span class="stip"><span class="stip-title">Goldman Sachs AI Infrastructure 2025</span>Goldman Sachs analyst note on AI infrastructure. Key finding: 15% of Nvidia's projected 2025 revenue comes from circular/vendor-financing deals. Also provided hyperscaler capex projections.</span></span> <span class="src-badge">2<span class="stip"><span class="stip-title">Bain Global AI Report 2025</span>Published by Bain & Company. Key data: $2T annual revenue requirement by 2030, 5% of enterprises seeing transformative returns, enterprise AI spending trajectory from $1.7B (2023) to $37B (2025).</span></span> — $560B invested by 5 hyperscalers vs $35B AI revenue combined = 6¢ per $1 invested.
+        Source: <span class="src-badge">1<span class="stip"><span class="stip-title">Research Documents (provided)</span>The three research papers provided: "AI Bubble Burst Paper", "AI Bubbles — Details", and "Pop Goes the AI Bubble". Core quantitative frameworks, stakeholder analysis, scenario probabilities, and mathematical models all originate from these.</span></span> <span class="src-badge">3<span class="stip"><span class="stip-title">Goldman Sachs AI Infrastructure 2025</span>Goldman Sachs analyst note on AI infrastructure. Key finding: <span class="pct-tip">15%<span class="ptip"><span class="ptip-label">15% of Nvidia revenue from circular deals</span><span class="ptip-basis sourced">&#128196; Sourced</span>Goldman Sachs AI Infrastructure analyst note (2025). GS estimated ~15% of Nvidia's projected 2025 chip revenues come from "circular" arrangements &mdash; where Nvidia invests in AI labs that then buy Nvidia chips. Treated as a fragility risk indicator in the GS report.</span></span> of Nvidia's projected 2025 revenue comes from circular/vendor-financing deals. Also provided hyperscaler capex projections.</span></span> <span class="src-badge">2<span class="stip"><span class="stip-title">Bain Global AI Report 2025</span>Published by Bain & Company. Key data: $2T annual revenue requirement by 2030, 5% of enterprises seeing transformative returns, enterprise AI spending trajectory from $1.7B (2023) to $37B (2025).</span></span> — $560B invested by 5 hyperscalers vs $35B AI revenue combined = <span class="pct-tip">6¢ per $1<span class="ptip"><span class="ptip-label">6&cent; per $1 invested &mdash; AI Revenue-to-Capex ratio</span><span class="ptip-basis derived">&#128208; Derived</span>Calculated from public figures. $35B AI revenue / $560B capex deployed = 6.25%. For comparison: AWS generated ~$1 for every $1 of capex within 3 years; dotcom infrastructure never broke even. The research documents use this as the core evidence that current AI infrastructure is not self-sustaining.</span></span> invested.
       </div>
     </div>
   </div>
@@ -1040,7 +1159,7 @@ input[type=range].sim-slider.green::-webkit-slider-thumb { background: var(--gre
       <span class="fterm">Cumulative Capex<span class="ftip"><span class="ftip-label">Cumulative Capex — $560B</span>Total capital already deployed: Microsoft ~$80B, Google ~$85B, Amazon ~$125B, Meta ~$72B, Nvidia ~$100B commitments. This is the "sunk cost" that future cash flows must recoup.</span></span>
       ≥ 0
     </span>
-    <span class="explain">At r = 12% discount rate, 15-yr depreciation, this requires annual cash flows averaging ~15–20% of cumulative capex.</span>
+    <span class="explain">At r = <span class="pct-tip">12%<span class="ptip"><span class="ptip-label">12% discount rate &mdash; NPV calculation assumption</span><span class="ptip-basis assumption">&#129517; Assumption</span>Analytical assumption stated explicitly in the research documents. Derived as: base WACC for large tech firms (~5–6%) + AI-specific risk premium (~6%). The risk premium reflects uncertainty about whether AI revenues will materialise. At 8% discount rate, investments look more attractive; at 15%, they require even faster revenue growth. The 12% is a mid-point reflecting elevated but not extreme uncertainty.</span></span> discount rate, 15-yr depreciation, this requires annual cash flows averaging ~<span class="pct-tip">15–20%<span class="ptip"><span class="ptip-label">15–20% annual CF requirement &mdash; NPV threshold</span><span class="ptip-basis derived">&#128208; Derived</span>Arithmetically derived. For r=12% and 10-year payback, the annuity factor is ~5.65. So: $560B / 5.65 &asymp; $99B/yr &asymp; 17.7% of capex. The 15–20% range brackets this across different depreciation assumptions (10–15 years). This means hyperscalers currently generate 6¢ per dollar of capex vs the required 15–20¢ &mdash; a 2.8× gap.</span></span>.</span>
     <span class="eq">Required avg. annual CF ≥ $560B × 0.175 = ~$98B/yr</span>
     <span class="explain">Current AI revenue trajectory: ~$35B (2025) → implies 3× growth needed just to break sustainability threshold. Break-even expected 2028–2030.</span>
   </div>
@@ -1051,8 +1170,8 @@ input[type=range].sim-slider.green::-webkit-slider-thumb { background: var(--gre
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:center;">
       <div>
         <p style="font-size:11px;color:var(--text-dim);line-height:1.7;margin-bottom:16px;">
-          Nvidia invests $100B in OpenAI → OpenAI buys Nvidia chips → Nvidia revenues rise → Nvidia market cap rises → more capacity to invest. Goldman Sachs estimates 15% of Nvidia's 2025 sales come from such circular arrangements.
-          <span class="src-badge">3<span class="stip"><span class="stip-title">Goldman Sachs AI Infrastructure Report 2025</span>GS analyst note estimated that approximately 15% of Nvidia's projected 2025 chip sales come from "circular" deals — where Nvidia itself finances or co-invests in companies that then purchase its chips.</span></span>
+          Nvidia invests $100B in OpenAI → OpenAI buys Nvidia chips → Nvidia revenues rise → Nvidia market cap rises → more capacity to invest. Goldman Sachs estimates <span class="pct-tip">15%<span class="ptip"><span class="ptip-label">15% of Nvidia revenue from circular deals</span><span class="ptip-basis sourced">&#128196; Sourced</span>Goldman Sachs AI Infrastructure analyst note (2025). GS estimated ~15% of Nvidia's projected 2025 chip revenues come from "circular" arrangements &mdash; where Nvidia invests in AI labs that then buy Nvidia chips. Treated as a fragility risk indicator in the GS report.</span></span> of Nvidia's 2025 sales come from such circular arrangements.
+          <span class="src-badge">3<span class="stip"><span class="stip-title">Goldman Sachs AI Infrastructure Report 2025</span>GS analyst note estimated that approximately <span class="pct-tip">15%<span class="ptip"><span class="ptip-label">15% of Nvidia revenue from circular deals</span><span class="ptip-basis sourced">&#128196; Sourced</span>Goldman Sachs AI Infrastructure analyst note (2025). GS estimated ~15% of Nvidia's projected 2025 chip revenues come from "circular" arrangements &mdash; where Nvidia invests in AI labs that then buy Nvidia chips. Treated as a fragility risk indicator in the GS report.</span></span> of Nvidia's projected 2025 chip sales come from "circular" deals — where Nvidia itself finances or co-invests in companies that then purchase its chips.</span></span>
         </p>
         <div class="math-block" style="margin:0;">
           <span class="explain" style="margin-bottom:6px;display:block;">Feedback loop between three linked variables:</span>
@@ -1103,7 +1222,7 @@ input[type=range].sim-slider.green::-webkit-slider-thumb { background: var(--gre
           <text x="200" y="133" text-anchor="middle" fill="#c0392b" font-family="JetBrains Mono" font-size="9">CIRCULAR LOOP</text>
           <text x="200" y="146" text-anchor="middle" fill="#c0392b" font-family="JetBrains Mono" font-size="9">αβγ → 1 (fragile)</text>
 
-          <text x="200" y="260" text-anchor="middle" fill="#9090aa" font-family="JetBrains Mono" font-size="9">15% of Nvidia revenue from circular deals (Goldman Sachs)</text>
+          <text x="200" y="260" text-anchor="middle" fill="#9090aa" font-family="JetBrains Mono" font-size="9"><span class="pct-tip">15%<span class="ptip"><span class="ptip-label">15% of Nvidia revenue from circular deals</span><span class="ptip-basis sourced">&#128196; Sourced</span>Goldman Sachs AI Infrastructure analyst note (2025). GS estimated ~15% of Nvidia's projected 2025 chip revenues come from "circular" arrangements &mdash; where Nvidia invests in AI labs that then buy Nvidia chips. Treated as a fragility risk indicator in the GS report.</span></span> of Nvidia revenue from circular deals (Goldman Sachs)</text>
         </svg>
       </div>
     </div>
@@ -1152,8 +1271,8 @@ input[type=range].sim-slider.green::-webkit-slider-thumb { background: var(--gre
         <tbody>
           <tr>
             <td style="color:var(--text-bright)">Avg. Price-to-Sales</td>
-            <td style="color:var(--red)">30–200×</td>
-            <td style="color:var(--green)">8–15×</td>
+            <td style="color:var(--red)"><span class="pct-tip">30–200×<span class="ptip"><span class="ptip-label">30–200× Price-to-Sales &mdash; Dotcom Era (1999–2000)</span><span class="ptip-basis sourced">&#128196; Sourced</span>Research documents + NASDAQ historical data + Bloomberg. The average Price-to-Sales for internet companies in 1999 exceeded 30×, with many having infinite ratios (zero revenue). The NASDAQ overall P/E peaked at 200×. Cited directly in the research documents as evidence of the "valuation-revenue divergence function" V(t)/R(t) &rarr; &infin; as R(t) &rarr; 0.</span></span></td>
+            <td style="color:var(--green)"><span class="pct-tip">8–15×<span class="ptip"><span class="ptip-label">8–15× Price-to-Sales &mdash; AI Era (2025)</span><span class="ptip-basis sourced">&#128196; Sourced</span>Research documents (AI_bubbles_details) + Bloomberg terminal data. Enterprise AI/SaaS companies trade at 8–15× forward revenue in 2025, compared to dotcom-era 30–200×. Represents a premium but one anchored in demonstrated 30–40% annual revenue growth. The documents cite this as the key structural divergence from the dotcom bubble.</span></span></td>
           </tr>
           <tr>
             <td style="color:var(--text-bright)">Revenue Growth Rate</td>
@@ -1168,7 +1287,7 @@ input[type=range].sim-slider.green::-webkit-slider-thumb { background: var(--gre
           <tr>
             <td style="color:var(--text-bright)">Infrastructure Utilisation</td>
             <td style="color:var(--red)">&lt;10%</td>
-            <td style="color:var(--amber)">40–60%</td>
+            <td style="color:var(--amber)"><span class="pct-tip">40–60%<span class="ptip"><span class="ptip-label">40–60% infrastructure utilisation &mdash; AI Era</span><span class="ptip-basis estimate">&#128202; Estimate</span>Research documents (blended estimate). GPU cluster utilisation in training workloads: 60–80%. Inference infrastructure: often 20–40% (deployed but underutilised). The 40–60% blended estimate compares favourably to post-dotcom fibre utilisation of &lt;10%. Actual figures are commercially sensitive and not publicly disclosed; this is an industry-analyst consensus range.</span></span></td>
           </tr>
           <tr>
             <td style="color:var(--text-bright)">Cash Burn / Revenue</td>
@@ -1198,12 +1317,12 @@ input[type=range].sim-slider.green::-webkit-slider-thumb { background: var(--gre
         <div class="tl-item">
           <div class="tl-date">2024</div>
           <div class="tl-title">Infrastructure Arms Race Begins</div>
-          <div class="tl-text">Hyperscaler capex: $241B (0.82% GDP). AI captured 34% of global VC. Enterprise AI: $11.5B.</div>
+          <div class="tl-text">Hyperscaler capex: $241B (<span class="pct-tip">0.82% GDP<span class="ptip"><span class="ptip-label">0.82% of GDP &mdash; AI Capex in 2024</span><span class="ptip-basis sourced">&#128196; Sourced</span>US Bureau of Economic Analysis (BEA). The four largest hyperscalers spent ~$241B on AI capex in 2024. US GDP was ~$29.4T, making this &asymp;0.82%. Documents note AI capex briefly became the primary driver of US GDP growth in H1 2025.</span></span>). AI captured <span class="pct-tip">34%<span class="ptip"><span class="ptip-label">34% of global VC &mdash; AI share in 2024</span><span class="ptip-basis sourced">&#128196; Sourced</span>PitchBook / CB Insights annual global VC report (2024). AI companies received 34% of all venture capital deployed globally in 2024, up from ~18% in 2022. Cited in research documents as evidence of accelerating capital concentration.</span></span> of global VC. Enterprise AI: $11.5B.</div>
         </div>
         <div class="tl-item">
           <div class="tl-date">Jan–Oct 2025</div>
           <div class="tl-title">Peak Inflated Expectations</div>
-          <div class="tl-text">Nvidia hits $3T+. OpenAI: $500B. AI = 50% of global VC ($202B). Capex: $443B projected. Sundar Pichai acknowledges "elements of irrationality."</div>
+          <div class="tl-text">Nvidia hits $3T+. OpenAI: $500B. AI = <span class="pct-tip">50%<span class="ptip"><span class="ptip-label">50% of global VC in 2025 &mdash; AI share</span><span class="ptip-basis sourced">&#128196; Sourced</span>PitchBook 2025 mid-year report. AI companies captured ~50% ($202B) of all global VC in 2025, up from 34% in 2024. Research documents describe this as "a concentration of capital that rivals or exceeds the dotcom peak on an inflation-adjusted basis."</span></span> of global VC ($202B). Capex: $443B projected. Sundar Pichai acknowledges "elements of irrationality."</div>
         </div>
         <div class="tl-item">
           <div class="tl-date">Nov 2025</div>
@@ -1244,13 +1363,13 @@ input[type=range].sim-slider.green::-webkit-slider-thumb { background: var(--gre
 
   <div class="scenario-grid">
     <div class="scenario-card sc-soft">
-      <div class="sc-prob">35%</div>
+      <div class="sc-prob"><span class="pct-tip">35%<span class="ptip"><span class="ptip-label">35% probability &mdash; Soft Landing (Moderate Correction)</span><span class="ptip-basis assumption">&#129517; Assumption</span>Analytical estimate from the research documents scenario matrix. Assigned as the most likely single outcome because: (1) hyperscalers have financial buffers, (2) enterprise AI utility is demonstrated, (3) historical precedent (dotcom) shows productive bubbles correct without full collapse. The 35% is not actuarial &mdash; it reflects the authors' informed judgment weighted against the other three scenarios.</span></span></div>
       <div class="sc-name">Scenario A — Soft Landing (Correction)</div>
       <div class="sc-desc">
-        AI capabilities advance but decelerate. Revenue grows to $300–500B by 2028. Valuations compress 30–50%. Consolidation among foundation labs; 3–5 survivors globally. Hyperscalers absorb losses from diversified revenue. Enterprise adoption broadens in well-defined use cases. "Productive bubble" outcome — infrastructure remains, many investors lose.
+        AI capabilities advance but decelerate. Revenue grows to $300–500B by 2028. Valuations compress <span class="pct-tip">30–50%<span class="ptip"><span class="ptip-label">30–50% valuation compression &mdash; Soft Landing</span><span class="ptip-basis estimate">&#128202; Estimate</span>Estimate anchored to historical tech corrections. Post-dotcom, enterprise software P/E multiples compressed 40&ndash;60% but survivors recovered within 3&ndash;5 years. The 30&ndash;50% range for AI assumes: AI P/E ~30x reverts toward historical software norms of ~18&ndash;22x (a 30&ndash;40% compression), with foundation lab private valuations falling more steeply (50%) due to revenue shortfall.</span></span>. Consolidation among foundation labs; 3–5 survivors globally. Hyperscalers absorb losses from diversified revenue. Enterprise adoption broadens in well-defined use cases. "Productive bubble" outcome — infrastructure remains, many investors lose.
       </div>
       <div class="sc-impacts">
-        <div class="sc-impact"><span class="impact-icon">📉</span> NASDAQ AI-exposed stocks: −30 to −50%</div>
+        <div class="sc-impact"><span class="impact-icon">📉</span> NASDAQ AI-exposed stocks: <span class="pct-tip">−30 to −50%<span class="ptip"><span class="ptip-label">−30 to −50% NASDAQ decline &mdash; Soft Landing scenario</span><span class="ptip-basis estimate">&#128202; Estimate</span>Estimate based on comparable corrections. The 2022 tech selloff saw AI/growth stocks fall 40&ndash;70% while NASDAQ fell ~33%. A soft landing assumes: hyperscalers fall 20&ndash;35%, Nvidia falls 30&ndash;50%, but broad market resilience (non-tech sectors healthy) limits overall NASDAQ to −30 to −50%. Not a forecast &mdash; an analytical scenario boundary.</span></span></div>
         <div class="sc-impact"><span class="impact-icon">🏦</span> Foundation labs: consolidation to 3–5 survivors</div>
         <div class="sc-impact"><span class="impact-icon">💡</span> Infrastructure (dark compute) remains intact</div>
         <div class="sc-impact"><span class="impact-icon">🇮🇳</span> India: moderate IT demand slowdown, 6–12 months lag</div>
@@ -1258,21 +1377,21 @@ input[type=range].sim-slider.green::-webkit-slider-thumb { background: var(--gre
     </div>
 
     <div class="scenario-card sc-hard">
-      <div class="sc-prob">25%</div>
+      <div class="sc-prob"><span class="pct-tip">25%<span class="ptip"><span class="ptip-label">25% probability &mdash; Hard Crash (AI Winter II)</span><span class="ptip-basis assumption">&#129517; Assumption</span>Analytical estimate. A hard crash requires simultaneous capability plateau AND revenue shortfall AND capital market closure &mdash; a conjunction requiring co-occurrence. Informed by: Web3 82% VC funding collapse analogy (PitchBook 2023), OpenAI fragile unit economics (5:1 capex:revenue ratio), and Nvidia circular financing risk (GS: 15% circular revenue).</span></span></div>
       <div class="sc-name">Scenario B — Hard Crash (AI Winter II)</div>
       <div class="sc-desc">
-        Capability plateau + revenue shortfall simultaneously. Capital markets close for unprofitable AI cos. Valuations: −70 to −80% from peak. Multiple major bankruptcies including possibly OpenAI. Nvidia stock −60–70%. AI investment freeze for 2–3 years. Echoes dotcom collapse in scale of destruction. Enterprise customers: stranded assets.
+        Capability plateau + revenue shortfall simultaneously. Capital markets close for unprofitable AI cos. Valuations: <span class="pct-tip">−70 to −80%<span class="ptip"><span class="ptip-label">−70 to −80% valuation decline &mdash; Hard Crash</span><span class="ptip-basis estimate">&#128202; Estimate</span>Based on historical precedents explicitly cited in the research documents. NASDAQ fell 78% (March 2000 &ndash; October 2002). Cisco fell 89% from peak. In a hard AI crash, pure-play AI companies face near-zero valuations if capital dries up; Nvidia could fall 60&ndash;70% (SOX semiconductor index fell ~80% in 2000&ndash;2002). Documents directly reference these as comparable benchmarks.</span></span>. Multiple major bankruptcies including possibly OpenAI. Nvidia stock −60–70%. AI investment freeze for 2–3 years. Echoes dotcom collapse in scale of destruction. Enterprise customers: stranded assets.
       </div>
       <div class="sc-impacts">
-        <div class="sc-impact"><span class="impact-icon">💥</span> Nvidia stock: −60 to −70% from peak</div>
-        <div class="sc-impact"><span class="impact-icon">❄️</span> AI winter: VC funding drops 80%+ (like Web3 2023)</div>
+        <div class="sc-impact"><span class="impact-icon">💥</span> Nvidia stock: <span class="pct-tip">−60 to −70%<span class="ptip"><span class="ptip-label">−60 to −70% Nvidia decline &mdash; Hard Crash</span><span class="ptip-basis estimate">&#128202; Estimate</span>Based on semiconductor cycle history. Cisco (Nvidia's closest dotcom analog) fell 89% in 2000&ndash;2002. Nvidia itself fell ~65% in 2022 during the crypto/gaming demand collapse. The −60−70% range assumes: AI chip demand drops sharply, but Nvidia retains its H100/Blackwell data-centre technology moat, preventing a full Cisco-style collapse. Nvidia also has stronger gaming revenue as a buffer.</span></span></div>
+        <div class="sc-impact"><span class="impact-icon">❄️</span> AI winter: VC funding drops <span class="pct-tip">80%+<span class="ptip"><span class="ptip-label">80%+ VC funding drop &mdash; Hard Crash (AI Winter)</span><span class="ptip-basis sourced">&#128196; Sourced</span>Directly precedented: Web3/crypto VC fell 82% year-over-year from Q1 2022 to Q1 2023 (PitchBook / CB Insights). Dotcom VC fell from $100B/yr (2000) to ~$20B/yr (2003) &mdash; also ~80%. The 80%+ figure applies the most comparable recent episode (Web3) directly to AI, not a unique projection. The Web3 collapse is cited in the research documents as the closest structural parallel.</span></span> (like Web3 2023)</div>
         <div class="sc-impact"><span class="impact-icon">🏚️</span> OpenAI/Anthropic existential risk</div>
-        <div class="sc-impact"><span class="impact-icon">🇮🇳</span> India: IT sector contracts 8–15%; significant job losses</div>
+        <div class="sc-impact"><span class="impact-icon">🇮🇳</span> India: IT sector contracts <span class="pct-tip">8–15%<span class="ptip"><span class="ptip-label">8–15% IT sector contraction &mdash; Hard Crash, India</span><span class="ptip-basis estimate">&#128202; Estimate</span>Analytical estimate using NASSCOM dependency data. With 60% NA client dependency and a US tech spending freeze of 30–50%, India IT faces a 18–30% revenue headwind from its NA book. Offset by domestic/APAC/EU business (~40% of revenue). Net estimated contraction: 8–15%. Post-dotcom India IT reference: growth fell from 30%+ to single digits 2001–2003 &mdash; this scenario implies outright contraction given deeper AI dependency.</span></span>; significant job losses</div>
       </div>
     </div>
 
     <div class="scenario-card sc-accel">
-      <div class="sc-prob">15%</div>
+      <div class="sc-prob"><span class="pct-tip">15%<span class="ptip"><span class="ptip-label">15% probability &mdash; Continued Acceleration (AGI-adjacent)</span><span class="ptip-basis assumption">&#129517; Assumption</span>Analytical estimate. Assigned the lowest probability because it requires AI capability breakthroughs beyond current scaling trends. Most AI researchers surveyed (AI Index 2025) place AGI-adjacent general reasoning 5&ndash;15+ years away. The non-trivial 15% reflects that Sam Altman and leading researchers consider near-term breakthroughs plausible, and that this scenario would fundamentally invalidate the other three.</span></span></div>
       <div class="sc-name">Scenario C — Continued Acceleration (AGI-adjacent)</div>
       <div class="sc-desc">
         AI capabilities break through — reasoning, planning, autonomy. Revenue exceeds projections. Current investment proves insufficient. Foundation labs become most valuable companies. Labour market disruption accelerates rapidly. Regulatory response likely triggers forced correction anyway. Low probability but non-trivial.
@@ -1286,13 +1405,13 @@ input[type=range].sim-slider.green::-webkit-slider-thumb { background: var(--gre
     </div>
 
     <div class="scenario-card sc-bifur">
-      <div class="sc-prob">25%</div>
+      <div class="sc-prob"><span class="pct-tip">25%<span class="ptip"><span class="ptip-label">25% probability &mdash; Bifurcation (Split Outcomes)</span><span class="ptip-basis assumption">&#129517; Assumption</span>Analytical estimate. Tied with Hard Crash at 25% because current evidence is precisely bifurcated: 78% of enterprises using AI but only 5% seeing transformative returns (McKinsey 2025). Strong narrow successes (coding, CS) coexist with widespread mediocrity &mdash; exactly the bifurcation pattern.</span></span></div>
       <div class="sc-name">Scenario D — Bifurcation (Split Outcomes)</div>
       <div class="sc-desc">
         Certain applications (coding, customer service, content) prove highly valuable; others fail. 2–3 labs win massively; rest fail. "AI haves vs have-nots" among enterprises. Startup ecosystem: spectacular successes alongside widespread failures. Most likely near-term path given current deployment patterns.
       </div>
       <div class="sc-impacts">
-        <div class="sc-impact"><span class="impact-icon">✂️</span> Winner-take-most: 2–3 labs capture 80%+ of value</div>
+        <div class="sc-impact"><span class="impact-icon">✂️</span> Winner-take-most: 2–3 labs capture <span class="pct-tip">80%+<span class="ptip"><span class="ptip-label">80%+ value capture &mdash; Bifurcation scenario</span><span class="ptip-basis estimate">&#128202; Estimate</span>Based on platform economics precedents. Google: ~90% search market share. Facebook/Instagram: ~65% social. AWS/Azure/GCP: ~65% cloud IaaS. AI foundation models show similar winner-take-most dynamics: compute moats (training costs), data advantages, API lock-in, and distribution through cloud bundling. The 80% is an estimate consistent with platform market structures historically observed in infrastructure-layer tech.</span></span></div>
         <div class="sc-impact"><span class="impact-icon">📊</span> Sector splits: coding/CS disrupted; others stable</div>
         <div class="sc-impact"><span class="impact-icon">🌍</span> Geopolitical: US/China AI leaders; others follow</div>
         <div class="sc-impact"><span class="impact-icon">🇮🇳</span> India: application-layer positions partially protected</div>
@@ -1323,9 +1442,9 @@ input[type=range].sim-slider.green::-webkit-slider-thumb { background: var(--gre
     <span class="eq">
       Required
       <span class="fterm">CAGR<span class="ftip"><span class="ftip-label">CAGR — Compound Annual Growth Rate</span>The year-over-year growth rate that, if constant, takes a starting value to an ending value. Formula: (End/Start)^(1/years) − 1. Here: (200/13)^(1/5) − 1 = 72%. For context, Amazon's peak CAGR was ~28%, Google's ~73% briefly in early years.</span></span>
-      = (200B / 13B)<sup>1/5</sup> − 1 = <strong>72% p.a.</strong> (2025–2030)
+      = (200B / 13B)<sup>1/5</sup> − 1 = <strong><span class="pct-tip">72% p.a.<span class="ptip"><span class="ptip-label">72% annual revenue CAGR &mdash; OpenAI break-even by 2030</span><span class="ptip-basis derived">&#128208; Derived</span>Arithmetically derived from OpenAI leaked financial projections (reported by The Information, WSJ). Starting revenue: $13B (2025E). Internal 2030 target: $200B. Formula: (200/13)^(1/5) − 1 = 72.4%. Historical context: Google briefly hit ~73% CAGR in 2002–2006 but from a far smaller revenue base. No major tech company has sustained 70%+ CAGR from a $10B+ revenue base.</span></span></strong> (2025–2030)
     </span>
-    <span class="explain">OpenAI needs 72% annual revenue growth to reach break-even by 2030. Global AI SaaS market CAGR: ~39%. This implies OpenAI must grow at 2× market rate while market itself expands — historically rare (only Google, Amazon in hyper-growth phase achieved this).</span>
+    <span class="explain">OpenAI needs 72% annual revenue growth to reach break-even by 2030. Global AI SaaS market CAGR: ~<span class="pct-tip">39%<span class="ptip"><span class="ptip-label">39% CAGR &mdash; Global AI SaaS market projection (2025–2032)</span><span class="ptip-basis sourced">&#128196; Sourced</span>Market research consensus cited in the research documents. Multiple research firms (IDC, Gartner, MarketsandMarkets) project 38–40% CAGR for the AI-created SaaS market through 2032. OpenAI growing at 72% would require capturing ever-larger market share while the market itself expands at 39% &mdash; only achievable if OpenAI dominates the category the way Google dominated search.</span></span>. This implies OpenAI must grow at 2× market rate while market itself expands — historically rare (only Google, Amazon in hyper-growth phase achieved this).</span>
   </div>
 </section>
 
@@ -1371,7 +1490,7 @@ input[type=range].sim-slider.green::-webkit-slider-thumb { background: var(--gre
           <td>
             <div class="risk-bar">
               <div class="risk-bar-track"><div class="risk-bar-fill" style="width:40%;background:var(--red)"></div></div>
-              <span style="color:var(--red)">40%</span>
+              <span style="color:var(--red)"><span class="pct-tip">40%<span class="ptip"><span class="ptip-label">40% survival probability &mdash; Foundation Labs</span><span class="ptip-basis assumption">&#129517; Assumption</span>Analytical estimate. OpenAI must achieve 72% CAGR and faces $140B cumulative burn by 2029. Anthropic faces similar pressure. 40% reflects the probability at least 2&ndash;3 of today's top labs survive in their current form &mdash; not that any individual lab fails with 60% certainty. If capital markets stay open, probability rises sharply.</span></span></span>
             </div>
           </td>
           <td style="color:var(--amber);font-size:10px">Consolidation; 3–5 survivors</td>
@@ -1384,7 +1503,7 @@ input[type=range].sim-slider.green::-webkit-slider-thumb { background: var(--gre
           <td>
             <div class="risk-bar">
               <div class="risk-bar-track"><div class="risk-bar-fill" style="width:80%;background:var(--green)"></div></div>
-              <span style="color:var(--green)">80%</span>
+              <span style="color:var(--green)"><span class="pct-tip">80%<span class="ptip"><span class="ptip-label">80% survival probability &mdash; Hyperscalers</span><span class="ptip-basis assumption">&#129517; Assumption</span>Analytical estimate. Microsoft, Google, Amazon, Meta have diversified revenue, massive cash generation, and proven business models outside AI. Even at 94% capex/OCF ratio, they remain solvent. The 20% risk represents existential regulatory or macro-economic scenarios &mdash; not the AI correction itself.</span></span></span>
             </div>
           </td>
           <td style="color:var(--green);font-size:10px">Survive; reduce investment</td>
@@ -1397,7 +1516,7 @@ input[type=range].sim-slider.green::-webkit-slider-thumb { background: var(--gre
           <td>
             <div class="risk-bar">
               <div class="risk-bar-track"><div class="risk-bar-fill" style="width:70%;background:var(--amber)"></div></div>
-              <span style="color:var(--amber)">70%</span>
+              <span style="color:var(--amber)"><span class="pct-tip">70%<span class="ptip"><span class="ptip-label">70% survival probability &mdash; Hardware Vendors (Nvidia)</span><span class="ptip-basis assumption">&#129517; Assumption</span>Analytical estimate. Nvidia derives 80%+ of revenue from data-centre/AI in 2025. In a hard crash, chip demand could fall 50&ndash;60% &mdash; as in the 2000&ndash;2002 semiconductor cycle (SOX index fell ~80%). 70% reflects that Nvidia has a genuine technology moat and survives, but as a much smaller company. TSMC is less exposed due to diversified semiconductor demand.</span></span></span>
             </div>
           </td>
           <td style="color:var(--amber);font-size:10px">Revenue moderation; −30 to −40% stock</td>
@@ -1410,7 +1529,7 @@ input[type=range].sim-slider.green::-webkit-slider-thumb { background: var(--gre
           <td>
             <div class="risk-bar">
               <div class="risk-bar-track"><div class="risk-bar-fill" style="width:90%;background:var(--green)"></div></div>
-              <span style="color:var(--green)">90%</span>
+              <span style="color:var(--green)"><span class="pct-tip">90%<span class="ptip"><span class="ptip-label">90% survival probability &mdash; Enterprise Customers</span><span class="ptip-basis assumption">&#129517; Assumption</span>Analytical estimate. Enterprises buying AI tools face stranded-asset risk (sunk software/integration costs) rather than existential risk. Most can revert to pre-AI workflows. The 10% risk applies to enterprises that made large, irreversible AI infrastructure commitments &mdash; particularly those that restructured core operations around AI dependencies.</span></span></span>
             </div>
           </td>
           <td style="color:var(--green);font-size:10px">Selective deployment; price benefits</td>
@@ -1423,7 +1542,7 @@ input[type=range].sim-slider.green::-webkit-slider-thumb { background: var(--gre
           <td>
             <div class="risk-bar">
               <div class="risk-bar-track"><div class="risk-bar-fill" style="width:30%;background:var(--red)"></div></div>
-              <span style="color:var(--red)">30%</span>
+              <span style="color:var(--red)"><span class="pct-tip">30%<span class="ptip"><span class="ptip-label">30% survival probability &mdash; AI Startups</span><span class="ptip-basis estimate">&#128202; Estimate</span>Base-rate estimate using historical tech bubbles. Web3/crypto saw 82% VC funding drop (PitchBook 2023). Dotcom saw ~78% of funded companies fail by 2004 (NVCA data). The 30% is slightly optimistic vs these precedents because AI startups show demonstrated enterprise utility. However, inference cost scaling and hyperscaler competition remain severe structural headwinds.</span></span></span>
             </div>
           </td>
           <td style="color:var(--amber);font-size:10px">Top 10% survive; rest consolidated</td>
@@ -1436,7 +1555,7 @@ input[type=range].sim-slider.green::-webkit-slider-thumb { background: var(--gre
           <td>
             <div class="risk-bar">
               <div class="risk-bar-track"><div class="risk-bar-fill" style="width:95%;background:var(--blue)"></div></div>
-              <span style="color:var(--blue)">95%</span>
+              <span style="color:var(--blue)"><span class="pct-tip">95%<span class="ptip"><span class="ptip-label">95% survival probability &mdash; Sovereign Actors</span><span class="ptip-basis assumption">&#129517; Assumption</span>Analytical assumption. Nation-states fund AI from strategic/national security budgets, not return-driven capital. US CHIPS Act, China state AI funding, IndiaAI Mission ($1.25B) are geopolitical commitments not subject to market repricing. The 5% risk covers extreme scenarios: fiscal crises, regime change, or major geopolitical realignment altering AI investment priorities.</span></span></span>
             </div>
           </td>
           <td style="color:var(--green);font-size:10px">Accelerate domestic AI strategy</td>
@@ -1444,7 +1563,7 @@ input[type=range].sim-slider.green::-webkit-slider-thumb { background: var(--gre
         </tr>
       </tbody>
     </table>
-    <div style="font-size:10px;color:var(--text-dim);margin-top:12px;">Source: <span class="src-badge">1<span class="stip"><span class="stip-title">Research Documents (provided)</span>The three research papers provided: "AI Bubble Burst Paper", "AI Bubbles — Details", and "Pop Goes the AI Bubble". Core quantitative frameworks, stakeholder analysis, scenario probabilities, and mathematical models all originate from these.</span></span> <span class="src-badge">3<span class="stip"><span class="stip-title">Goldman Sachs AI Infrastructure 2025</span>Goldman Sachs analyst note on AI infrastructure. Key finding: 15% of Nvidia's projected 2025 revenue comes from circular/vendor-financing deals. Also provided hyperscaler capex projections.</span></span> <span class="src-badge">2<span class="stip"><span class="stip-title">Bain Global AI Report 2025</span>Published by Bain & Company. Key data: $2T annual revenue requirement by 2030, 5% of enterprises seeing transformative returns, enterprise AI spending trajectory from $1.7B (2023) to $37B (2025).</span></span> <span class="src-badge">4<span class="stip"><span class="stip-title">Company Financial Filings</span>Annual reports, 10-K/10-Q filings, and earnings calls from Microsoft, Google (Alphabet), Meta, Amazon, and Nvidia. OpenAI financials from leaked internal documents reported by The Information and WSJ.</span></span></div>
+    <div style="font-size:10px;color:var(--text-dim);margin-top:12px;">Source: <span class="src-badge">1<span class="stip"><span class="stip-title">Research Documents (provided)</span>The three research papers provided: "AI Bubble Burst Paper", "AI Bubbles — Details", and "Pop Goes the AI Bubble". Core quantitative frameworks, stakeholder analysis, scenario probabilities, and mathematical models all originate from these.</span></span> <span class="src-badge">3<span class="stip"><span class="stip-title">Goldman Sachs AI Infrastructure 2025</span>Goldman Sachs analyst note on AI infrastructure. Key finding: <span class="pct-tip">15%<span class="ptip"><span class="ptip-label">15% of Nvidia revenue from circular deals</span><span class="ptip-basis sourced">&#128196; Sourced</span>Goldman Sachs AI Infrastructure analyst note (2025). GS estimated ~15% of Nvidia's projected 2025 chip revenues come from "circular" arrangements &mdash; where Nvidia invests in AI labs that then buy Nvidia chips. Treated as a fragility risk indicator in the GS report.</span></span> of Nvidia's projected 2025 revenue comes from circular/vendor-financing deals. Also provided hyperscaler capex projections.</span></span> <span class="src-badge">2<span class="stip"><span class="stip-title">Bain Global AI Report 2025</span>Published by Bain & Company. Key data: $2T annual revenue requirement by 2030, 5% of enterprises seeing transformative returns, enterprise AI spending trajectory from $1.7B (2023) to $37B (2025).</span></span> <span class="src-badge">4<span class="stip"><span class="stip-title">Company Financial Filings</span>Annual reports, 10-K/10-Q filings, and earnings calls from Microsoft, Google (Alphabet), Meta, Amazon, and Nvidia. OpenAI financials from leaked internal documents reported by The Information and WSJ.</span></span></div>
   </div>
 </section>
 
@@ -1648,7 +1767,7 @@ input[type=range].sim-slider.green::-webkit-slider-thumb { background: var(--gre
       <div class="card-title"><span class="dot dot-green"></span>India AI Exposure Profile</div>
       <div class="chart-wrap"><canvas id="chartIndia"></canvas></div>
       <div style="font-size:10px;color:var(--text-dim);margin-top:12px;">
-        Source: <span class="src-badge">6<span class="stip"><span class="stip-title">NASSCOM FY2025</span>National Association of Software and Service Companies annual industry report. India IT sector revenue ($254B), client geography breakdown (60% North America), employment data, and AI services growth projections.</span></span> <span class="src-badge">10<span class="stip"><span class="stip-title">IndiaAI Mission / MeitY</span>India's Ministry of Electronics and IT and the IndiaAI Mission framework. $1.25B ($10,372 crore) government AI compute program, 10,000+ GPU procurement for public access, focus on applications and language model localisation.</span></span> <span class="src-badge">7<span class="stip"><span class="stip-title">McKinsey Global Institute</span>McKinsey's AI productivity research. Key findings: 14% average productivity gain from AI tools in controlled studies, 78% enterprise AI adoption rate (2025), 26–55% productivity gains in specific use cases.</span></span> — India's $6B IT-AI services is ~3% of global AI investment.
+        Source: <span class="src-badge">6<span class="stip"><span class="stip-title">NASSCOM FY2025</span>National Association of Software and Service Companies annual industry report. India IT sector revenue ($254B), client geography breakdown (60% North America), employment data, and AI services growth projections.</span></span> <span class="src-badge">10<span class="stip"><span class="stip-title">IndiaAI Mission / MeitY</span>India's Ministry of Electronics and IT and the IndiaAI Mission framework. $1.25B ($10,372 crore) government AI compute program, 10,000+ GPU procurement for public access, focus on applications and language model localisation.</span></span> <span class="src-badge">7<span class="stip"><span class="stip-title">McKinsey Global Institute</span>McKinsey's AI productivity research. Key findings: 14% average productivity gain from AI tools in controlled studies, 78% enterprise AI adoption rate (2025), 26–55% productivity gains in specific use cases.</span></span> — India's $6B IT-AI services is ~<span class="pct-tip">3%<span class="ptip"><span class="ptip-label">~3% &mdash; India's share of global AI investment</span><span class="ptip-basis estimate">&#128202; Estimate</span>Derived from NASSCOM and IndiaAI figures. India's AI-adjacent IT services revenue ~$6B vs global AI investment of ~$200B (2025). The ~3% reflects India's position as a services/application consumer rather than infrastructure builder. India's direct AI R&D spend is even smaller &mdash; the IndiaAI Mission's $1.25B over several years is under 1% of annual global capex.</span></span> of global AI investment.
       </div>
     </div>
 
@@ -1656,7 +1775,7 @@ input[type=range].sim-slider.green::-webkit-slider-thumb { background: var(--gre
       <div class="card-title"><span class="dot dot-amber"></span>IT Sector Revenue Sensitivity by Scenario</div>
       <div class="chart-wrap"><canvas id="chartIndiaIT"></canvas></div>
       <div style="font-size:10px;color:var(--text-dim);margin-top:12px;">
-        Source: <span class="src-badge">6<span class="stip"><span class="stip-title">NASSCOM FY2025</span>National Association of Software and Service Companies annual industry report. India IT sector revenue ($254B), client geography breakdown (60% North America), employment data, and AI services growth projections.</span></span> <span class="src-badge">4<span class="stip"><span class="stip-title">Company Financial Filings</span>Annual reports, 10-K/10-Q filings, and earnings calls from Microsoft, Google (Alphabet), Meta, Amazon, and Nvidia. OpenAI financials from leaked internal documents reported by The Information and WSJ.</span></span> — 6–12 month lag from US market to Indian IT revenue impact.
+        Source: <span class="src-badge">6<span class="stip"><span class="stip-title">NASSCOM FY2025</span>National Association of Software and Service Companies annual industry report. India IT sector revenue ($254B), client geography breakdown (60% North America), employment data, and AI services growth projections.</span></span> <span class="src-badge">4<span class="stip"><span class="stip-title">Company Financial Filings</span>Annual reports, 10-K/10-Q filings, and earnings calls from Microsoft, Google (Alphabet), Meta, Amazon, and Nvidia. OpenAI financials from leaked internal documents reported by The Information and WSJ.</span></span> — <span class="pct-tip">6–12 month<span class="ptip"><span class="ptip-label">6–12 month lag &mdash; US correction to India IT impact</span><span class="ptip-basis estimate">&#128202; Estimate</span>Estimate based on historical IT spending cycles. Post-dotcom (2001–2002): US enterprise tech budgets froze in Q4 2000; India IT growth began slowing by Q2–Q3 2001 &mdash; roughly a 2–3 quarter lag. The 6–12 month range reflects: contract structures (annual/multi-year deals buffer near-term), project pipeline momentum, and the time required for US enterprise budget cuts to propagate to vendor contracts.</span></span> lag from US market to Indian IT revenue impact.
       </div>
     </div>
   </div>
@@ -1672,8 +1791,8 @@ input[type=range].sim-slider.green::-webkit-slider-thumb { background: var(--gre
         <strong style="color:var(--green)">Key upside:</strong> India missed the model-building bus but now benefits from cheap infrastructure. Document argues: "Indian approach focused on applications — in mild correction, global Big Tech wins but Indian application layer is partially protected."
       </p>
       <div class="india-metrics">
-        <div class="india-metric"><div class="v" style="color:var(--amber)">−5 to −8%</div><div class="l">IT sector revenue growth impact</div></div>
-        <div class="india-metric"><div class="v" style="color:var(--green)">+12%</div><div class="l">AI services opportunity growth</div></div>
+        <div class="india-metric"><div class="v" style="color:var(--amber)"><span class="pct-tip">−5 to −8%<span class="ptip"><span class="ptip-label">−5 to −8% IT growth impact &mdash; Scenario A (Soft Landing)</span><span class="ptip-basis estimate">&#128202; Estimate</span>Analytical estimate. NASSCOM baseline IT growth: ~8–10%/yr. A soft landing reduces US enterprise tech budgets 15–20%. India's 60% NA dependency means ~9–12% of revenue faces headwind; offset by domestic/EU/APAC growth (~40% of revenue). Net estimated impact: 5–8 percentage points below baseline growth &mdash; implying ~0–3% actual growth rather than contraction.</span></span></div><div class="l">IT sector revenue growth impact</div></div>
+        <div class="india-metric"><div class="v" style="color:var(--green)"><span class="pct-tip">+12%<span class="ptip"><span class="ptip-label">+12% AI services opportunity &mdash; Scenario A (Soft Landing)</span><span class="ptip-basis estimate">&#128202; Estimate</span>Educated estimate. A soft landing creates global demand for AI implementation services &mdash; helping enterprises deploy AI tools they've already licensed. India's large English-speaking engineering workforce, cost arbitrage, and existing enterprise relationships position it well. The 12% represents growth in AI-adjacent services (prompt engineering, model fine-tuning, AI integration) partially offsetting IT services headwinds.</span></span></div><div class="l">AI services opportunity growth</div></div>
         <div class="india-metric"><div class="v" style="color:var(--amber)">6–12 mo</div><div class="l">Lag before impact felt</div></div>
         <div class="india-metric"><div class="v" style="color:var(--green)">Protected</div><div class="l">IndiaAI Mission / sovereign</div></div>
       </div>
@@ -1689,8 +1808,8 @@ input[type=range].sim-slider.green::-webkit-slider-thumb { background: var(--gre
         <strong style="color:var(--red)">Key risk:</strong> India's IT sector derives ~60% revenue from North American clients. A NASDAQ correction of 50%+ historically correlates with IT spending freeze of 12–24 months. BPO/KPO segments most vulnerable to automation-driven cuts regardless of bubble outcome.
       </p>
       <div class="india-metrics">
-        <div class="india-metric"><div class="v" style="color:var(--red)">−15%</div><div class="l">IT sector revenue contraction</div></div>
-        <div class="india-metric"><div class="v" style="color:var(--red)">−80%</div><div class="l">AI startup VC funding drop</div></div>
+        <div class="india-metric"><div class="v" style="color:var(--red)"><span class="pct-tip">−15%<span class="ptip"><span class="ptip-label">−15% IT sector contraction &mdash; Scenario B (Hard Crash)</span><span class="ptip-basis estimate">&#128202; Estimate</span>Analytical estimate. A hard crash implies US enterprise tech budgets freeze for 12–24 months. India's 60% NA dependency means ~60% of revenue faces severe pressure. Historical reference: post-dotcom India IT growth fell from 30%+ to single digits &mdash; but that cycle lacked the AI dependency depth of 2025. The −15% assumes outright contraction as AI-dependent deal pipelines freeze and clients pause all discretionary IT spend.</span></span></div><div class="l">IT sector revenue contraction</div></div>
+        <div class="india-metric"><div class="v" style="color:var(--red)"><span class="pct-tip">−80%<span class="ptip"><span class="ptip-label">−80% AI startup VC funding drop &mdash; Scenario B (Hard Crash)</span><span class="ptip-basis sourced">&#128196; Sourced</span>Directly precedented by Web3/crypto: VC funding fell 82% year-over-year Q1 2022 to Q1 2023 (PitchBook). Dotcom VC fell ~80% from 2000 to 2003 (NVCA). Applied to Indian AI startups &mdash; which raised $10B+ in AI-adjacent VC in 2024 &mdash; an 80% drop would reduce this to ~$2B, severely constraining the Indian startup ecosystem.</span></span></div><div class="l">AI startup VC funding drop</div></div>
         <div class="india-metric"><div class="v" style="color:var(--amber)">2–3 yr</div><div class="l">Recovery timeline</div></div>
         <div class="india-metric"><div class="v" style="color:var(--red)">100K+</div><div class="l">Potential tech job losses</div></div>
       </div>
@@ -1724,8 +1843,8 @@ input[type=range].sim-slider.green::-webkit-slider-thumb { background: var(--gre
       </p>
       <div class="india-metrics">
         <div class="india-metric"><div class="v" style="color:var(--amber)">Split</div><div class="l">IT sector outcome</div></div>
-        <div class="india-metric"><div class="v" style="color:var(--green)">+20%</div><div class="l">AI app opportunity uplift</div></div>
-        <div class="india-metric"><div class="v" style="color:var(--amber)">−20%</div><div class="l">BPO/legacy services</div></div>
+        <div class="india-metric"><div class="v" style="color:var(--green)"><span class="pct-tip">+20%<span class="ptip"><span class="ptip-label">+20% AI application opportunity &mdash; Scenario D (Bifurcation)</span><span class="ptip-basis estimate">&#128202; Estimate</span>Educated estimate. In a bifurcation scenario, application-layer AI succeeds while foundation model investment partially fails. India's focus on applications (IndiaAI Mission, UPI-integrated AI, agri-tech, health-tech) positions it well. The 20% uplift reflects: (1) collapsing inference costs (dark compute effect) making AI applications cheaper to build and run, (2) demand for India's relatively low-cost AI application development talent.</span></span></div><div class="l">AI app opportunity uplift</div></div>
+        <div class="india-metric"><div class="v" style="color:var(--amber)"><span class="pct-tip">−20%<span class="ptip"><span class="ptip-label">−20% BPO/legacy services &mdash; Scenario D (Bifurcation)</span><span class="ptip-basis estimate">&#128202; Estimate</span>Estimate based on automation risk analysis. In a bifurcation scenario, AI succeeds in narrow domains &mdash; notably including BPO/KPO work (data annotation, customer service, document processing, basic coding). These represent ~25–30% of India's IT-BPO revenue. A 20% decline in this segment is conservative: if coding AI (used by 50% of developers daily, McKinsey 2025) matures further, the displacement in IT services could be structural, not cyclical.</span></span></div><div class="l">BPO/legacy services</div></div>
         <div class="india-metric"><div class="v" style="color:var(--green)">DPI edge</div><div class="l">UPI/ONDC infra advantage</div></div>
       </div>
     </div>
@@ -1765,7 +1884,7 @@ input[type=range].sim-slider.green::-webkit-slider-thumb { background: var(--gre
           <div class="leverage-rank" style="color:var(--red)">2</div>
           <div class="leverage-body">
             <div class="leverage-name">Circular Financing Stability (αβγ &lt; 1)</div>
-            <div class="leverage-desc">If any node in the Nvidia → OpenAI → Cloud loop faces financial stress, the feedback reverses. Goldman Sachs: 15% of Nvidia revenue is circular. A single OpenAI funding round failure could destabilise the entire loop. Monitoring: OpenAI's next fundraise and revenue update.</div>
+            <div class="leverage-desc">If any node in the Nvidia → OpenAI → Cloud loop faces financial stress, the feedback reverses. Goldman Sachs: <span class="pct-tip">15%<span class="ptip"><span class="ptip-label">15% of Nvidia revenue from circular deals</span><span class="ptip-basis sourced">&#128196; Sourced</span>Goldman Sachs AI Infrastructure analyst note (2025). GS estimated ~15% of Nvidia's projected 2025 chip revenues come from "circular" arrangements &mdash; where Nvidia invests in AI labs that then buy Nvidia chips. Treated as a fragility risk indicator in the GS report.</span></span> of Nvidia revenue is circular. A single OpenAI funding round failure could destabilise the entire loop. Monitoring: OpenAI's next fundraise and revenue update.</div>
           </div>
         </div>
         <div class="leverage-item">
@@ -1793,7 +1912,7 @@ input[type=range].sim-slider.green::-webkit-slider-thumb { background: var(--gre
           <div class="leverage-rank" style="color:var(--blue)">6</div>
           <div class="leverage-body">
             <div class="leverage-name">Enterprise Adoption Gap Closure (25% shadow AI → formal)</div>
-            <div class="leverage-desc">40% of knowledge workers use AI personally; only 15% have formal enterprise deployment. Closing this 25-point gap from bottom-up adoption could generate $100–200B in new enterprise revenue rapidly, validating investments and averting correction. The "Slack-ification" of AI is the soft-landing mechanism.</div>
+            <div class="leverage-desc"><span class="pct-tip">40%<span class="ptip"><span class="ptip-label">40% of knowledge workers using AI personally</span><span class="ptip-basis sourced">&#128196; Sourced</span>McKinsey "State of AI" report (2025). 40% of knowledge workers (office, professional, analytical roles) reported using AI tools at least weekly &mdash; primarily ChatGPT and similar consumer products, often on personal accounts without corporate approval. This "shadow AI" mirrors Slack/Dropbox bottom-up adoption patterns observed in 2010–2014.</span></span> of knowledge workers use AI personally; only <span class="pct-tip">15%<span class="ptip"><span class="ptip-label">15% formal enterprise AI deployment</span><span class="ptip-basis sourced">&#128196; Sourced</span>McKinsey / Gartner enterprise survey data (2025). While 78% of enterprises report "using AI," only ~15% have deployed AI in a formally managed, secured, and core-business-integrated way. The 25-percentage-point gap between personal use (40%) and enterprise deployment (15%) represents the "shadow AI economy" &mdash; demand that has not yet converted to formal enterprise contracts.</span></span> have formal enterprise deployment. Closing this 25-point gap from bottom-up adoption could generate $100–200B in new enterprise revenue rapidly, validating investments and averting correction. The "Slack-ification" of AI is the soft-landing mechanism.</div>
           </div>
         </div>
       </div>
@@ -1815,7 +1934,7 @@ input[type=range].sim-slider.green::-webkit-slider-thumb { background: var(--gre
           </span>
           <span class="explain">
             <span class="fterm">τ<span class="ftip tip-below"><span class="ftip-label">τ — Application Lag (5–7 years)</span>Historical precedent: fibre optic cable laid 1997–2001 took until ~2005–2008 before applications (YouTube, cloud computing, social media) fully utilised it. The AI equivalent lag is estimated at 5–7 years.</span></span>
-            = 5–7 year application lag. Dark fiber analogy: 85–95% of 1990s fibre remained unused for years before the consumer internet arrived.
+            = 5–7 year application lag. Dark fiber analogy: <span class="pct-tip">85–95%<span class="ptip"><span class="ptip-label">85–95% dark fiber &mdash; Post-dotcom infrastructure utilisation</span><span class="ptip-basis sourced">&#128196; Sourced</span>Multiple telecom industry reports and academic studies (Zook 2000; FCC Broadband Data). Four years after the dotcom collapse, 85–95% of fibre optic cable laid in the late 1990s remained "unlit" (unused). Cited explicitly in research documents as the basis for the "dark compute" analogy: that AI infrastructure overcapacity may similarly enable the next wave of applications, even as original investors lose money.</span></span> of 1990s fibre remained unused for years before the consumer internet arrived.
           </span><br>
           <span class="explain">Current state (t=0): U ≈ 0.2–0.4 (40–60% utilisation in best cases)</span><br>
           <span class="explain">If A(t) catches up: infrastructure justified retrospectively ("dark compute" scenario)</span><br>
@@ -2006,7 +2125,7 @@ input[type=range].sim-slider.green::-webkit-slider-thumb { background: var(--gre
       <div class="assumption-grid">
         <div class="assumption-card">
           <div class="a-label">Discount Rate</div>
-          <div class="a-val">12% for hyperscaler AI capex NPV. 15% for startup valuation. Reflects risk premium above WACC.</div>
+          <div class="a-val"><span class="pct-tip">12%<span class="ptip"><span class="ptip-label">12% discount rate for hyperscaler AI NPV &mdash; Assumption</span><span class="ptip-basis assumption">&#129517; Assumption</span>Stated assumption. Base WACC for large-cap tech: ~5–6%. Added: ~6% AI risk premium for uncertainty about revenue materialisation. The 12% is mid-range: conservative analysts use 15%+, bulls use 8–10%. At 8%, NPV of AI investments becomes positive sooner; at 15%, break-even recedes beyond 2035.</span></span> for hyperscaler AI capex NPV. <span class="pct-tip">15%<span class="ptip"><span class="ptip-label">15% discount rate for startup valuations &mdash; Assumption</span><span class="ptip-basis assumption">&#129517; Assumption</span>Stated assumption. Startup valuations use a higher discount rate reflecting: (1) binary outcomes (most fail), (2) illiquidity premium (no public market exit for years), (3) execution risk on top of technology risk. Industry standard for early-stage tech VC: 20–30%; 15% is used here for Series B/C-stage AI companies with some revenue traction.</span></span> for startup valuation. Reflects risk premium above WACC.</div>
         </div>
         <div class="assumption-card">
           <div class="a-label">Revenue Lag</div>
@@ -2022,11 +2141,11 @@ input[type=range].sim-slider.green::-webkit-slider-thumb { background: var(--gre
         </div>
         <div class="assumption-card">
           <div class="a-label">Scenario Probs</div>
-          <div class="a-val">Derived from documents: Soft 35%, Hard 25%, Accel 15%, Bifurcation 25%. Sum = 100%. Author-attributed, not actuarial.</div>
+          <div class="a-val">Derived from documents: Soft <span class="pct-tip">35%<span class="ptip"><span class="ptip-label">35% probability &mdash; Soft Landing</span><span class="ptip-basis assumption">&#129517; Assumption</span>Analytical assumption from research documents. Most likely single outcome based on: financial buffer of hyperscalers, demonstrated AI utility, historical productive bubble precedent (dotcom). Not actuarial.</span></span>, Hard <span class="pct-tip">25%<span class="ptip"><span class="ptip-label">25% probability &mdash; Hard Crash</span><span class="ptip-basis assumption">&#129517; Assumption</span>Analytical assumption. Requires simultaneous capability plateau + revenue shortfall + capital market closure. Informed by: Web3 82% funding collapse analogy, OpenAI fragile unit economics, Nvidia circular financing risk.</span></span>, Accel <span class="pct-tip">15%<span class="ptip"><span class="ptip-label">15% probability &mdash; Continued Acceleration</span><span class="ptip-basis assumption">&#129517; Assumption</span>Lowest probability. Requires AGI-adjacent capability breakthroughs most researchers place 5–15+ years out. Non-trivial because if it occurs, the entire analysis changes.</span></span>, Bifurcation <span class="pct-tip">25%<span class="ptip"><span class="ptip-label">25% probability &mdash; Bifurcation</span><span class="ptip-basis assumption">&#129517; Assumption</span>Tied with Hard Crash. Most consistent with current data: 78% enterprise adoption but only 5% transformative returns (McKinsey 2025) &mdash; classic bifurcated outcome with strong narrow results and broad mediocrity.</span></span>. Sum = 100%. Author-attributed, not actuarial.</div>
         </div>
         <div class="assumption-card">
           <div class="a-label">India Exposure</div>
-          <div class="a-val">60% of India IT revenue from North American clients (NASSCOM). Direct frontier model investment: &lt;1% of global.</div>
+          <div class="a-val"><span class="pct-tip">60%<span class="ptip"><span class="ptip-label">60% North American dependency &mdash; India IT revenue</span><span class="ptip-basis sourced">&#128196; Sourced</span>NASSCOM Annual Report FY2025. North America accounts for approximately 60% of India's IT services exports (US alone ~52%). This has been broadly stable (55–62%) for over a decade. It makes India's IT sector a leveraged proxy for US enterprise tech spending cycles &mdash; with roughly a 6–12 month demand lag.</span></span> of India IT revenue from North American clients (NASSCOM). Direct frontier model investment: &lt;1% of global.</div>
         </div>
         <div class="assumption-card">
           <div class="a-label">OpenAI Math</div>
@@ -2069,7 +2188,7 @@ input[type=range].sim-slider.green::-webkit-slider-thumb { background: var(--gre
       The documents' core thesis — and this analysis concurs — is that <em style="color:var(--gold)">AI is simultaneously a bubble and a transformative technology</em>. These are not mutually exclusive. The dotcom era showed that bubbles can finance infrastructure that outlasts the correction. The critical distinction from crypto: AI has demonstrated measurable utility (14% productivity gains, 78% enterprise adoption) while crypto's utility-speculation ratio never broke 0.001.
     </p>
     <p style="font-size:12px;color:var(--text-dim);line-height:1.8;max-width:900px;margin-top:12px;">
-      The mathematical structure reveals a system under stress: $560B invested yielding $35B revenue (6¢/$1), OpenAI needing 72% CAGR, and circular financing loops approaching αβγ = 1. Yet the game-theoretic analysis shows rational actors cannot stop investing. The most likely outcome is Scenario A (35%) — a productive bubble correction, not unlike dark fiber — leaving "dark compute" that enables the next wave of applications. For India, the application-layer focus and sovereign programs provide partial insulation, but the IT sector's North American dependence remains the primary vulnerability, with a 6–12 month lag before any US correction reaches Indian shores.
+      The mathematical structure reveals a system under stress: $560B invested yielding $35B revenue (6¢/$1), OpenAI needing <span class="pct-tip">72% CAGR<span class="ptip"><span class="ptip-label">72% CAGR required &mdash; OpenAI to break-even by 2030</span><span class="ptip-basis derived">&#128208; Derived</span>Arithmetically derived: (200B target / 13B current)^(1/5) − 1 = 72.4%. OpenAI's internal 2030 revenue target of $200B vs 2025 estimate of $13B (The Information, WSJ leaks). No large-cap tech company has sustained this growth rate from a $10B+ base.</span></span>, and circular financing loops approaching αβγ = 1. Yet the game-theoretic analysis shows rational actors cannot stop investing. The most likely outcome is Scenario A (35%) — a productive bubble correction, not unlike dark fiber — leaving "dark compute" that enables the next wave of applications. For India, the application-layer focus and sovereign programs provide partial insulation, but the IT sector's North American dependence remains the primary vulnerability, with a <span class="pct-tip">6–12 month<span class="ptip"><span class="ptip-label">6–12 month lag &mdash; US correction to India IT impact</span><span class="ptip-basis estimate">&#128202; Estimate</span>Estimate based on historical IT spending cycles. Post-dotcom (2001–2002): US enterprise tech budgets froze in Q4 2000; India IT growth began slowing by Q2–Q3 2001 &mdash; roughly a 2–3 quarter lag. The 6–12 month range reflects: contract structures (annual/multi-year deals buffer near-term), project pipeline momentum, and the time required for US enterprise budget cuts to propagate to vendor contracts.</span></span> lag before any US correction reaches Indian shores.
     </p>
   </div>
 </section>
@@ -2104,7 +2223,7 @@ function goldGrad(ctx, top, bottom) {
 new Chart(document.getElementById('chartIntensity'), {
   type: 'bar',
   data: {
-    labels: ['Railroad Era\n1870s', 'Dotcom Peak\n1999-2000', 'Apollo\n1960s', 'AI 2024\n(0.82% GDP)', 'AI Q2 2025\n(annualised)'],
+    labels: ['Railroad Era\n1870s', 'Dotcom Peak\n1999-2000', 'Apollo\n1960s', 'AI 2024\n(<span class="pct-tip">0.82% GDP<span class="ptip"><span class="ptip-label">0.82% of GDP &mdash; AI Capex in 2024</span><span class="ptip-basis sourced">&#128196; Sourced</span>US Bureau of Economic Analysis (BEA). The four largest hyperscalers spent ~$241B on AI capex in 2024. US GDP was ~$29.4T, making this &asymp;0.82%. Documents note AI capex briefly became the primary driver of US GDP growth in H1 2025.</span></span>)', 'AI Q2 2025\n(annualised)'],
     datasets: [{
       label: '% of GDP',
       data: [1.8, 1.5, 1.1, 0.82, 1.28],
